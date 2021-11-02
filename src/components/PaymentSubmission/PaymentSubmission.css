@@ -1,0 +1,49 @@
+.octane-component.payment-submission:hover {
+  background-color: var(--octane-action-secondary);
+}
+
+.payment-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.octane-component.payment-submission .save-button,
+.octane-component.present-payment-method .update-payment-method {
+  background-color: var(--octane-bg-accent);
+  cursor: pointer;
+  width: 100%;
+  color: var(--octane-text-primary);
+  border-radius: 0 0 var(--octane-border-radius-lg)
+    var(--octane-border-radius-lg);
+  border: 0;
+  padding: 12px 16px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: block;
+  transition: all 0.2s ease;
+  box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
+}
+
+.octane-component.payment-submission .save-button:hover,
+.octane-component.present-payment-method .update-payment-method:hover {
+  background-color: var(--octane-bg-accent-disabled);
+}
+
+.octane-component.payment-submission .save-button:disabled,
+.octane-component.present-payment-method .update-payment-method:disabled {
+  background: var(--octane-bg-accent-disabled);
+}
+
+.octane-component.payment-submission #card-elem-row,
+.octane-component.present-payment-method .details {
+  font-size: var(--octane-meter-text-size);
+  text-align: center;
+  border-radius: var(--octane-border-radius-lg) var(--octane-border-radius-lg) 0
+    0;
+  background-color: var(--octane-bg-primary);
+  padding: 12px;
+  border: 1px solid var(--octane-border-primary);
+  box-sizing: border-box;
+  max-height: 44px;
+}

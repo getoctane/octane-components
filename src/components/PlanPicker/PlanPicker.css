@@ -1,0 +1,173 @@
+.octane-component.price-plan-picker {
+  overflow-y: auto;
+  white-space: nowrap;
+  text-align: center;
+  padding: calc(2 * var(--octane-spacing));
+}
+
+.octane-component.price-plan-picker .price-plan-card {
+  display: inline-block;
+  width: 250px;
+  vertical-align: top;
+}
+
+.octane-component .loading {
+  background-color: var(--octane-bg-primary);
+  width: 70%;
+  font-weight: bold;
+  text-align: center;
+  padding: calc(var(--octane-spacing) * 2);
+  margin-top: var(--octane-spacing);
+  margin-bottom: var(--octane-spacing);
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: var(--octane-border-radius-lg);
+}
+
+.octane-component .price-plan-card {
+  transition: all var(--octane-transition-speed) ease-in-out;
+  transform: scale(1);
+  opacity: 1;
+  box-shadow: 0px 0px 0px var(--octane-shadow-color);
+
+  border-color: var(--octane-border-primary);
+  border-width: 1px;
+  border-style: solid;
+  border-radius: var(--octane-border-radius-sm);
+  background-color: var(--octane-bg-primary);
+
+  white-space: normal;
+  text-align: center;
+  padding: calc(var(--octane-spacing) * 2);
+  margin: var(--octane-spacing);
+}
+
+.octane-component .price-plan-card.selected {
+  /* Note: These aren't variables because they're really specific to how I chose
+    to animate this particular element. */
+  transform: scale(1.03);
+  box-shadow: 1px 5px 10px var(--octane-shadow-color);
+}
+
+.octane-component .price-plan-card.existing {
+  /* Note: These aren't variables because they're really specific to how I chose
+    to animate this particular element. */
+  opacity: 0.85;
+}
+
+.octane-component .price-plan-card.selected .select-plan,
+.octane-component .price-plan-card.existing .select-plan {
+  cursor: default;
+}
+
+.octane-component .price-plan-card .plan-name {
+  font-size: var(--octane-plan-title-size);
+  font-weight: bold;
+  margin-bottom: calc(var(--octane-spacing) * 2);
+}
+
+.octane-component .label {
+  font-size: var(--octane-smallcaps-size);
+  font-weight: bold;
+  text-transform: uppercase;
+  vertical-align: var(--octane-smallcaps-baseline);
+}
+
+.octane-component .separator {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--octane-border-primary);
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  margin-bottom: calc(var(--octane-spacing) * 2);
+}
+
+.octane-component .base-price {
+  margin-bottom: calc(var(--octane-spacing) * 2);
+}
+.octane-component .base-price .value {
+  font-size: 1.3rem;
+  color: var(--octane-text-accent);
+}
+.octane-component .base-price .period {
+  font-size: var(--octane-smallcaps-size);
+  color: var(--octane-text-accent);
+}
+
+.octane-component .metered-components {
+  margin-bottom: calc(2 * var(--octane-spacing));
+}
+
+.octane-component .metered-component {
+  text-align: left;
+  background: var(--octane-bg-secondary);
+  border-radius: var(--octane-border-radius-lg);
+  margin-bottom: calc(2 * var(--octane-spacing));
+  padding-top: calc(2 * var(--octane-spacing));
+  font-size: var(--octane-meter-text-size);
+}
+.octane-component .metered-component .meter-name {
+  margin-bottom: calc(2 * var(--octane-spacing));
+  color: var(--octane-text-secondary);
+  padding-left: calc(2 * var(--octane-spacing));
+  padding-right: calc(2 * var(--octane-spacing));
+}
+
+.octane-component .metered-component .meter-tiers {
+  padding-left: calc(2 * var(--octane-spacing));
+  padding-right: calc(2 * var(--octane-spacing));
+  padding-bottom: calc(2 * var(--octane-spacing));
+}
+.octane-component .metered-component .meter-tier + .meter-tier {
+  margin-top: calc(var(--octane-spacing) / 2);
+}
+
+.octane-component .metered-component .tier-price {
+  color: var(--octane-text-accent);
+}
+.octane-component .metered-component .tier-price .price {
+  font-weight: bold;
+}
+
+.octane-component .tier-label + .tier-price {
+  float: right;
+}
+
+.octane-component .meter-limit {
+  text-align: center;
+  padding: var(--octane-spacing);
+  background-color: var(--octane-bg-lighter);
+  border-bottom-left-radius: var(--octane-border-radius-lg);
+  border-bottom-right-radius: var(--octane-border-radius-lg);
+}
+
+.octane-component .select-plan {
+  /* reset just this button's styling */
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1;
+  margin: 0;
+  overflow: visible;
+  text-transform: none;
+  -webkit-appearance: button;
+  border: none;
+  cursor: pointer;
+
+  /* octane styling */
+  transition: background-color var(--octane-transition-speed) ease-in-out;
+  color: var(--octane-text-primary);
+  background-color: var(--octane-bg-accent);
+  border-radius: var(--octane-border-radius-lg);
+  text-transform: uppercase;
+  padding: calc(2 * var(--octane-spacing));
+  margin-top: calc(2 * var(--octane-spacing));
+  display: block;
+  position: relative;
+  width: 100%;
+  font-weight: bold;
+}
+
+.octane-component .select-plan[disabled] {
+  background-color: var(--octane-bg-accent-disabled);
+}
