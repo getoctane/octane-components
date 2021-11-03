@@ -9,6 +9,10 @@
       "jsx": true
     }
   },
+  "plugins": [
+    "@typescript-eslint",
+    "unused-imports"
+  ],
   "extends": [
     "standard",
     "standard-react",
@@ -34,10 +38,7 @@
         "*.tsx"
       ],
       "extends": [
-        "airbnb-typescript",
         "plugin:@typescript-eslint/recommended",
-        "plugin:you-dont-need-lodash-underscore/compatible-warn",
-        "next",
         "plugin:prettier/recommended"
       ],
       "rules": {
@@ -57,13 +58,6 @@
           "error"
         ],
         "consistent-return": "error",
-        "react-hooks/rules-of-hooks": "error",
-        "react-hooks/exhaustive-deps": [
-          "error",
-          {
-            "additionalHooks": "useRecoilCallback"
-          }
-        ],
         "no-param-reassign": [
           "error",
           {
@@ -89,7 +83,7 @@
           "error", 
           {
             "types": {
-              "object": false
+              "object": null
             },
             "extendDefaults": true
           }
