@@ -7,6 +7,10 @@
 ## Install
 
 ```bash
+## For yarn:
+yarn add octane-components
+
+## For NPM:
 npm install --save octane-components
 ```
 
@@ -23,6 +27,25 @@ class Example extends Component {
     return <MyComponent />;
   }
 }
+```
+
+## Local Development
+
+The easiest thing to do is to run `yarn storybook`, which will let you see and edit all of our components.
+
+Here are the other commands to know about:
+
+```bash
+# Run a full build once. This checks types and puts built code in dist/
+yarn build
+# Start a build server, rebuilding any time a file changes
+yarn start
+# Run all of our tests
+yarn test
+# Run the storybook server in development / watch mode
+yarn storybook
+# Build storybook once
+yarn build-storybook
 ```
 
 ## License
