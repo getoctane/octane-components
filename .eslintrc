@@ -1,5 +1,14 @@
 {
   "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "sourceType": "module",
+    "ecmaVersion": 2020,
+    "ecmaFeatures": {
+      "legacyDecorators": true,
+      "jsx": true
+    }
+  },
   "extends": [
     "standard",
     "standard-react",
@@ -9,26 +18,129 @@
     "plugin:@typescript-eslint/eslint-recommended"
   ],
   "env": {
+    "browser": true,
+    "es6": true,
     "node": true
-  },
-  "parserOptions": {
-    "ecmaVersion": 2020,
-    "ecmaFeatures": {
-      "legacyDecorators": true,
-      "jsx": true
-    }
-  },
+  }, 
   "settings": {
     "react": {
       "version": "16"
     }
   },
-  "rules": {
-    "space-before-function-paren": 0,
-    "react/prop-types": 0,
-    "react/jsx-handler-names": 0,
-    "react/jsx-fragments": 0,
-    "react/no-unused-prop-types": 0,
-    "import/export": 0
-  }
+  "overrides": [
+    {
+      "files": [
+        "*.ts",
+        "*.tsx"
+      ],
+      "extends": [
+        "airbnb-typescript",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:you-dont-need-lodash-underscore/compatible-warn",
+        "next",
+        "plugin:prettier/recommended"
+      ],
+      "rules": {
+        "no-restricted-syntax": [
+          "error",
+          {
+            "selector": "ImportDeclaration Literal[value=/^\\./]",
+            "message": "Please use absolute imports.\nFor example, use `import foo from 'foo/bar'` rather than `import foo from '../bar'`"
+          }
+        ],
+        "curly": [
+          "error",
+          "all"
+        ],
+        "react/jsx-props-no-spreading": "off",
+        "prettier/prettier": [
+          "error"
+        ],
+        "consistent-return": "error",
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": [
+          "error",
+          {
+            "additionalHooks": "useRecoilCallback"
+          }
+        ],
+        "no-param-reassign": [
+          "error",
+          {
+            "ignorePropertyModificationsFor": [
+              "draft"
+            ]
+          }
+        ],
+        "react/require-default-props": "off",
+        "import/prefer-default-export": "off",
+        "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+        "no-console": [
+          "error",
+          {
+            "allow": [
+              "warn",
+              "info",
+              "error"
+            ]
+          }
+        ],
+        "@typescript-eslint/ban-types": [
+          "error", 
+          {
+            "types": {
+              "object": false
+            },
+            "extendDefaults": true
+          }
+        ],
+        "@typescript-eslint/naming-convention": [
+          "error",
+          {
+            "selector": "default",
+            "format": [
+              "camelCase",
+              "UPPER_CASE",
+              "PascalCase"
+            ],
+            "leadingUnderscore": "allow",
+            "trailingUnderscore": "allow"
+          },
+          {
+            "selector": "variable",
+            "format": [
+              "camelCase",
+              "UPPER_CASE",
+              "PascalCase"
+            ],
+            "leadingUnderscore": "allow",
+            "trailingUnderscore": "allow"
+          },
+          {
+            "selector": "typeLike",
+            "format": [
+              "PascalCase"
+            ]
+          }
+        ],
+        "@typescript-eslint/consistent-type-assertions": ["error", {
+          "assertionStyle": "never"
+        }],
+        "@typescript-eslint/no-explicit-any": ["error"], 
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": "error",
+        "unused-imports/no-unused-imports": "error",
+        "unused-imports/no-unused-vars": [
+          "error",
+          {
+            "vars": "all",
+            "varsIgnorePattern": "^_",
+            "args": "after-used",
+            "argsIgnorePattern": "^_"
+          }
+        ],
+        "no-underscore-dangle": "off"
+      }
+    }
+  ]
 }
