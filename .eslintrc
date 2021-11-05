@@ -88,12 +88,24 @@
             "extendDefaults": true
           }
         ],
+        "@typescript-eslint/camelcase": 0,
         "@typescript-eslint/naming-convention": [
           "error",
           {
             "selector": "default",
             "format": [
               "camelCase",
+              "UPPER_CASE",
+              "PascalCase"
+            ],
+            "leadingUnderscore": "allow",
+            "trailingUnderscore": "allow"
+          },
+          {
+            "selector": "property",
+            "format": [
+              "camelCase",
+              "snake_case", // for when we have to deal with API data
               "UPPER_CASE",
               "PascalCase"
             ],
