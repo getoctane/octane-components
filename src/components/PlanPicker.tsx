@@ -44,7 +44,6 @@ function PricePlanManager(): JSX.Element {
         throw new Error('Something went wrong fetching price plans');
       }
       const data = await result.json();
-      console.log('got data', data);
       setPricePlans(data);
     };
     fetchData();
