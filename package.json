@@ -39,6 +39,7 @@
     "@testing-library/user-event": "^7.2.1",
     "@types/jest": "^25.1.4",
     "@types/node": "^12.12.38",
+    "@types/numeral": "^2.0.2",
     "@types/react": "^16.9.27",
     "@types/react-dom": "^16.9.7",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
@@ -71,6 +72,7 @@
     "dist"
   ],
   "dependencies": {
+    "numeral": "^2.0.6",
     "prop-types": "^15.7.2"
   }
 }
