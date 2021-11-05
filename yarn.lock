@@ -1276,7 +1276,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.10.2", "@babel/runtime@^7.12.5", "@babel/runtime@^7.14.0", "@babel/runtime@^7.14.8", "@babel/runtime@^7.3.1", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.0", "@babel/runtime@^7.5.1", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.0.0-rc.0", "@babel/runtime@^7.10.2", "@babel/runtime@^7.12.5", "@babel/runtime@^7.14.0", "@babel/runtime@^7.14.8", "@babel/runtime@^7.3.1", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.0", "@babel/runtime@^7.5.1", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4":
   version "7.16.0"
   resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.16.0.tgz"
   integrity sha512-Nht8L0O8YCktmsDV6FqFue7vQLRx3Hb0B37lS5y0jDRqRxlBG4wIJHnf9/bgSE2UyipKFA01YtS+npRdTWBUyw==
@@ -2069,7 +2069,7 @@
     prop-types "^15.7.2"
     regenerator-runtime "^0.13.7"
 
-"@storybook/addons@6.3.12", "@storybook/addons@^6.3.0":
+"@storybook/addons@6.3.12", "@storybook/addons@^6.2.9", "@storybook/addons@^6.3.0":
   version "6.3.12"
   resolved "https://registry.npmjs.org/@storybook/addons/-/addons-6.3.12.tgz"
   integrity sha512-UgoMyr7Qr0FS3ezt8u6hMEcHgyynQS9ucr5mAwZky3wpXRPFyUTmMto9r4BBUdqyUvTUj/LRKIcmLBfj+/l0Fg==
@@ -2554,7 +2554,7 @@
     react-docgen-typescript "^2.0.0"
     tslib "^2.0.0"
 
-"@storybook/react@^6.3.12":
+"@storybook/react@^6.2.9", "@storybook/react@^6.3.12":
   version "6.3.12"
   resolved "https://registry.npmjs.org/@storybook/react/-/react-6.3.12.tgz"
   integrity sha512-c1Y/3/eNzye+ZRwQ3BXJux6pUMVt3lhv1/M9Qagl9JItP3jDSj5Ed3JHCgwEqpprP8mvNNXwEJ8+M7vEQyDuHg==
@@ -11075,6 +11075,11 @@ mkdirp@^1.0.3, mkdirp@^1.0.4:
   resolved "https://registry.npmjs.org/mkdirp/-/mkdirp-1.0.4.tgz"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
+mock-xmlhttprequest@^7.0.3:
+  version "7.0.4"
+  resolved "https://registry.yarnpkg.com/mock-xmlhttprequest/-/mock-xmlhttprequest-7.0.4.tgz#5e188da009cf46900e522f690cbea8d26274a872"
+  integrity sha512-hA0fIHy/74p5DE0rdmrpU0sV1U+gnWTcgShWequGRLy0L1eT+zY0ozFukawpLaxMwIA+orRcqFRElYwT+5p81A==
+
 move-concurrently@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/move-concurrently/-/move-concurrently-1.0.1.tgz"
@@ -11916,6 +11921,11 @@ path-to-regexp@0.1.7:
   version "0.1.7"
   resolved "https://registry.npmjs.org/path-to-regexp/-/path-to-regexp-0.1.7.tgz"
   integrity sha1-32BBeABfUi8V60SQ5yR6G/qmf4w=
+
+path-to-regexp@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-6.2.0.tgz#f7b3803336104c346889adece614669230645f38"
+  integrity sha512-f66KywYG6+43afgE/8j/GoiNyygk/bnoCbps++3ErRKsIYkGGupyv07R2Ok5m9i67Iqc+T2g1eAUGUPzWhYTyg==
 
 path-type@^2.0.0:
   version "2.0.0"
@@ -13594,6 +13604,13 @@ react-is@^16.12.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4:
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
+react-json-editor-ajrm@^2.5.13:
+  version "2.5.13"
+  resolved "https://registry.yarnpkg.com/react-json-editor-ajrm/-/react-json-editor-ajrm-2.5.13.tgz#d2496b6b0166ff9e6bb5dbb85ba3615d8f398151"
+  integrity sha512-uYRJFzY34w7coLxeWPFZGyQpWdBKK5e8R9jBZTJ5gAFp3WuGVG2DdGZ8oJKOVJy0hqkxS9DzJIzGmmxHHQ9afA==
+  dependencies:
+    "@babel/runtime" "^7.0.0-rc.0"
+
 react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.npmjs.org/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz"
@@ -15044,6 +15061,17 @@ store2@^2.12.0:
   version "2.12.0"
   resolved "https://registry.npmjs.org/store2/-/store2-2.12.0.tgz"
   integrity sha512-7t+/wpKLanLzSnQPX8WAcuLCCeuSHoWdQuh9SB3xD0kNOM38DNf+0Oa+wmvxmYueRzkmh6IcdKFtvTa+ecgPDw==
+
+storybook-addon-mock@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/storybook-addon-mock/-/storybook-addon-mock-1.6.0.tgz#9d7747bc8f0c992e2a7f7dfc301c9158ba9c2b3e"
+  integrity sha512-WBPJLFqRlT4OC/b1GIVZV6jmjy/klJLAz6y1WLo43oGPSHRcopAOuQVbRQdIRFG79gDRox+eIBI4FqbsxVfmxA==
+  dependencies:
+    "@storybook/addons" "^6.2.9"
+    "@storybook/react" "^6.2.9"
+    mock-xmlhttprequest "^7.0.3"
+    path-to-regexp "^6.2.0"
+    react-json-editor-ajrm "^2.5.13"
 
 storybook-addon-outline@^1.4.1:
   version "1.4.1"
