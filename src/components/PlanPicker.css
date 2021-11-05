@@ -1,8 +1,15 @@
 .octane-component {
+  /* Dark theme */
   --octane-bg-primary: #071420;
   --octane-fg-primary: #ffffff;
   --octane-border-primary: #d4f5f54d;
   --octane-fg-accent: #a8c9bf;
+
+  /* Light theme */
+  /* --octane-bg-primary: #d4f5f54d;
+  --octane-fg-primary: #071420;
+  --octane-border-primary: #c7dcd5;
+  --octane-fg-accent: #128475; */
 
   --octane-spacing: 6px;
   --octane-default-font: -apple-system, BlinkMacSystemFont, 'avenir next',
@@ -54,6 +61,9 @@
   display: block;
   width: 100%;
   border: 1px solid var(--octane-border-primary);
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
   margin-bottom: calc(var(--octane-spacing) * 2);
 }
 
