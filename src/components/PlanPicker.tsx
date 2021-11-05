@@ -90,9 +90,11 @@ function PricePlanCard({ pricePlan }: PricePlanCardProps): JSX.Element {
 
 function PricePlanManager(): JSX.Element {
   const [pricePlans, setPricePlans] = useState<PricePlan[]>([]);
+  const token = useContext(TokenContext);
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       const result = await fetch('https://api.cloud.getoctane.io/price_plans/');
+      // TODO: pass the token to `fetch` as an auth header
       if (!result.ok) {
         throw new Error('Something went wrong fetching price plans');
       }
@@ -100,9 +102,8 @@ function PricePlanManager(): JSX.Element {
       setPricePlans(data);
     };
     fetchData();
-  }, [setPricePlans]);
+  }, [setPricePlans, token]);
 
-  const token = useContext(TokenContext);
   return (
     <div className='octane-component price-plan-picker'>
       {pricePlans.map((plan) => (
