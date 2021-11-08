@@ -1,23 +1,33 @@
 .octane-component {
   /* Dark theme */
   --octane-bg-primary: #071420;
+  --octane-bg-secondary: #212c37;
+  --octane-bg-lighter: #484e5980;
   --octane-text-primary: #ffffff;
+  --octane-text-secondary: #d4f5f5;
   --octane-border-primary: #d4f5f54d;
   --octane-text-accent: #a8c9bf;
 
   /* Light theme */
   /* --octane-bg-primary: #d4f5f54d;
-  --octane-fg-primary: #071420;
+  --octane-text-primary: #071420;
   --octane-border-primary: #c7dcd5;
-  --octane-fg-accent: #128475; */
+  --octane-text-accent: #128475;
+  --octane-bg-secondary: #becbd8;
+  --octane-bg-lighter: #484e5980;
+  --octane-text-secondary: #282c2c;
+  --octane-border-primary: #d4f5f54d; */
 
   --octane-spacing: 6px;
   --octane-default-font: -apple-system, BlinkMacSystemFont, 'avenir next',
     avenir, 'helvetica neue', helvetica, ubuntu, roboto, noto, 'segoe ui', arial,
     sans-serif;
-  --octane-plan-name-size: 1.5rem;
+  --octane-plan-title-size: 1.5rem;
+  --octane-meter-text-size: 0.8rem;
   --octane-smallcaps-size: 0.8rem;
   --octane-smallcaps-baseline: 0.1rem;
+  --octane-border-radius-sm: 3px;
+  --octane-border-radius-lg: 5px;
 
   color: var(--octane-text-primary);
   font-family: var(--octane-default-font);
@@ -32,13 +42,14 @@
 .octane-component.price-plan-picker .price-plan-card {
   display: inline-block;
   width: 250px;
+  vertical-align: top;
 }
 
 .octane-component .price-plan-card {
   border-color: var(--octane-border-primary);
   border-width: 1px;
   border-style: solid;
-  border-radius: 1px;
+  border-radius: var(--octane-border-radius-sm);
   background-color: var(--octane-bg-primary);
 
   white-space: normal;
@@ -48,7 +59,7 @@
 }
 
 .octane-component .price-plan-card .plan-name {
-  font-size: var(--octane-plan-name-size);
+  font-size: var(--octane-plan-title-size);
   font-weight: bold;
   margin-bottom: calc(var(--octane-spacing) * 2);
 }
@@ -80,4 +91,51 @@
 .octane-component .base-price .period {
   font-size: var(--octane-smallcaps-size);
   color: var(--octane-text-accent);
+}
+
+.octane-component .metered-components {
+  margin-bottom: calc(2 * var(--octane-spacing));
+}
+
+.octane-component .metered-component {
+  text-align: left;
+  background: var(--octane-bg-secondary);
+  border-radius: var(--octane-border-radius-lg);
+  margin-bottom: calc(2 * var(--octane-spacing));
+  padding-top: var(--octane-spacing);
+  font-size: var(--octane-meter-text-size);
+}
+.octane-component .metered-component .meter-name {
+  margin-bottom: var(--octane-spacing);
+  color: var(--octane-text-secondary);
+  padding-left: var(--octane-spacing);
+  padding-right: var(--octane-spacing);
+}
+
+.octane-component .metered-component .meter-tiers {
+  padding-left: var(--octane-spacing);
+  padding-right: var(--octane-spacing);
+  padding-bottom: var(--octane-spacing);
+}
+.octane-component .metered-component .meter-tier + .meter-tier {
+  margin-top: calc(var(--octane-spacing) / 2);
+}
+
+.octane-component .metered-component .tier-price {
+  color: var(--octane-text-accent);
+}
+.octane-component .metered-component .tier-price .price {
+  font-weight: bold;
+}
+
+.octane-component .tier-label + .tier-price {
+  float: right;
+}
+
+.octane-component .meter-limit {
+  text-align: center;
+  padding: var(--octane-spacing);
+  background-color: var(--octane-bg-lighter);
+  border-bottom-left-radius: var(--octane-border-radius-lg);
+  border-bottom-right-radius: var(--octane-border-radius-lg);
 }
