@@ -1,15 +1,78 @@
 import React from 'react';
 import PricePlans from 'components/PlanPicker';
-import type { PricePlan, PricePlansProps } from 'components/PlanPicker';
+import type {
+  PricePlan,
+  MeteredComponent,
+  PricePlansProps,
+} from 'components/PlanPicker';
 import withMock from 'storybook-addon-mock';
 import type { Story, Meta } from '@storybook/react';
 import 'components/PlanPicker.css';
+
+/**
+ * Test cases to implement:
+ *    1. No base price
+ *    2. Multiple metered components
+ *    3. Discounts
+ *    4. Limits
+ */
 
 const config: Meta = {
   title: 'Octane/PricePlans',
   component: PricePlans,
   decorators: [withMock],
 };
+
+const mockMeteredComponents: MeteredComponent[] = [
+  {
+    limit: null,
+    meter_name: 'processing_time',
+    price_scheme: {
+      display_name: null,
+      name: null,
+      prices: [{ cap: 3600.0, price: 3.0 }, { price: 1.0 }],
+      scheme_type: 'PriceSchemeType.TIERED',
+      time_unit_name: null,
+      unit_name: 'second',
+    },
+  },
+  {
+    limit: 400.0,
+    meter_name: 'storage',
+    price_scheme: {
+      display_name: null,
+      name: null,
+      prices: [{ price: 300.0 }],
+      scheme_type: 'PriceSchemeType.FLAT',
+      time_unit_name: null,
+      unit_name: 'gigabyte',
+    },
+  },
+  {
+    limit: null,
+    meter_name: 'storage',
+    price_scheme: {
+      display_name: null,
+      name: null,
+      prices: [{ cap: 100.0, price: 100000.0 }, { price: 200000.0 }],
+      scheme_type: 'PriceSchemeType.STAIRSTEP',
+      time_unit_name: null,
+      unit_name: null,
+    },
+  },
+  {
+    limit: null,
+    meter_name: 'storage',
+    price_scheme: {
+      display_name: null,
+      name: null,
+      prices: [{ price: 5.0 }],
+      scheme_type: 'PriceSchemeType.VOLUME',
+      time_unit_name: null,
+      unit_name: 'byte',
+    },
+  },
+];
 
 const mockPricePlan: PricePlan = {
   name: 'plans_standard_with_storage',
@@ -93,7 +156,11 @@ Default.parameters = {
       status: 200,
       response: [
         { ...mockPricePlan, name: 'plan1' },
-        { ...mockPricePlan, name: 'plan2' },
+        {
+          ...mockPricePlan,
+          name: 'plan2',
+          metered_components: mockMeteredComponents,
+        },
         { ...mockPricePlan, name: 'plan3' },
       ],
     },
