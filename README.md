@@ -46,6 +46,8 @@ yarn test
 yarn storybook
 # Build storybook once
 yarn build-storybook
+# Fetch our openapi spec and generate fresh TypeScript types
+yarn generate
 ```
 
 ## License
