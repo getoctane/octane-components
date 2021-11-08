@@ -28,7 +28,7 @@
     "generate:types": "openapi-typescript -c .prettierrc https://api.cloud.getoctane.io/docs/openapi.json --output src/apiTypes.ts"
   },
   "peerDependencies": {
-    "react": "^16.0.0"
+    "react": ">=16.8.0"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",

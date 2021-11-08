@@ -584,9 +584,9 @@ export interface paths {
         query: {
           /** Ending timestamp to consider usage formatted as ISO-8601. */
           end_time?: string;
-          meter_name?: string;
           /** Starting timestamp to consider usage formatted as ISO-8601. */
           start_time?: string;
+          meter_name?: string;
         };
       };
       responses: {
@@ -661,9 +661,9 @@ export interface paths {
           customer_name: string;
         };
         query: {
+          start_time?: string;
           /** The number of items to fetch. Defaults to 10. */
           limit?: number;
-          start_time?: string;
         };
       };
       responses: {
@@ -1112,37 +1112,37 @@ export interface components {
       contact_info?: components['schemas']['ContactInfo'] | null;
     };
     ContactInfoInputArgs: {
-      zipcode?: string;
-      url?: string;
+      city?: string;
       address_line_1?: string;
+      state?: string;
+      zipcode?: string;
+      phone?: string;
+      url?: string;
       email?: string;
       logo_url?: string;
-      city?: string;
-      state?: string;
-      phone?: string;
       address_line_2?: string;
       country?: string;
     };
     CreateVendorArgs: {
       contact_info?: components['schemas']['ContactInfoInputArgs'];
-      name?: string;
       display_name?: string;
-      api_key?: string;
-      vendor_display_name?: string;
+      name?: string;
       vendor_name?: string;
+      vendor_display_name?: string;
+      api_key?: string;
     };
     UpdateVendorArgs: {
+      vendor_id?: number;
       display_name?: string;
       contact_info?: components['schemas']['ContactInfoInputArgs'];
-      vendor_id?: number;
     };
     Error: {
       /** Error message */
       message?: string;
-      /** Error name */
-      status?: string;
       /** Error code */
       code?: number;
+      /** Error name */
+      status?: string;
       /** Errors */
       errors?: { [key: string]: unknown };
     };
@@ -1161,36 +1161,36 @@ export interface components {
       primary_labels?: unknown[];
     };
     MeterInputArgs: {
-      name?: string;
-      meter_type?: string;
-      vendor_id?: number;
-      unit_name?: string;
-      display_name?: string;
-      description?: string;
-      is_incremental?: boolean;
-      expected_labels?: string[];
       primary_labels?: string[];
+      is_incremental?: boolean;
+      display_name?: string;
+      name?: string;
+      expected_labels?: string[];
+      description?: string;
+      vendor_id?: number;
+      meter_type?: string;
+      unit_name?: string;
     };
     UpdateMeterArgs: {
-      name?: string;
-      meter_type?: string;
-      vendor_id?: number;
-      unit_name?: string;
-      display_name?: string;
-      description?: string;
-      is_incremental?: boolean;
-      expected_labels?: string[];
       primary_labels?: string[];
+      is_incremental?: boolean;
+      display_name?: string;
+      name?: string;
+      expected_labels?: string[];
+      description?: string;
+      vendor_id?: number;
+      meter_type?: string;
+      unit_name?: string;
     };
     Measurement: {
       /** All times are parsed as `ISO-8601` formatted, UTC-based timestamps */
       time?: string;
-      /** Applies to incremental meters and resets the total current value to this new value. */
-      reset_total?: boolean;
       /** The unique name of the meter associated with this measurement */
       meter_name: string;
       /** A set of key:value label pairs to supplement a measurement. Each meter defines its own set of primary and/or expected labels. */
       labels?: { [key: string]: string };
+      /** Applies to incremental meters and resets the total current value to this new value. */
+      reset_total?: boolean;
       /** The raw value of the measurement */
       value: number;
     };
@@ -1206,23 +1206,23 @@ export interface components {
       label?: string;
     };
     CreateCustomerArgs: {
-      contact_info?: components['schemas']['ContactInfoInputArgs'];
-      tags?: string[];
-      name?: string;
-      vendor_id?: number;
-      display_name?: string;
-      measurement_mappings?: components['schemas']['CustomerMeasurementMappingInputArgs'][];
-      price_plan_tag?: string;
-      autogenerate_payment_gateway_customer?: boolean;
       price_plan_name?: string;
+      measurement_mappings?: components['schemas']['CustomerMeasurementMappingInputArgs'][];
+      contact_info?: components['schemas']['ContactInfoInputArgs'];
+      price_plan_tag?: string;
+      display_name?: string;
+      name?: string;
+      autogenerate_payment_gateway_customer?: boolean;
+      vendor_id?: number;
+      tags?: string[];
     };
     UpdateCustomerArgs: {
+      measurement_mappings?: components['schemas']['CustomerMeasurementMappingInputArgs'][];
       contact_info?: components['schemas']['ContactInfoInputArgs'];
-      tags?: string[];
+      display_name?: string;
       name?: string;
       vendor_id?: number;
-      display_name?: string;
-      measurement_mappings?: components['schemas']['CustomerMeasurementMappingInputArgs'][];
+      tags?: string[];
     };
     CustomerMeasurementMapping: {
       /** The label key used to map measurements to customers. */
@@ -1273,40 +1273,40 @@ export interface components {
       tax_rate?: number | null;
     };
     CreateBillingSettingsInputArgs: {
-      customer_invoice_detail_level?: string;
-      vendor_id?: number;
-      payment_grace_period_length?: number;
-      charges_enabled?: boolean;
-      retry_attempts?: number;
       invoice_grace_period_unit?: string;
-      invoice_grace_period_length?: number;
-      auto_approve_invoices?: boolean;
-      should_send_invoice_to_customers?: boolean;
+      retry_attempts?: number;
       tax_rate?: number | null;
       retry_frequency_unit?: string;
-      customer_id?: number;
-      retry_frequency_length?: number;
-      invoice_fixed_components_at_start?: boolean;
+      customer_invoice_detail_level?: string;
+      charges_enabled?: boolean;
       invoice_via_octane?: boolean;
       payment_grace_period_unit?: string;
+      should_send_invoice_to_customers?: boolean;
+      auto_approve_invoices?: boolean;
+      invoice_fixed_components_at_start?: boolean;
+      customer_id?: number;
+      retry_frequency_length?: number;
+      vendor_id?: number;
+      payment_grace_period_length?: number;
+      invoice_grace_period_length?: number;
     };
     UpdateBillingSettingsInputArgs: {
-      customer_invoice_detail_level?: string;
-      vendor_id?: number;
-      payment_grace_period_length?: number;
-      charges_enabled?: boolean;
-      retry_attempts?: number;
       invoice_grace_period_unit?: string;
-      invoice_grace_period_length?: number;
-      auto_approve_invoices?: boolean;
-      should_send_invoice_to_customers?: boolean;
+      retry_attempts?: number;
       tax_rate?: number | null;
       retry_frequency_unit?: string;
-      customer_id?: number;
-      retry_frequency_length?: number;
-      invoice_fixed_components_at_start?: boolean;
+      customer_invoice_detail_level?: string;
+      charges_enabled?: boolean;
       invoice_via_octane?: boolean;
       payment_grace_period_unit?: string;
+      should_send_invoice_to_customers?: boolean;
+      auto_approve_invoices?: boolean;
+      invoice_fixed_components_at_start?: boolean;
+      customer_id?: number;
+      retry_frequency_length?: number;
+      vendor_id?: number;
+      payment_grace_period_length?: number;
+      invoice_grace_period_length?: number;
     };
     RevenueResponse: {
       revenue?: number;
@@ -1318,52 +1318,52 @@ export interface components {
       usage?: number;
     };
     CustomerFeature: {
-      limit?: number;
-      enabled?: boolean;
       feature_name?: string;
+      enabled?: boolean;
+      limit?: number;
     };
     LineItems: {
-      price_int?: number;
+      price?: string;
+      quantity_unit?: string;
+      id?: string;
       name?: string;
       description?: string;
-      price?: string;
-      id?: string;
-      quantity?: number;
-      quantity_unit?: string;
       metadata?: { [key: string]: string };
+      quantity?: number;
+      price_int?: number;
     };
     RevenueBreakdown: {
       line_items?: components['schemas']['LineItems'][];
       total_revenue?: number;
     };
     Invoice: {
-      /** Any discount credits applied to the invoice */
-      discount_credit?: number;
+      end_time?: string;
+      due_date?: string;
+      id?: string;
       /** Amount due before any credits are applied */
       sub_total?: number;
-      /** False if invoice has not been sent to the customer */
-      is_invoiced?: boolean;
       latest_invoice_attempt_at?: string;
-      /** False if not approved */
-      is_approved?: boolean;
-      latest_payment_attempt_at?: string;
-      start_time?: string;
-      id?: string;
-      /** Non-empty string if there was an error while processing payment */
-      payment_error?: string;
-      /** Non-empty string if there was an error while sending out invoice */
-      invoicing_error?: string;
-      due_date?: string;
-      end_time?: string;
-      line_items?: components['schemas']['LineItems'][];
-      /** False if not paid yet */
-      is_paid?: boolean;
-      /** The number of retries done to process the payment */
-      payment_retry_attempt?: number;
       /** The number of retries done to send the invoice */
       invoice_retry_attempt?: number;
+      /** The number of retries done to process the payment */
+      payment_retry_attempt?: number;
+      /** Non-empty string if there was an error while processing payment */
+      payment_error?: string;
+      start_time?: string;
+      /** False if not approved */
+      is_approved?: boolean;
+      line_items?: components['schemas']['LineItems'][];
+      /** False if invoice has not been sent to the customer */
+      is_invoiced?: boolean;
+      /** False if not paid yet */
+      is_paid?: boolean;
+      /** Any discount credits applied to the invoice */
+      discount_credit?: number;
+      latest_payment_attempt_at?: string;
       /** Total amount due */
       amount_due?: number;
+      /** Non-empty string if there was an error while sending out invoice */
+      invoicing_error?: string;
     };
     Coupon: {
       /** Unique name identifier. */
@@ -1460,30 +1460,30 @@ export interface components {
       amount?: number;
     };
     CreateSubscriptionArgs: {
-      discount_override?: components['schemas']['DiscountInputArgs'];
-      coupon_override_id?: number;
-      vendor_id?: number;
-      effective_at?: string;
-      coupon_override_name?: string;
       price_plan_tag?: string;
-      price_plan_id?: number;
       customer_id?: number;
+      price_plan_id?: number;
+      vendor_id?: number;
+      discount_override?: components['schemas']['DiscountInputArgs'];
+      effective_at?: string;
       price_plan_name?: string;
+      coupon_override_name?: string;
+      coupon_override_id?: number;
     };
     UpdateSubscriptionArgs: {
-      discount_override?: components['schemas']['DiscountInputArgs'];
-      coupon_override_id?: number;
-      vendor_id?: number;
-      effective_at?: string;
-      coupon_override_name?: string;
       price_plan_tag?: string;
-      price_plan_id?: number;
       customer_id?: number;
+      price_plan_id?: number;
+      vendor_id?: number;
+      discount_override?: components['schemas']['DiscountInputArgs'];
+      effective_at?: string;
       price_plan_name?: string;
+      coupon_override_name?: string;
+      coupon_override_id?: number;
     };
     DeleteSubscriptionArgs: {
-      expire_at?: string;
       customer_id?: number;
+      expire_at?: string;
       vendor_id?: number;
     };
     BillingCycleDate: {
@@ -1508,75 +1508,75 @@ export interface components {
       current_billing_cycle?: components['schemas']['BillingCycleDate'];
     };
     FeatureInputArgs: {
-      display_name?: string;
-      description?: string;
       name?: string;
+      description?: string;
+      display_name?: string;
+    };
+    AddOnInputArgs: {
+      price?: number;
+      feature?: components['schemas']['FeatureInputArgs'];
     };
     TrialInputArgs: {
-      credit?: number;
       time_unit_name?: string;
+      credit?: number;
       time_length?: number;
+    };
+    LimitInputArgs: {
+      feature?: components['schemas']['FeatureInputArgs'];
+      limit?: number;
     };
     PriceInputArgs: {
       price?: number;
       cap?: number;
     };
     PriceSchemeInputArgs: {
-      scheme_type?: string;
       time_unit_name?: string;
-      prices?: components['schemas']['PriceInputArgs'][];
       unit_name?: string;
+      scheme_type?: string;
+      prices?: components['schemas']['PriceInputArgs'][];
     };
     MeteredComponentInputArgs: {
       id?: number;
       meter_id?: number;
-      limit?: number;
-      price_scheme?: components['schemas']['PriceSchemeInputArgs'];
       meter_name?: string;
-    };
-    AddOnInputArgs: {
-      price?: number;
-      feature?: components['schemas']['FeatureInputArgs'];
-    };
-    LimitInputArgs: {
+      price_scheme?: components['schemas']['PriceSchemeInputArgs'];
       limit?: number;
-      feature?: components['schemas']['FeatureInputArgs'];
     };
     CreatePricePlanArgs: {
-      tags?: string[];
+      add_ons?: components['schemas']['AddOnInputArgs'][];
+      coupon_name?: string;
       period?: string;
-      name?: string;
-      vendor_id?: number;
-      display_name?: string;
-      description?: string;
+      trial?: components['schemas']['TrialInputArgs'];
       base_price?: number;
       features?: components['schemas']['FeatureInputArgs'][];
-      trial?: components['schemas']['TrialInputArgs'];
-      metered_components?: components['schemas']['MeteredComponentInputArgs'][];
-      add_ons?: components['schemas']['AddOnInputArgs'][];
-      discount?: components['schemas']['DiscountInputArgs'];
+      display_name?: string;
       limits?: components['schemas']['LimitInputArgs'][];
-      coupon_name?: string;
+      discount?: components['schemas']['DiscountInputArgs'];
+      name?: string;
+      description?: string;
+      vendor_id?: number;
+      tags?: string[];
+      metered_components?: components['schemas']['MeteredComponentInputArgs'][];
     };
     UpdatePricePlanArgs: {
-      tags?: string[];
+      add_ons?: components['schemas']['AddOnInputArgs'][];
+      coupon_name?: string;
       period?: string;
-      name?: string;
-      vendor_id?: number;
-      display_name?: string;
-      description?: string;
+      trial?: components['schemas']['TrialInputArgs'];
       base_price?: number;
       features?: components['schemas']['FeatureInputArgs'][];
-      trial?: components['schemas']['TrialInputArgs'];
-      metered_components?: components['schemas']['MeteredComponentInputArgs'][];
-      add_ons?: components['schemas']['AddOnInputArgs'][];
-      discount?: components['schemas']['DiscountInputArgs'];
+      display_name?: string;
       limits?: components['schemas']['LimitInputArgs'][];
-      coupon_name?: string;
+      discount?: components['schemas']['DiscountInputArgs'];
+      name?: string;
+      description?: string;
+      vendor_id?: number;
+      tags?: string[];
+      metered_components?: components['schemas']['MeteredComponentInputArgs'][];
     };
     PaymentGatewayCredentialInputArgs: {
-      payment_gateway?: string;
       account_id?: string;
+      payment_gateway?: string;
       auth_token?: string;
     };
     Customer1: {
@@ -1616,28 +1616,28 @@ export interface components {
       excluded_price_plans?: components['schemas']['PricePlan1'][];
     };
     CouponInputArgs: {
-      frequency: string;
-      discount_type: string;
-      name: string;
-      discount_amount: number;
-      vendor_id?: number;
-      max_uses?: number;
-      display_name?: string;
-      is_end_prorated?: boolean;
-      excluded_customers?: string[];
-      code?: string;
       expiration_time?: string;
-      duration_length?: number;
-      excluded_price_plans?: string[];
+      excluded_customers?: string[];
+      discount_amount: number;
+      is_end_prorated?: boolean;
       is_start_prorated?: boolean;
       duration_unit?: string;
+      discount_type: string;
+      display_name?: string;
+      frequency: string;
+      name: string;
+      vendor_id?: number;
+      max_uses?: number;
+      code?: string;
+      duration_length?: number;
+      excluded_price_plans?: string[];
     };
     ApplyCouponInputArgs: {
       name?: string;
-      vendor_id?: number;
       customer_id?: number;
-      code?: string;
+      vendor_id?: number;
       customer_name?: string;
+      code?: string;
     };
   };
   responses: {
