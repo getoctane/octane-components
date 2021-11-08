@@ -1,13 +1,12 @@
 import React from 'react';
 import PricePlans from 'components/PlanPicker';
-import type {
-  PricePlan,
-  MeteredComponent,
-  PricePlansProps,
-} from 'components/PlanPicker';
+import type { PricePlansProps } from 'components/PlanPicker';
 import withMock from 'storybook-addon-mock';
 import type { Story, Meta } from '@storybook/react';
 import 'components/PlanPicker.css';
+import { components } from 'apiTypes';
+type PricePlan = components['schemas']['PricePlan'];
+type MeteredComponent = components['schemas']['MeteredComponent'];
 
 /**
  * Test cases to implement:

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { formatCurrency } from 'utils/format';
 import { components } from 'apiTypes';
+import { PricePlanCard } from 'components/PricePlanCard';
 
 export type PricePlan = components['schemas']['PricePlan'];
 export type MeteredComponent = components['schemas']['MeteredComponent'];
@@ -9,40 +9,7 @@ export interface PricePlansProps {
   customerToken: string;
 }
 
-export interface PricePlanCardProps {
-  pricePlan: PricePlan;
-}
-
 const TokenContext = React.createContext<string>('NO_TOKEN');
-
-function PricePlanCard({ pricePlan }: PricePlanCardProps): JSX.Element {
-  const {
-    display_name: displayName,
-    base_price: basePrice,
-    period,
-  } = pricePlan;
-
-  const billingSchedule =
-    period === 'month' ? 'Billed monthly' : `Billed every ${period}`;
-  const hasBasePrice = basePrice != null;
-  const formattedBasePrice = hasBasePrice ? formatCurrency(basePrice) : null;
-  const periodAbbrev = period === 'month' ? 'mo' : period;
-
-  return (
-    <div className='price-plan-card'>
-      <div className='plan-name'>{displayName} </div>
-      {hasBasePrice && (
-        <div className='base-price'>
-          <span className='label starting-at'>Starting at </span>
-          <span className='cost'>{formattedBasePrice}</span>
-          <span className='period'>/{periodAbbrev}</span>
-        </div>
-      )}
-      <div className='separator' />
-      <div className='label billing-sched'>{billingSchedule}</div>
-    </div>
-  );
-}
 
 function PricePlanManager(): JSX.Element {
   const [pricePlans, setPricePlans] = useState<PricePlan[]>([]);
@@ -79,5 +46,5 @@ export default function PricePlans({
 }
 
 PricePlans.propTypes = {
-  customerToken: PropTypes.string,
+  customerToken: PropTypes.string.isRequired,
 };
