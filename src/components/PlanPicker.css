@@ -1,9 +1,9 @@
 .octane-component {
   /* Dark theme */
   --octane-bg-primary: #071420;
-  --octane-fg-primary: #ffffff;
+  --octane-text-primary: #ffffff;
   --octane-border-primary: #d4f5f54d;
-  --octane-fg-accent: #a8c9bf;
+  --octane-text-accent: #a8c9bf;
 
   /* Light theme */
   /* --octane-bg-primary: #d4f5f54d;
@@ -15,8 +15,11 @@
   --octane-default-font: -apple-system, BlinkMacSystemFont, 'avenir next',
     avenir, 'helvetica neue', helvetica, ubuntu, roboto, noto, 'segoe ui', arial,
     sans-serif;
+  --octane-plan-name-size: 1.5rem;
+  --octane-smallcaps-size: 0.8rem;
+  --octane-smallcaps-baseline: 0.1rem;
 
-  color: var(--octane-fg-primary);
+  color: var(--octane-text-primary);
   font-family: var(--octane-default-font);
 }
 
@@ -45,16 +48,16 @@
 }
 
 .octane-component .price-plan-card .plan-name {
-  font-size: 1.5rem;
+  font-size: var(--octane-plan-name-size);
   font-weight: bold;
   margin-bottom: calc(var(--octane-spacing) * 2);
 }
 
 .octane-component .label {
-  font-size: 0.8rem;
+  font-size: var(--octane-smallcaps-size);
   font-weight: bold;
   text-transform: uppercase;
-  vertical-align: 0.1rem;
+  vertical-align: var(--octane-smallcaps-baseline);
 }
 
 .octane-component .separator {
@@ -72,9 +75,9 @@
 }
 .octane-component .base-price .cost {
   font-size: 1.3rem;
-  color: var(--octane-fg-accent);
+  color: var(--octane-text-accent);
 }
 .octane-component .base-price .period {
-  font-size: 0.8rem;
-  color: var(--octane-fg-accent);
+  font-size: var(--octane-smallcaps-size);
+  color: var(--octane-text-accent);
 }
