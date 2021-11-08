@@ -1,9 +1,12 @@
 import React from 'react';
 import { formatCurrency } from 'utils/format';
 import PropTypes from 'prop-types';
-
 import { components } from 'apiTypes';
+import { MeteredComponent } from 'components/MeteredComponent';
+
 type PricePlan = components['schemas']['PricePlan'];
+type MeteredComponent = components['schemas']['MeteredComponent'];
+
 export interface PricePlanCardProps {
   pricePlan: PricePlan;
 }
@@ -13,6 +16,7 @@ export function PricePlanCard({ pricePlan }: PricePlanCardProps): JSX.Element {
     display_name: displayName,
     base_price: basePrice,
     period,
+    metered_components: meteredComponents,
   } = pricePlan;
 
   const billingSchedule =
@@ -32,6 +36,14 @@ export function PricePlanCard({ pricePlan }: PricePlanCardProps): JSX.Element {
         </div>
       )}
       <div className='separator' />
+
+      <div className='metered-components'>
+        {meteredComponents?.map((component, idx) => (
+          /* Note: we have to key by idx here because we don't have access to
+            anything 100% unique to the metered component exposed. */
+          <MeteredComponent key={idx} meteredComponent={component} />
+        ))}
+      </div>
       <div className='label billing-sched'>{billingSchedule}</div>
     </div>
   );
