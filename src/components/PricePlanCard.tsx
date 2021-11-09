@@ -31,7 +31,7 @@ export function PricePlanCard({ pricePlan }: PricePlanCardProps): JSX.Element {
       {hasBasePrice && (
         <div className='base-price'>
           <span className='label starting-at'>Starting at </span>
-          <span className='cost'>{formattedBasePrice}</span>
+          <span className='value'>{formattedBasePrice}</span>
           <span className='period'>/{periodAbbrev}</span>
         </div>
       )}
