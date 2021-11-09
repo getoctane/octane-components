@@ -84,7 +84,7 @@
 .octane-component .base-price {
   margin-bottom: calc(var(--octane-spacing) * 2);
 }
-.octane-component .base-price .cost {
+.octane-component .base-price .value {
   font-size: 1.3rem;
   color: var(--octane-text-accent);
 }
