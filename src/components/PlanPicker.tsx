@@ -2,14 +2,13 @@ import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { components } from 'apiTypes';
 import { PricePlanCard } from 'components/PricePlanCard';
+import { fetchPricePlans } from 'utils/api';
 
 export type PricePlan = components['schemas']['PricePlan'];
 export type MeteredComponent = components['schemas']['MeteredComponent'];
 export interface PricePlansProps {
   customerToken: string;
 }
-
-const PROD_API = 'https://api.cloud.getoctane.io/price_plans/';
 
 const TokenContext = React.createContext<string>('NO_TOKEN');
 
@@ -18,12 +17,7 @@ function PricePlanManager(): JSX.Element {
   const token = useContext(TokenContext);
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
-      const result = await fetch(PROD_API, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      // TODO: pass the token to `fetch` as an auth header
+      const result = await fetchPricePlans(token);
       if (!result.ok) {
         throw new Error('Something went wrong fetching price plans');
       }
