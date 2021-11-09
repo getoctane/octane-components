@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import pluralize from 'pluralize';
 import { formatCurrency } from 'utils/format';
 import { components } from 'apiTypes';
@@ -125,7 +125,7 @@ export function MeteredComponent({
 
   const unit = priceScheme.unit_name ?? 'unit';
 
-  const meterTiers = getPriceTiers(priceScheme);
+  const meterTiers = useMemo(() => getPriceTiers(priceScheme), [priceScheme]);
 
   return (
     <div className='metered-component'>
