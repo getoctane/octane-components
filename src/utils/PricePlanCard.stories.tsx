@@ -14,10 +14,7 @@ const config: Meta = {
 
 /**
  * Test cases to implement:
- *    1. No base price
- *    2. Multiple metered components
- *    3. Discounts
- *    4. Limits
+ *    1. Discounts
  */
 
 const mockMeteredComponents: MeteredComponent[] = [
@@ -147,9 +144,14 @@ Default.args = {
   pricePlan: mockPricePlan,
 };
 
-export const Variation1 = Template.bind({});
-Variation1.args = {
+export const MultipleMeters = Template.bind({});
+MultipleMeters.args = {
   pricePlan: { ...mockPricePlan, metered_components: mockMeteredComponents },
+};
+
+export const NoBasePrice = Template.bind({});
+NoBasePrice.args = {
+  pricePlan: { ...mockPricePlan, base_price: null },
 };
 
 export default config;
