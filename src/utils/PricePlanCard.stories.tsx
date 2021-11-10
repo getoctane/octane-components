@@ -1,24 +1,23 @@
 import React from 'react';
-import PlanPicker from 'components/PlanPicker';
-import type { PlanPickerProps } from 'components/PlanPicker';
-import withMock from 'storybook-addon-mock';
+import { PricePlanCard } from 'components/PricePlanCard';
+import type { PricePlanCardProps } from 'components/PricePlanCard';
 import type { Story, Meta } from '@storybook/react';
 import 'components/PlanPicker.css';
 import { components } from 'apiTypes';
-import { getPricePlansUrl } from 'utils/api';
 type PricePlan = components['schemas']['PricePlan'];
 type MeteredComponent = components['schemas']['MeteredComponent'];
 
 const config: Meta = {
-  title: 'Octane/PlanPicker',
-  component: PlanPicker,
-  decorators: [withMock],
+  title: 'Octane/PricePlanCard',
+  component: PricePlanCard,
 };
 
 /**
  * Test cases to implement:
- *    1. No selection callback => make API request
- *    2. selection callback => don't make API request
+ *    1. No base price
+ *    2. Multiple metered components
+ *    3. Discounts
+ *    4. Limits
  */
 
 const mockMeteredComponents: MeteredComponent[] = [
@@ -137,30 +136,20 @@ const mockPricePlan: PricePlan = {
   },
 };
 
-const Template: Story<PlanPickerProps> = (args) => <PlanPicker {...args} />;
+const Template: Story<PricePlanCardProps> = (args) => (
+  <div className='octane-component'>
+    <PricePlanCard {...args} />
+  </div>
+);
 
 export const Default = Template.bind({});
 Default.args = {
-  customerToken: 'primary token',
+  pricePlan: mockPricePlan,
 };
 
-Default.parameters = {
-  mockData: [
-    {
-      url: getPricePlansUrl(),
-      method: 'GET',
-      status: 200,
-      response: [
-        { ...mockPricePlan, name: 'plan1' },
-        {
-          ...mockPricePlan,
-          name: 'plan2',
-          metered_components: mockMeteredComponents,
-        },
-        { ...mockPricePlan, name: 'plan3' },
-      ],
-    },
-  ],
+export const Variation1 = Template.bind({});
+Variation1.args = {
+  pricePlan: { ...mockPricePlan, metered_components: mockMeteredComponents },
 };
 
 export default config;
