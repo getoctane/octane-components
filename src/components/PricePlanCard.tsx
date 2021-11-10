@@ -8,6 +8,9 @@ type PricePlan = components['schemas']['PricePlan'];
 type MeteredComponent = components['schemas']['MeteredComponent'];
 
 export interface PricePlanCardProps {
+  /**
+   * The price plan to render
+   */
   pricePlan: PricePlan;
 }
 

@@ -6,7 +6,10 @@ import { fetchPricePlans } from 'utils/api';
 
 export type PricePlan = components['schemas']['PricePlan'];
 export type MeteredComponent = components['schemas']['MeteredComponent'];
-export interface PricePlansProps {
+export interface PlanPickerProps {
+  /**
+   * An API token with permissions for a specific customer
+   */
   customerToken: string;
 }
 
@@ -35,9 +38,9 @@ function PricePlanManager(): JSX.Element {
     </div>
   );
 }
-export default function PricePlans({
+export default function PlanPicker({
   customerToken,
-}: PricePlansProps): JSX.Element {
+}: PlanPickerProps): JSX.Element {
   return (
     <TokenContext.Provider value={customerToken}>
       <PricePlanManager />
@@ -45,6 +48,6 @@ export default function PricePlans({
   );
 }
 
-PricePlans.propTypes = {
+PlanPicker.propTypes = {
   customerToken: PropTypes.string.isRequired,
 };

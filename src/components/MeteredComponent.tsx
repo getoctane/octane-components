@@ -107,6 +107,9 @@ export function getPriceTiers({
 }
 
 export interface MeteredComponentProps {
+  /**
+   * The metered component to render
+   */
   meteredComponent: MeteredComponent;
 }
 
