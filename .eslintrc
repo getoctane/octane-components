@@ -134,7 +134,7 @@
           "assertionStyle": "never"
         }],
         "@typescript-eslint/no-explicit-any": ["error"], 
-        "@typescript-eslint/no-explicit-function-return-type": ["error", {
+        "@typescript-eslint/explicit-function-return-type": ["error", {
           "allowExpressions": true,
           "allowTypedFunctionExpressions": true,
           "allowHigherOrderFunctions": true,
