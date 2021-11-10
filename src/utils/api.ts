@@ -58,8 +58,8 @@ const makeApiGETEndpoint =
   ): Promise<TypedResponse<Success, Failure>> =>
     fetch(urlFactory(urlOverride), getFetchConfig(token));
 
-const getPricePlansUrl: UrlFactory = (base = PROD_API): string =>
-  `${base}/price_plans/`;
+export const getPricePlansUrl: UrlFactory = (base = PROD_API): string =>
+  `${base}price_plans/`;
 
 /**
  * Gets all price plans that can be read using `token`.
