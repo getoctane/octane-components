@@ -11,11 +11,23 @@ export interface PlanPickerProps {
    * An API token with permissions for a specific customer
    */
   customerToken: string;
+  /**
+   * The name of the currently selected plan, if any.
+   * This is the initial value that the PlanPicker's internal
+   * state uses to preselect a plan.
+   */
+  initialSelected?: string;
+}
+
+interface PricePlanManagerProps {
+  initialSelected?: string;
 }
 
 const TokenContext = React.createContext<string>('NO_TOKEN');
 
-function PricePlanManager(): JSX.Element {
+function PricePlanManager({
+  initialSelected,
+}: PricePlanManagerProps): JSX.Element {
   const [pricePlans, setPricePlans] = useState<PricePlan[]>([]);
   const token = useContext(TokenContext);
   useEffect(() => {
@@ -30,20 +42,28 @@ function PricePlanManager(): JSX.Element {
     fetchData();
   }, [setPricePlans, token]);
 
+  const [selected, setSelected] = useState<string | undefined>(initialSelected);
+
   return (
     <div className='octane-component price-plan-picker'>
       {pricePlans.map((plan) => (
-        <PricePlanCard key={plan.name} pricePlan={plan} />
+        <PricePlanCard
+          key={plan.name}
+          pricePlan={plan}
+          selected={plan.name === selected}
+          onSelect={setSelected}
+        />
       ))}
     </div>
   );
 }
 export default function PlanPicker({
   customerToken,
+  initialSelected: selected,
 }: PlanPickerProps): JSX.Element {
   return (
     <TokenContext.Provider value={customerToken}>
-      <PricePlanManager />
+      <PricePlanManager initialSelected={selected} />
     </TokenContext.Provider>
   );
 }

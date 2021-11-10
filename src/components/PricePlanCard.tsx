@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { formatCurrency } from 'utils/format';
 import PropTypes from 'prop-types';
 import { components } from 'apiTypes';
@@ -12,10 +12,19 @@ export interface PricePlanCardProps {
    * The price plan to render
    */
   pricePlan: PricePlan;
+  onSelect?: (planName: string) => void;
+  selected?: boolean;
 }
 
-export function PricePlanCard({ pricePlan }: PricePlanCardProps): JSX.Element {
+export function PricePlanCard({
+  pricePlan,
+  selected = false,
+  onSelect = (): void => {
+    /* noop */
+  },
+}: PricePlanCardProps): JSX.Element {
   const {
+    name,
     display_name: displayName,
     base_price: basePrice,
     period,
@@ -29,7 +38,7 @@ export function PricePlanCard({ pricePlan }: PricePlanCardProps): JSX.Element {
   const periodAbbrev = period === 'month' ? 'mo' : period;
 
   return (
-    <div className='price-plan-card'>
+    <div className={'price-plan-card' + (selected ? ' selected' : '')}>
       <div className='plan-name'>{displayName} </div>
       {hasBasePrice && (
         <div className='base-price'>
@@ -48,10 +57,19 @@ export function PricePlanCard({ pricePlan }: PricePlanCardProps): JSX.Element {
         ))}
       </div>
       <div className='label billing-sched'>{billingSchedule}</div>
+      <button
+        className='select-plan'
+        disabled={selected}
+        onClick={(): void => onSelect(name)}
+      >
+        {selected ? 'Selected' : 'Select'}
+      </button>
     </div>
   );
 }
 
 PricePlanCard.propTypes = {
   pricePlan: PropTypes.object.isRequired,
+  onSelect: PropTypes.func,
+  selected: PropTypes.bool,
 };

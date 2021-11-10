@@ -134,6 +134,12 @@
           "assertionStyle": "never"
         }],
         "@typescript-eslint/no-explicit-any": ["error"], 
+        "@typescript-eslint/no-explicit-function-return-type": ["error", {
+          "allowExpressions": true,
+          "allowTypedFunctionExpressions": true,
+          "allowHigherOrderFunctions": true,
+          "allowConciseArrowFunctionExpressionsStartingWithVoid": true
+        }], 
         "no-unused-vars": "off",
         "@typescript-eslint/no-unused-vars": "error",
         "unused-imports/no-unused-imports": "error",

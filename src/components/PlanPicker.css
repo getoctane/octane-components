@@ -3,10 +3,13 @@
   --octane-bg-primary: #071420;
   --octane-bg-secondary: #212c37;
   --octane-bg-lighter: #484e5980;
+  --octane-bg-accent-disabled: #afcfd0;
+  --octane-bg-accent: #6ea9aa;
   --octane-text-primary: #ffffff;
   --octane-text-secondary: #d4f5f5;
   --octane-border-primary: #d4f5f54d;
   --octane-text-accent: #a8c9bf;
+  --octane-shadow-color: #212c37cc;
 
   /* Light theme */
   /* --octane-bg-primary: #d4f5f54d;
@@ -19,6 +22,7 @@
   --octane-border-primary: #d4f5f54d; */
 
   --octane-spacing: 6px;
+  --octane-transition-speed: 0.1s;
   --octane-default-font: -apple-system, BlinkMacSystemFont, 'avenir next',
     avenir, 'helvetica neue', helvetica, ubuntu, roboto, noto, 'segoe ui', arial,
     sans-serif;
@@ -31,12 +35,14 @@
 
   color: var(--octane-text-primary);
   font-family: var(--octane-default-font);
+  box-sizing: border-box;
 }
 
 .octane-component.price-plan-picker {
   overflow-y: auto;
   white-space: nowrap;
   text-align: left;
+  padding: calc(2 * var(--octane-spacing));
 }
 
 .octane-component.price-plan-picker .price-plan-card {
@@ -46,6 +52,10 @@
 }
 
 .octane-component .price-plan-card {
+  transition: all var(--octane-transition-speed) ease-in-out;
+  transform: scale(1);
+  box-shadow: 0px 0px 0px var(--octane-shadow-color);
+
   border-color: var(--octane-border-primary);
   border-width: 1px;
   border-style: solid;
@@ -56,6 +66,13 @@
   text-align: center;
   padding: calc(var(--octane-spacing) * 2);
   margin: var(--octane-spacing);
+}
+
+.octane-component .price-plan-card.selected {
+  /* Note: These aren't variables because they're really specific to how I chose
+    to animate this particular element. */
+  transform: scale(1.03);
+  box-shadow: 1px 5px 10px var(--octane-shadow-color);
 }
 
 .octane-component .price-plan-card .plan-name {
@@ -138,4 +155,33 @@
   background-color: var(--octane-bg-lighter);
   border-bottom-left-radius: var(--octane-border-radius-lg);
   border-bottom-right-radius: var(--octane-border-radius-lg);
+}
+
+.octane-component .select-plan {
+  /* reset just this button's styling */
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1;
+  margin: 0;
+  overflow: visible;
+  text-transform: none;
+  -webkit-appearance: button;
+  border: none;
+
+  /* octane styling */
+  transition: background-color var(--octane-transition-speed) ease-in-out;
+  color: var(--octane-text-primary);
+  background-color: var(--octane-bg-accent);
+  border-radius: var(--octane-border-radius-lg);
+  text-transform: uppercase;
+  padding: calc(2 * var(--octane-spacing));
+  margin-top: calc(2 * var(--octane-spacing));
+  display: block;
+  position: relative;
+  width: 100%;
+  font-weight: bold;
+}
+
+.octane-component .select-plan[disabled] {
+  background-color: var(--octane-bg-accent-disabled);
 }

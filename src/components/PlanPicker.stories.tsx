@@ -142,6 +142,7 @@ const Template: Story<PlanPickerProps> = (args) => <PlanPicker {...args} />;
 export const Default = Template.bind({});
 Default.args = {
   customerToken: 'primary token',
+  initialSelected: 'plan2',
 };
 
 Default.parameters = {
