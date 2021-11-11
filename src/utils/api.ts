@@ -1,6 +1,6 @@
 import { components } from 'apiTypes';
 
-const PROD_API = 'https://api.cloud.getoctane.io/';
+const PROD_API = 'https://api.cloud.getoctane.io';
 type UrlFactory = (base?: string) => string;
 
 /**
@@ -59,7 +59,7 @@ const makeApiGETEndpoint =
     fetch(urlFactory(urlOverride), getFetchConfig(token));
 
 export const getPricePlansUrl: UrlFactory = (base = PROD_API): string =>
-  `${base}price_plans/`;
+  `${base}/price_plans/`;
 
 /**
  * Gets all price plans that can be read using `token`.
