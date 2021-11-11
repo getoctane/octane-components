@@ -119,20 +119,20 @@
   background: var(--octane-bg-secondary);
   border-radius: var(--octane-border-radius-lg);
   margin-bottom: calc(2 * var(--octane-spacing));
-  padding-top: var(--octane-spacing);
+  padding-top: calc(2 * var(--octane-spacing));
   font-size: var(--octane-meter-text-size);
 }
 .octane-component .metered-component .meter-name {
-  margin-bottom: var(--octane-spacing);
+  margin-bottom: calc(2 * var(--octane-spacing));
   color: var(--octane-text-secondary);
-  padding-left: var(--octane-spacing);
-  padding-right: var(--octane-spacing);
+  padding-left: calc(2 * var(--octane-spacing));
+  padding-right: calc(2 * var(--octane-spacing));
 }
 
 .octane-component .metered-component .meter-tiers {
-  padding-left: var(--octane-spacing);
-  padding-right: var(--octane-spacing);
-  padding-bottom: var(--octane-spacing);
+  padding-left: calc(2 * var(--octane-spacing));
+  padding-right: calc(2 * var(--octane-spacing));
+  padding-bottom: calc(2 * var(--octane-spacing));
 }
 .octane-component .metered-component .meter-tier + .meter-tier {
   margin-top: calc(var(--octane-spacing) / 2);
