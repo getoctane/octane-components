@@ -26,7 +26,7 @@ function PricePlanManager(): JSX.Element {
   const token = useContext(TokenContext);
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
-      const result = await fetchPricePlans(token);
+      const result = await fetchPricePlans({ token });
       if (!result.ok) {
         throw new Error('Something went wrong fetching price plans');
       }
