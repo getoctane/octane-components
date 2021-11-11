@@ -19,15 +19,9 @@ export interface PlanPickerProps {
   initialSelected?: string;
 }
 
-interface PricePlanManagerProps {
-  initialSelected?: string;
-}
-
 const TokenContext = React.createContext<string>('NO_TOKEN');
 
-function PricePlanManager({
-  initialSelected,
-}: PricePlanManagerProps): JSX.Element {
+function PricePlanManager(): JSX.Element {
   const [pricePlans, setPricePlans] = useState<PricePlan[]>([]);
   const token = useContext(TokenContext);
   useEffect(() => {
@@ -42,7 +36,7 @@ function PricePlanManager({
     fetchData();
   }, [setPricePlans, token]);
 
-  const [selected, setSelected] = useState<string | undefined>(initialSelected);
+  const [selected, setSelected] = useState<string | undefined>(undefined);
 
   return (
     <div className='octane-component price-plan-picker'>
@@ -59,11 +53,10 @@ function PricePlanManager({
 }
 export default function PlanPicker({
   customerToken,
-  initialSelected: selected,
 }: PlanPickerProps): JSX.Element {
   return (
     <TokenContext.Provider value={customerToken}>
-      <PricePlanManager initialSelected={selected} />
+      <PricePlanManager />
     </TokenContext.Provider>
   );
 }
