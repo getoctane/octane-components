@@ -5,7 +5,7 @@ import withMock from 'storybook-addon-mock';
 import type { Story, Meta } from '@storybook/react';
 import 'components/PlanPicker.css';
 import { components } from 'apiTypes';
-import { getPricePlansUrl } from 'utils/api';
+import { getPricePlansUrl, getCustomerActiveSubscriptionUrl } from 'utils/api';
 type PricePlan = components['schemas']['PricePlan'];
 type MeteredComponent = components['schemas']['MeteredComponent'];
 
@@ -73,7 +73,7 @@ const mockMeteredComponents: MeteredComponent[] = [
 ];
 
 const mockPricePlan: PricePlan = {
-  name: 'plans_standard_with_storage',
+  name: 'plan2',
   display_name: 'Standard Plan w/ storage',
   description:
     'Same rates as standard plan. Additionally, metered usage for managed storage component is included.',
@@ -137,12 +137,32 @@ const mockPricePlan: PricePlan = {
   },
 };
 
+const mockActiveSubscription = {
+  base_price_override: null,
+  current_billing_cycle: {
+    cycle_end: '2021-11-12T17:02:00.986000',
+    cycle_start: '2021-10-12T17:02:00.986000',
+  },
+  customer_name: 'joey_pizza',
+  discount_override: {
+    amount: 25.0,
+    coupon_id: 17,
+    discount_type: 'PERCENT',
+    end_date: null,
+    start_date: '2021-08-12T17:02:00.986000',
+  },
+  effective_at: '2021-08-12T17:02:00.986000',
+  price_plan: mockPricePlan,
+  price_plan_name: 'basic',
+  trial_override: null,
+};
+
 const Template: Story<PlanPickerProps> = (args) => <PlanPicker {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
   customerToken: 'primary token',
-  initialSelected: 'plan2',
+  customerName: 'joey_pizza',
 };
 
 Default.parameters = {
@@ -160,6 +180,12 @@ Default.parameters = {
         },
         { ...mockPricePlan, name: 'plan3' },
       ],
+    },
+    {
+      url: getCustomerActiveSubscriptionUrl(undefined, 'joey_pizza'),
+      method: 'GET',
+      status: 200,
+      response: mockActiveSubscription,
     },
   ],
 };
