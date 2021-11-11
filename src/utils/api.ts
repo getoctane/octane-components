@@ -1,17 +1,29 @@
 import { components } from 'apiTypes';
+type PricePlan = components['schemas']['PricePlan'];
+type ActiveSubscription = components['schemas']['ActiveSubscription'];
 
 const PROD_API = 'https://api.cloud.getoctane.io';
-type UrlFactory = (base?: string) => string;
+
+/* = = = = = = = = = = = = = = 
+
+  HELPER TYPES
+
+ = = = = = = = = = = = = = = = */
+
+type UrlFactory<
+  Args extends unknown[] = [],
+  _Success = unknown,
+  _Failure = unknown
+> = (base?: string, ...args: Args) => string;
 
 /**
  * A config object to let us customize how we make requests.
  * Since this config should be optional, all of its keys should also be optional.
  */
 interface ApiConfig {
+  token: string;
   urlOverride?: string;
 }
-
-type PricePlan = components['schemas']['PricePlan'];
 
 /**
  * A Fetch response that is successful, and has types for json()
@@ -32,8 +44,14 @@ type TypedResponse<Success, Failure = unknown> =
   | TypedSuccessResponse<Success>
   | TypedFailureResponse<Failure>;
 
+/* = = = = = = = = = = = = = = 
+
+  HELPER METHODS
+
+ = = = = = = = = = = = = = = = */
+
 /**
- * given a token, create a RequestInit object to configure fetch() with
+ * Given a token, create a RequestInit object to configure fetch() with
  */
 const getFetchConfig = (token: string): RequestInit => ({
   headers: {
@@ -51,19 +69,41 @@ const getFetchConfig = (token: string): RequestInit => ({
  * TODO: Also accept API params (whenever we need em)
  */
 const makeApiGETEndpoint =
-  <Success, Failure = unknown>(urlFactory: UrlFactory) =>
+  <UrlFactoryArgs extends unknown[], Success, Failure>(
+    urlFactory: UrlFactory<UrlFactoryArgs, Success, Failure>
+  ) =>
   (
-    token: string,
-    { urlOverride }: ApiConfig = {}
+    { token, urlOverride }: ApiConfig,
+    ...urlArgs: UrlFactoryArgs
   ): Promise<TypedResponse<Success, Failure>> =>
-    fetch(urlFactory(urlOverride), getFetchConfig(token));
+    fetch(urlFactory(urlOverride, ...urlArgs), getFetchConfig(token));
 
-export const getPricePlansUrl: UrlFactory = (base = PROD_API): string =>
-  `${base}/price_plans/`;
+/* = = = = = = = = = = = = = = 
+
+  API ENDPOINTS
+
+ = = = = = = = = = = = = = = = */
+
+export const getPricePlansUrl: UrlFactory<[], PricePlan[]> = (
+  base = PROD_API
+): string => `${base}/price_plans/`;
 
 /**
  * Gets all price plans that can be read using `token`.
  * The token can be either a vendor token or a customer token.
  */
-export const fetchPricePlans =
-  makeApiGETEndpoint<PricePlan[]>(getPricePlansUrl);
+export const fetchPricePlans = makeApiGETEndpoint(getPricePlansUrl);
+
+export const getCustomerActiveSubscriptionUrl: UrlFactory<
+  [customer_name: string],
+  ActiveSubscription | null
+> = (base = PROD_API, customerName) =>
+  `${base}/customers/${customerName}/active_subscription`;
+
+/**
+ * For a given customer, returns the customer's active subscription (or null
+ * if there is none).
+ */
+export const fetchCustomerActiveSubscription = makeApiGETEndpoint(
+  getCustomerActiveSubscriptionUrl
+);
