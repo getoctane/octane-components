@@ -190,4 +190,35 @@ Default.parameters = {
   ],
 };
 
+export const NoSubscription = Template.bind({});
+NoSubscription.args = {
+  customerToken: 'primary token',
+  customerName: 'joey_pizza',
+};
+
+NoSubscription.parameters = {
+  mockData: [
+    {
+      url: getPricePlansUrl(),
+      method: 'GET',
+      status: 200,
+      response: [
+        { ...mockPricePlan, name: 'plan1' },
+        {
+          ...mockPricePlan,
+          name: 'plan2',
+          metered_components: mockMeteredComponents,
+        },
+        { ...mockPricePlan, name: 'plan3' },
+      ],
+    },
+    {
+      url: getCustomerActiveSubscriptionUrl(undefined, 'joey_pizza'),
+      method: 'GET',
+      status: 200,
+      response: null,
+    },
+  ],
+};
+
 export default config;
