@@ -16,6 +16,10 @@ interface PricePlanManagerProps {
    * Only show price plans with these names
    */
   pricePlanNames?: string[];
+  /**
+   * Callback triggered whenever a plan is selected.
+   */
+  onPlanSelect?: (planName: string, plan: PricePlan) => void;
 }
 
 export interface PlanPickerProps extends PricePlanManagerProps {
@@ -48,6 +52,9 @@ type LoadingState =
 function PricePlanManager({
   pricePlanTags,
   pricePlanNames,
+  onPlanSelect = () => {
+    /* noop */
+  },
 }: PricePlanManagerProps): JSX.Element {
   const [pricePlans, setPricePlans] = useState<PricePlan[]>([]);
   const [selected, setSelected] = useState<string | undefined>(undefined);
@@ -61,6 +68,8 @@ function PricePlanManager({
       setSelected(planName);
       // As well as the global state
       selectedPricePlan.set(plan);
+      // As well as the user-provided callback
+      onPlanSelect(planName, plan);
     },
     [setSelected, selectedPricePlan]
   );
