@@ -10,20 +10,29 @@ const PROD_API = 'https://api.cloud.getoctane.io';
 
  = = = = = = = = = = = = = = = */
 
+/**
+ * This takes in an optional string base and some path args and spits out a URL.
+ * It also encodes the URL's success and failure response types, as well as
+ * any query params accepted by the URL.
+ * I'd love to put `base` as the last param, but unfortunately TS only lets
+ * ...rest params to be at the end of a list of args, not at the beginning.
+ */
 type UrlFactory<
-  Args extends unknown[] = [],
+  _QueryArgs extends Record<string, string> | undefined | void = void,
+  PathArgs extends unknown[] = [],
   _Success = unknown,
   _Failure = unknown
-> = (base?: string, ...args: Args) => string;
+> = (base?: string | undefined, ...args: PathArgs) => string;
 
 /**
  * A config object to let us customize how we make requests.
  * Since this config should be optional, all of its keys should also be optional.
  */
-interface ApiConfig {
+type ApiConfig<QueryParams> = {
   token: string;
   urlOverride?: string;
-}
+  params?: QueryParams;
+};
 
 /**
  * A Fetch response that is successful, and has types for json()
@@ -66,17 +75,26 @@ const getFetchConfig = (token: string): RequestInit => ({
  * Accepts a few generics:
  *  - Success is the type of the API when it's successful
  *  - Failure is the type of the API when it's... not. Defaults to unknown.
- * TODO: Also accept API params (whenever we need em)
  */
 const makeApiGETEndpoint =
-  <UrlFactoryArgs extends unknown[], Success, Failure>(
-    urlFactory: UrlFactory<UrlFactoryArgs, Success, Failure>
+  <
+    QueryArgs extends Record<string, string> | undefined | void,
+    PathArgs extends unknown[],
+    Success,
+    Failure
+  >(
+    urlFactory: UrlFactory<QueryArgs, PathArgs, Success, Failure>
   ) =>
   (
-    { token, urlOverride }: ApiConfig,
-    ...urlArgs: UrlFactoryArgs
-  ): Promise<TypedResponse<Success, Failure>> =>
-    fetch(urlFactory(urlOverride, ...urlArgs), getFetchConfig(token));
+    { token, urlOverride, params }: ApiConfig<QueryArgs>,
+    ...pathArgs: PathArgs
+  ): Promise<TypedResponse<Success, Failure>> => {
+    const url = new URL(urlFactory(urlOverride, ...pathArgs));
+    if (params) {
+      url.search = new URLSearchParams(params).toString();
+    }
+    return fetch(url.toString(), getFetchConfig(token));
+  };
 
 /* = = = = = = = = = = = = = = 
 
@@ -84,17 +102,20 @@ const makeApiGETEndpoint =
 
  = = = = = = = = = = = = = = = */
 
-export const getPricePlansUrl: UrlFactory<[], PricePlan[]> = (
-  base = PROD_API
-): string => `${base}/price_plans/`;
+export const getPricePlansUrl: UrlFactory<
+  { tags?: string; names?: string },
+  [],
+  PricePlan[]
+> = (base = PROD_API): string => `${base}/price_plans/`;
 
 /**
  * Gets all price plans that can be read using `token`.
  * The token can be either a vendor token or a customer token.
  */
-export const fetchPricePlans = makeApiGETEndpoint(getPricePlansUrl);
+export const getPricePlans = makeApiGETEndpoint(getPricePlansUrl);
 
 export const getCustomerActiveSubscriptionUrl: UrlFactory<
+  never,
   [customer_name: string],
   ActiveSubscription | null
 > = (base = PROD_API, customerName) =>
@@ -104,6 +125,6 @@ export const getCustomerActiveSubscriptionUrl: UrlFactory<
  * For a given customer, returns the customer's active subscription (or null
  * if there is none).
  */
-export const fetchCustomerActiveSubscription = makeApiGETEndpoint(
+export const getCustomerActiveSubscription = makeApiGETEndpoint(
   getCustomerActiveSubscriptionUrl
 );
