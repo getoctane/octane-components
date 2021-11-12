@@ -2,11 +2,22 @@ import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { components } from 'apiTypes';
 import { PricePlanCard } from 'components/PricePlanCard';
-import { fetchPricePlans, fetchCustomerActiveSubscription } from 'utils/api';
+import { getPricePlans, getCustomerActiveSubscription } from 'utils/api';
 
 export type PricePlan = components['schemas']['PricePlan'];
 export type MeteredComponent = components['schemas']['MeteredComponent'];
-export interface PlanPickerProps {
+interface PricePlanManagerProps {
+  /**
+   * Only show price plans that have these tags
+   */
+  pricePlanTags?: string[];
+  /**
+   * Only show price plans with these names
+   */
+  pricePlanNames?: string[];
+}
+
+export interface PlanPickerProps extends PricePlanManagerProps {
   /**
    * An API token with permissions for a specific customer.
    */
@@ -15,12 +26,6 @@ export interface PlanPickerProps {
    * The name of the customer to update the subscription for.
    */
   customerName: string;
-  /**
-   * The name of the currently selected plan, if any.
-   * This is the initial value that the PlanPicker's internal
-   * state uses to preselect a plan.
-   */
-  initialSelected?: string;
 }
 
 const TokenContext = React.createContext<{
@@ -39,7 +44,10 @@ type LoadingState =
   // The component has all the data it needs
   | 'loaded';
 
-function PricePlanManager(): JSX.Element {
+function PricePlanManager({
+  pricePlanTags,
+  pricePlanNames,
+}: PricePlanManagerProps): JSX.Element {
   const [pricePlans, setPricePlans] = useState<PricePlan[]>([]);
   const [selected, setSelected] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState<LoadingState>('preload');
@@ -49,7 +57,13 @@ function PricePlanManager(): JSX.Element {
   useEffect(() => {
     // Get all price plans
     const pricePlans = async (): Promise<void> => {
-      const result = await fetchPricePlans({ token });
+      const result = await getPricePlans({
+        token,
+        params: {
+          ...(pricePlanTags && { tags: pricePlanTags?.join(',') }),
+          ...(pricePlanNames && { names: pricePlanNames?.join(',') }),
+        },
+      });
       if (!result.ok) {
         throw new Error('Something went wrong fetching price plans');
       }
@@ -58,7 +72,7 @@ function PricePlanManager(): JSX.Element {
     };
     // Get the current subscription, if one exists
     const activeSubscription = async (): Promise<void> => {
-      const result = await fetchCustomerActiveSubscription(
+      const result = await getCustomerActiveSubscription(
         { token },
         customerName
       );
@@ -100,10 +114,11 @@ function PricePlanManager(): JSX.Element {
 export default function PlanPicker({
   customerToken: token,
   customerName,
+  ...managerProps
 }: PlanPickerProps): JSX.Element {
   return (
     <TokenContext.Provider value={{ token, customerName }}>
-      <PricePlanManager />
+      <PricePlanManager {...managerProps} />
     </TokenContext.Provider>
   );
 }
