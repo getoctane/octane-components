@@ -127,7 +127,8 @@
             "selector": "typeLike",
             "format": [
               "PascalCase"
-            ]
+            ],
+            "leadingUnderscore": "allow",
           }
         ],
         "@typescript-eslint/consistent-type-assertions": ["error", {
@@ -141,7 +142,9 @@
           "allowConciseArrowFunctionExpressionsStartingWithVoid": true
         }], 
         "no-unused-vars": "off",
-        "@typescript-eslint/no-unused-vars": "error",
+        "@typescript-eslint/no-unused-vars": ["error", {
+          "varsIgnorePattern": "^[_]"
+        }],
         "unused-imports/no-unused-imports": "error",
         "unused-imports/no-unused-vars": [
           "error",
