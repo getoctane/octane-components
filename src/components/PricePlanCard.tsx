@@ -12,7 +12,7 @@ export interface PricePlanCardProps {
    * The price plan to render
    */
   pricePlan: PricePlan;
-  onSelect?: (planName: string) => void;
+  onSelect?: (planName: string, plan: PricePlan) => void;
   selected?: boolean;
 }
 
@@ -60,7 +60,7 @@ export function PricePlanCard({
       <button
         className='select-plan'
         disabled={selected}
-        onClick={() => onSelect(name)}
+        onClick={() => onSelect(name, pricePlan)}
       >
         {selected ? 'Selected' : 'Select'}
       </button>

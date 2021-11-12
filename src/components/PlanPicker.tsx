@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { components } from 'apiTypes';
 import { PricePlanCard } from 'components/PricePlanCard';
 import { getPricePlans, getCustomerActiveSubscription } from 'utils/api';
+import { selectedPricePlan, existingSubscription } from 'utils/sharedState';
 
 export type PricePlan = components['schemas']['PricePlan'];
 export type MeteredComponent = components['schemas']['MeteredComponent'];
@@ -54,6 +55,16 @@ function PricePlanManager({
 
   const { token, customerName } = useContext(TokenContext);
 
+  const onSelectPlanName = useCallback(
+    (planName: string, plan: PricePlan) => {
+      // Update the local state
+      setSelected(planName);
+      // As well as the global state
+      selectedPricePlan.set(plan);
+    },
+    [setSelected, selectedPricePlan]
+  );
+
   useEffect(() => {
     // Get all price plans
     const pricePlans = async (): Promise<void> => {
@@ -80,9 +91,12 @@ function PricePlanManager({
         throw new Error('Something went wrong fetching price plans');
       }
       const data = await result.json();
-      if (data !== null) {
-        setSelected(data.price_plan?.name);
+      // Update component state
+      if (data !== null && data.price_plan) {
+        onSelectPlanName(data.price_plan.name, data.price_plan);
       }
+      // Update shared global state
+      existingSubscription.set(data !== null ? data : 'no_existing_plan');
     };
 
     setTimeout(() => {
@@ -105,7 +119,7 @@ function PricePlanManager({
             key={plan.name}
             pricePlan={plan}
             selected={plan.name === selected}
-            onSelect={setSelected}
+            onSelect={onSelectPlanName}
           />
         ))}
     </div>
