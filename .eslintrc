@@ -128,7 +128,7 @@
             "format": [
               "PascalCase"
             ],
-            "leadingUnderscore": "allow",
+            "leadingUnderscore": "allow"
           }
         ],
         "@typescript-eslint/consistent-type-assertions": ["error", {
