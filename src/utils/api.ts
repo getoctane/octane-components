@@ -25,13 +25,23 @@ type UrlFactory<
 > = (base?: string | undefined, ...args: PathArgs) => string;
 
 /**
- * A config object to let us customize how we make requests.
+ * A config object to let us customize how we make GET requests.
  * Since this config should be optional, all of its keys should also be optional.
  */
-type ApiConfig<QueryParams> = {
+type ApiGETConfig<QueryParams> = {
   token: string;
   urlOverride?: string;
   params?: QueryParams;
+};
+
+/**
+ * A config object to let us customize how we make GET requests.
+ * Since this config should be optional, all of its keys should also be optional.
+ */
+type ApiPOSTConfig<BodyType> = {
+  token: string;
+  urlOverride?: string;
+  body?: BodyType;
 };
 
 /**
@@ -62,10 +72,15 @@ type TypedResponse<Success, Failure = unknown> =
 /**
  * Given a token, create a RequestInit object to configure fetch() with
  */
-const getFetchConfig = (token: string): RequestInit => ({
+const getFetchConfig = (
+  token: string,
+  { headers, ...rest }: RequestInit = {}
+): RequestInit => ({
   headers: {
     Authorization: `Bearer ${token}`,
+    ...headers,
   },
+  ...rest,
 });
 
 /**
@@ -86,7 +101,7 @@ const makeApiGETEndpoint =
     urlFactory: UrlFactory<QueryArgs, PathArgs, Success, Failure>
   ) =>
   (
-    { token, urlOverride, params }: ApiConfig<QueryArgs>,
+    { token, urlOverride, params }: ApiGETConfig<QueryArgs>,
     ...pathArgs: PathArgs
   ): Promise<TypedResponse<Success, Failure>> => {
     const url = new URL(urlFactory(urlOverride, ...pathArgs));
@@ -94,6 +109,28 @@ const makeApiGETEndpoint =
       url.search = new URLSearchParams(params).toString();
     }
     return fetch(url.toString(), getFetchConfig(token));
+  };
+
+const makeApiNonGETEndpoint =
+  <BodyType, PathArgs extends unknown[], Success, Failure>(
+    urlFactory: UrlFactory<void, PathArgs, Success, Failure>,
+    method: 'POST' | 'PUT' | 'DELETE' = 'POST'
+  ) =>
+  (
+    { token, urlOverride, body }: ApiPOSTConfig<BodyType>,
+    ...pathArgs: PathArgs
+  ): Promise<TypedResponse<Success, Failure>> => {
+    const url = new URL(urlFactory(urlOverride, ...pathArgs));
+    return fetch(
+      url.toString(),
+      getFetchConfig(token, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      })
+    );
   };
 
 /* = = = = = = = = = = = = = = 
@@ -128,3 +165,42 @@ export const getCustomerActiveSubscriptionUrl: UrlFactory<
 export const getCustomerActiveSubscription = makeApiGETEndpoint(
   getCustomerActiveSubscriptionUrl
 );
+
+export const createSubscriptionUrl: UrlFactory<
+  never,
+  [customer_name: string],
+  ActiveSubscription
+> = (base = PROD_API, customerName) =>
+  `${base}/customers/${customerName}/subscriptions`;
+
+/**
+ * Create a subscription to a price plan for a given customer.
+ */
+export const createSubscription = makeApiNonGETEndpoint<
+  // TODO: I do _not_ love that you need to pass all these generics in
+  // My plan for having the URL own the request / response types was
+  // maybe not the best idea; I want to refactor this whole file to make the
+  // endpoint function own the return types, parameter types, and body types.
+  {
+    effective_at?: string;
+    price_plan_name?: string;
+    coupon_override_name?: string;
+  },
+  [customer_name: string],
+  ActiveSubscription,
+  unknown
+>(createSubscriptionUrl);
+
+/**
+ * Update an existing subscription to a price plan for a given customer.
+ */
+export const updateSubscription = makeApiNonGETEndpoint<
+  {
+    effective_at?: string;
+    price_plan_name?: string;
+    coupon_override_name?: string;
+  },
+  [customer_name: string],
+  ActiveSubscription,
+  unknown
+>(createSubscriptionUrl, 'PUT');
