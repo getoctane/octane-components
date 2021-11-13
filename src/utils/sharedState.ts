@@ -163,3 +163,10 @@ export const selectedPricePlan = createStorage<PricePlan | null>(
 export const existingSubscription = createStorage<
   Subscription | 'no_existing_plan'
 >('existingPricePlan');
+
+/**
+ * Store an indication that the customer has submitted billing info
+ */
+export const billingInfoProvided = createStorage<boolean>(
+  'billingInfoProvided'
+);
