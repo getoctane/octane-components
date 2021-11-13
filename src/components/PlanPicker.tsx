@@ -7,6 +7,18 @@ import { selectedPricePlan, existingSubscription } from 'utils/sharedState';
 
 export type PricePlan = components['schemas']['PricePlan'];
 export type MeteredComponent = components['schemas']['MeteredComponent'];
+
+type LoadingState =
+  // Loading has started, but it's too soon to show a loading state
+  | 'preload'
+  // It's taken some time, show a loading state
+  | 'loading'
+  // The component has all the data it needs
+  | 'loaded';
+
+// How long before we should think about showing a loading spinner?
+const PRELOAD_TIME = 1000;
+
 interface PricePlanManagerProps {
   /**
    * Only show price plans that have these tags
@@ -40,14 +52,6 @@ const TokenContext = React.createContext<{
   token: 'NO_TOKEN',
   customerName: 'NO_CUSTOMER',
 });
-
-type LoadingState =
-  // Loading has started, but it's too soon to show a loading state
-  | 'preload'
-  // It's taken some time, show a loading state
-  | 'loading'
-  // The component has all the data it needs
-  | 'loaded';
 
 function PricePlanManager({
   pricePlanTags,
@@ -105,14 +109,21 @@ function PricePlanManager({
         onSelectPlanName(data.price_plan.name, data.price_plan);
       }
       // Update shared global state
-      existingSubscription.set(data !== null ? data : 'no_existing_plan');
+      // If there's state already, it means a plan was picked but the customer
+      // wasn't subscribed all the way. If they have no active subscription,
+      // re-select whatever they last picked.
+      const previousExistingSubscription =
+        existingSubscription.get() ?? 'no_existing_plan';
+      existingSubscription.set(
+        data !== null ? data : previousExistingSubscription
+      );
     };
 
     setTimeout(() => {
       if (loading === 'preload') {
         setLoading('loading');
       }
-    });
+    }, PRELOAD_TIME);
 
     Promise.all([activeSubscription(), pricePlans()]).then(() => {
       setLoading('loaded');
