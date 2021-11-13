@@ -1,3 +1,27 @@
+/**
+ * This module makes it easy to set and get shared, global state across a flow
+ * in a type-safe way. Why would we want to do that? Great question.
+ *
+ * Say you want to implement a sign-up flow, and you want to render the PlanPicker
+ * and the BillingInfo component separately as part of that. The two need to
+ * share information with each other so that, when we're ready to create a
+ * subscription, we know what price plan to make that subscription for and we
+ * know that the customer has submitted their billing info already.
+ *
+ * If you're rendering these two components separately from each other, you'd
+ * have to
+ * 1. add listeners to both components to see when their internal state has
+ *    changed (like what plan was selected), and keep track of that state.
+ * 2. take that state and use it to call the createSubscription API
+ *
+ * That's no fun because it means you need to keep track of state that you
+ * shouldn't have to think about.
+ *
+ * This module handles exactly that state. Our components all modify global
+ * state using the methods defined here, and our actions make use of that state
+ * when you're ready to call them (to, say, subscribe a customer).
+ */
+
 import { components } from 'apiTypes';
 type PricePlan = components['schemas']['PricePlan'];
 type Subscription = components['schemas']['Subscription'];
