@@ -2,9 +2,12 @@ import { components } from 'apiTypes';
 type PricePlan = components['schemas']['PricePlan'];
 type ActiveSubscription = components['schemas']['CustomerPortalSubscription'];
 
+type CustomerPortalStripeCredential =
+  components['schemas']['CustomerPortalStripeCredential'];
+
 const PROD_API = 'https://api.cloud.getoctane.io';
 
-/* = = = = = = = = = = = = = = 
+/* = = = = = = = = = = = = = =
 
   HELPER TYPES
 
@@ -63,7 +66,7 @@ type TypedResponse<Success, Failure = unknown> =
   | TypedSuccessResponse<Success>
   | TypedFailureResponse<Failure>;
 
-/* = = = = = = = = = = = = = = 
+/* = = = = = = = = = = = = = =
 
   HELPER METHODS
 
@@ -133,7 +136,7 @@ const makeApiNonGETEndpoint =
     );
   };
 
-/* = = = = = = = = = = = = = = 
+/* = = = = = = = = = = = = = =
 
   API ENDPOINTS
 
