@@ -77,6 +77,8 @@
     "dist"
   ],
   "dependencies": {
+    "@stripe/react-stripe-js": "^1.6.0",
+    "@stripe/stripe-js": "^1.21.1",
     "numeral": "^2.0.6",
     "pluralize": "^8.0.0",
     "prop-types": "^15.7.2"
