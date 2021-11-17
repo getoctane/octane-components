@@ -46,7 +46,6 @@ const useStripeCredential = (): void => {
   useEffect(() => {
     // Kickoff a flow to create a setup intent, starting with acquiring the client
     // secret from the serverside.
-
     try {
       setupIntent();
     } catch (err) {
