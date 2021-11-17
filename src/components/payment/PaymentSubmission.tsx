@@ -10,6 +10,7 @@ import { TokenProvider } from 'hooks/useCustomerToken';
 import useStripeCredential from 'hooks/useStripeCredential';
 import PropTypes from 'prop-types';
 import React, { useCallback, useState } from 'react';
+import { billingInfoProvided } from 'utils/sharedState';
 
 export type PricePlan = components['schemas']['PricePlan'];
 export type MeteredComponent = components['schemas']['MeteredComponent'];
@@ -59,6 +60,7 @@ function PaymentSubmissionManager(): JSX.Element {
             error ?? new Error('Payment method could not be saved succesfully.')
           );
         }
+        billingInfoProvided.set(true);
       } catch (err) {
         console.error(err);
       } finally {
@@ -69,7 +71,10 @@ function PaymentSubmissionManager(): JSX.Element {
   );
 
   return (
-    <form onSubmit={handleSubmit} className='payment-submission'>
+    <form
+      onSubmit={handleSubmit}
+      className='octane-component payment-submission'
+    >
       <CardElement
         id='card-elem-row'
         options={{
@@ -78,11 +83,9 @@ function PaymentSubmissionManager(): JSX.Element {
         }}
       />
 
-      <div className='payment-footer'>
-        <button className='save-button' type='submit'>
-          Save
-        </button>
-      </div>
+      <button className='save-button' type='submit'>
+        Save
+      </button>
     </form>
   );
 }
@@ -106,4 +109,5 @@ export default function PaymentSubmission({
 
 PaymentSubmission.propTypes = {
   customerToken: PropTypes.string.isRequired,
+  customerName: PropTypes.string.isRequired,
 };

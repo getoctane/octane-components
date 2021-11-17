@@ -41,25 +41,37 @@
   box-sizing: border-box;
 }
 
-.octane-component .payment-submission:hover {
-  background-color: var(--octane-action-secondary);
+.octane-component.signup-flow-root {
+  background-color: var(--octane-bg-secondary);
+  padding: var(--octane-spacing) calc(2 * var(--octane-spacing));
 }
 
-.payment-footer {
+.customer-metadata {
+  margin: var(--octane-spacing);
+}
+
+.octane-component.customer-name {
+  font-size: var(--octane-plan-title-size);
+  margin: calc(2 * var(--octane-spacing)) 0;
+}
+
+.octane-component.post-signup-footer {
+  align-items: center;
   display: flex;
-  justify-content: flex-end;
-}
 
-.save-button {
-  background-color: var(--octane-bg-accent);
-  cursor: pointer;
-
-  padding: var(--octane-spacing);
-  margin: calc(2 * var(--octane-spacing)) 2px;
+  margin: calc(2 * var(--octane-spacing)) 0;
   width: 100%;
-  justify-content: space-between;
 }
 
-.octane-component .save-button:hover {
+.octane-component .post-signup-button {
   background-color: var(--octane-bg-accent-disabled);
+  cursor: pointer;
+  justify-content: space-between;
+  margin: calc(2 * var(--octane-spacing)) var(--octane-spacing);
+  padding: calc(2 * var(--octane-spacing)) calc(1 * var(--octane-spacing));
+  width: 100%;
+}
+
+.octane-component .post-signup-button:hover {
+  background-color: var(--octane-bg-accent);
 }

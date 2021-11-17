@@ -1,21 +1,20 @@
 import type { Meta, Story } from '@storybook/react';
-import PaymentSubmission, {
-  PaymentSubmissionProps,
-} from 'components/payment/PaymentSubmission';
+import SignupFlow from 'components/flows/SignupFlow';
+import { PaymentSubmissionProps } from 'components/payment/PaymentSubmission';
 import 'components/payment/PaymentSubmission.css';
 import { TokenProvider } from 'hooks/useCustomerToken';
 import React from 'react';
 import withMock from 'storybook-addon-mock';
 
 const config: Meta = {
-  title: 'Octane/PaymentSubmission',
-  component: PaymentSubmission,
+  title: 'Octane/SignupFlow',
+  component: SignupFlow,
   decorators: [withMock],
 };
 
 const Template: Story<PaymentSubmissionProps> = (args) => (
   <TokenProvider customerName={args.customerName} token={args.customerToken}>
-    <PaymentSubmission {...args} />
+    <SignupFlow {...args} />
   </TokenProvider>
 );
 
