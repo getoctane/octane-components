@@ -3,12 +3,11 @@ import {
   existingSubscription,
   billingInfoProvided,
 } from 'utils/sharedState';
-import { createSubscription, updateSubscription } from 'utils/api';
+import { updateSubscription } from 'utils/api';
 import { components } from 'apiTypes';
-type ActiveSubscription = components['schemas']['ActiveSubscription'];
+type ActiveSubscription = components['schemas']['CustomerPortalSubscription'];
 
 export default function subscribeCustomer(
-  customerName: string,
   customerToken: string
 ): Promise<ActiveSubscription> {
   const plan = selectedPricePlan.get();
@@ -39,35 +38,15 @@ export default function subscribeCustomer(
     );
   }
 
-  if (existingSubscription.get() === 'no_existing_plan') {
-    return createSubscription(
-      {
-        token: customerToken,
-        body: {
-          price_plan_name: plan.name,
-        },
-      },
-      customerName
-    ).then((response) => {
-      if (!response.ok) {
-        throw new Error(`Something went wrong creating a subscription.`);
-      }
-      return response.json();
-    });
-  } else {
-    return updateSubscription(
-      {
-        token: customerToken,
-        body: {
-          price_plan_name: plan.name,
-        },
-      },
-      customerName
-    ).then((response) => {
-      if (!response.ok) {
-        throw new Error(`Something went wrong updating a subscription.`);
-      }
-      return response.json();
-    });
-  }
+  return updateSubscription({
+    token: customerToken,
+    body: {
+      price_plan_name: plan.name,
+    },
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error(`Something went wrong creating a subscription.`);
+    }
+    return response.json();
+  });
 }

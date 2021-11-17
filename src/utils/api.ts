@@ -1,6 +1,6 @@
 import { components } from 'apiTypes';
 type PricePlan = components['schemas']['PricePlan'];
-type ActiveSubscription = components['schemas']['ActiveSubscription'];
+type ActiveSubscription = components['schemas']['CustomerPortalSubscription'];
 
 const PROD_API = 'https://api.cloud.getoctane.io';
 
@@ -143,7 +143,7 @@ export const getPricePlansUrl: UrlFactory<
   { tags?: string; names?: string },
   [],
   PricePlan[]
-> = (base = PROD_API): string => `${base}/price_plans/`;
+> = (base = PROD_API): string => `${base}/ecp/price_plans/`;
 
 /**
  * Gets all price plans that can be read using `token`.
@@ -153,10 +153,9 @@ export const getPricePlans = makeApiGETEndpoint(getPricePlansUrl);
 
 export const getCustomerActiveSubscriptionUrl: UrlFactory<
   never,
-  [customer_name: string],
+  never,
   ActiveSubscription | null
-> = (base = PROD_API, customerName) =>
-  `${base}/customers/${customerName}/active_subscription`;
+> = (base = PROD_API) => `${base}/ecp/subscription`;
 
 /**
  * For a given customer, returns the customer's active subscription (or null
@@ -166,41 +165,24 @@ export const getCustomerActiveSubscription = makeApiGETEndpoint(
   getCustomerActiveSubscriptionUrl
 );
 
-export const createSubscriptionUrl: UrlFactory<
+export const updateSubscriptionUrl: UrlFactory<
   never,
-  [customer_name: string],
+  never,
   ActiveSubscription
-> = (base = PROD_API, customerName) =>
-  `${base}/customers/${customerName}/subscriptions`;
+> = (base = PROD_API) => `${base}/ecp/subscription`;
 
 /**
  * Create a subscription to a price plan for a given customer.
  */
-export const createSubscription = makeApiNonGETEndpoint<
+export const updateSubscription = makeApiNonGETEndpoint<
   // TODO: I do _not_ love that you need to pass all these generics in
   // My plan for having the URL own the request / response types was
   // maybe not the best idea; I want to refactor this whole file to make the
   // endpoint function own the return types, parameter types, and body types.
   {
-    effective_at?: string;
     price_plan_name?: string;
-    coupon_override_name?: string;
   },
-  [customer_name: string],
+  never,
   ActiveSubscription,
   unknown
->(createSubscriptionUrl);
-
-/**
- * Update an existing subscription to a price plan for a given customer.
- */
-export const updateSubscription = makeApiNonGETEndpoint<
-  {
-    effective_at?: string;
-    price_plan_name?: string;
-    coupon_override_name?: string;
-  },
-  [customer_name: string],
-  ActiveSubscription,
-  unknown
->(createSubscriptionUrl, 'PUT');
+>(updateSubscriptionUrl);
