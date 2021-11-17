@@ -20,10 +20,6 @@ export interface PaymentSubmissionProps {
    * An API token with permissions for a specific customer.
    */
   customerToken: string;
-  /**
-   * The name of the customer for whom this payment is being submitted.
-   */
-  customerName: string;
 }
 
 function PaymentSubmissionManager(): JSX.Element {
@@ -91,7 +87,6 @@ function PaymentSubmissionManager(): JSX.Element {
 }
 
 export default function PaymentSubmission({
-  customerName,
   customerToken,
   ...managerProps
 }: PaymentSubmissionProps): JSX.Element {
@@ -99,7 +94,7 @@ export default function PaymentSubmission({
   const clientSecret = getSetupIntentClientSecret();
 
   return (
-    <TokenProvider customerName={customerName} token={customerToken}>
+    <TokenProvider token={customerToken}>
       <Elements stripe={StripeApiPromise} options={{ clientSecret }}>
         <PaymentSubmissionManager {...managerProps} />
       </Elements>
@@ -109,5 +104,4 @@ export default function PaymentSubmission({
 
 PaymentSubmission.propTypes = {
   customerToken: PropTypes.string.isRequired,
-  customerName: PropTypes.string.isRequired,
 };

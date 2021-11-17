@@ -39,18 +39,12 @@ export interface PlanPickerProps extends PricePlanManagerProps {
    * An API token with permissions for a specific customer.
    */
   customerToken: string;
-  /**
-   * The name of the customer to update the subscription for.
-   */
-  customerName: string;
 }
 
 const TokenContext = React.createContext<{
   token: string;
-  customerName: string;
 }>({
   token: 'NO_TOKEN',
-  customerName: 'NO_CUSTOMER',
 });
 
 function PricePlanManager({
@@ -64,7 +58,7 @@ function PricePlanManager({
   const [selected, setSelected] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState<LoadingState>('preload');
 
-  const { token, customerName } = useContext(TokenContext);
+  const { token } = useContext(TokenContext);
 
   const onSelectPlanName = useCallback(
     (planName: string, plan: PricePlan) => {
@@ -96,10 +90,7 @@ function PricePlanManager({
     };
     // Get the current subscription, if one exists
     const activeSubscription = async (): Promise<void> => {
-      const result = await getCustomerActiveSubscription(
-        { token },
-        customerName
-      );
+      const result = await getCustomerActiveSubscription({ token });
       if (!result.ok) {
         throw new Error('Something went wrong fetching price plans');
       }
@@ -114,9 +105,17 @@ function PricePlanManager({
       // re-select whatever they last picked.
       const previousExistingSubscription =
         existingSubscription.get() ?? 'no_existing_plan';
-      existingSubscription.set(
-        data !== null ? data : previousExistingSubscription
-      );
+
+      if (data != null) {
+        existingSubscription.set({
+          ...data,
+          // TODO: Fix or remove the customer_name here.
+          customer_name: 'CNAME',
+          price_plan_name: data.price_plan?.name,
+        });
+      } else {
+        existingSubscription.set(previousExistingSubscription);
+      }
     };
 
     setTimeout(() => {
@@ -129,7 +128,6 @@ function PricePlanManager({
       setLoading('loaded');
     });
   }, [
-    customerName,
     loading,
     onSelectPlanName,
     pricePlanNames,
@@ -157,11 +155,10 @@ function PricePlanManager({
 }
 export default function PlanPicker({
   customerToken: token,
-  customerName,
   ...managerProps
 }: PlanPickerProps): JSX.Element {
   return (
-    <TokenContext.Provider value={{ token, customerName }}>
+    <TokenContext.Provider value={{ token }}>
       <PricePlanManager {...managerProps} />
     </TokenContext.Provider>
   );

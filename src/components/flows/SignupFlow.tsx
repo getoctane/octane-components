@@ -1,6 +1,7 @@
 import 'components/flows/SignupFlow.css';
 import PaymentSubmission from 'components/payment/PaymentSubmission';
 import PlanPicker from 'components/PlanPicker';
+import { TokenProvider } from 'hooks/useCustomerToken';
 import React from 'react';
 import {
   billingInfoProvided,
@@ -8,31 +9,25 @@ import {
   selectedPricePlan,
 } from 'utils/sharedState';
 
-interface Props {
-  customerName: string;
+interface SignupFlowContentProps {
   customerToken: string;
 }
 
-const SignupFlow = ({ customerName, customerToken }: Props): JSX.Element => {
+const SignupFlowContent = ({
+  customerToken,
+}: SignupFlowContentProps): JSX.Element => {
   if (existingSubscription.get() == null) {
-    return (
-      <PlanPicker customerName={customerName} customerToken={customerToken} />
-    );
+    return <PlanPicker customerToken={customerToken} />;
   }
 
   if (!billingInfoProvided.get()) {
-    return (
-      <PaymentSubmission
-        customerName={customerName}
-        customerToken={customerToken}
-      />
-    );
+    return <PaymentSubmission customerToken={customerToken} />;
   }
 
   return (
     <div className='octane-component signup-flow-root'>
       <div className='customer-metadata'>
-        <div className='octane-component customer-name'>{customerName}</div>
+        <div className='octane-component customer-name'>Customer Name</div>
 
         <div>
           <b>Active Subscription:</b>{' '}
@@ -45,6 +40,22 @@ const SignupFlow = ({ customerName, customerToken }: Props): JSX.Element => {
         <button className='post-signup-button'>Billing History</button>
       </div>
     </div>
+  );
+};
+
+const SignupFlow = (props: SignupFlowContentProps): JSX.Element => {
+  const { customerToken } = props;
+  return (
+    <TokenProvider token={customerToken}>
+      <SignupFlowContent {...props} />
+      <button
+        onClick={() => {
+          localStorage.clear();
+        }}
+      >
+        Reset Demo state
+      </button>
+    </TokenProvider>
   );
 };
 
