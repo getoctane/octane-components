@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
-import pluralize from 'pluralize';
-import { formatCurrency } from 'utils/format';
 import { components } from 'apiTypes';
+import pluralize from 'pluralize';
 import PropTypes from 'prop-types';
+import React, { useMemo } from 'react';
+import { formatCurrency } from 'utils/format';
 
 type MeteredComponent = components['schemas']['MeteredComponent'];
 type PriceScheme = components['schemas']['PriceScheme'];
@@ -122,13 +122,15 @@ export function MeteredComponent({
     price_scheme: priceScheme,
     limit,
   } = meteredComponent;
+  const meterTiers = useMemo(
+    () => (priceScheme ? getPriceTiers(priceScheme) : []),
+    [priceScheme]
+  );
   if (typeof meterName !== 'string' || !priceScheme) {
     return null;
   }
 
   const unit = priceScheme.unit_name ?? 'unit';
-
-  const meterTiers = useMemo(() => getPriceTiers(priceScheme), [priceScheme]);
 
   return (
     <div className='metered-component'>
