@@ -8,19 +8,13 @@ import { useCallback, useEffect } from 'react';
 import { createStripeSetupIntent } from 'utils/api';
 
 const useStripeCredential = (): void => {
-  const { customerName, token } = useCustomerToken();
+  const { token } = useCustomerToken();
 
   const setupIntent = useCallback(async (): Promise<void> => {
-    const result = await createStripeSetupIntent(
-      {
-        token,
-        urlOverride: API_BASE,
-        body: {
-          customer_name: customerName,
-        },
-      },
-      customerName
-    );
+    const result = await createStripeSetupIntent({
+      token,
+      urlOverride: API_BASE,
+    });
     if (!result.ok) {
       throw new Error(`An error occurred: ${result.statusText}`);
     }
@@ -41,7 +35,7 @@ const useStripeCredential = (): void => {
       // Update the in-memory secret if it is meaningful and has changed.
       setSetupIntentClientSecret(data.client_secret);
     }
-  }, [customerName, token]);
+  }, [token]);
 
   useEffect(() => {
     // Kickoff a flow to create a setup intent, starting with acquiring the client

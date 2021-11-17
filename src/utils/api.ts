@@ -190,18 +190,14 @@ export const updateSubscription = makeApiNonGETEndpoint<
 >(updateSubscriptionUrl);
 
 export const createStripeSetupIntentUrl: UrlFactory<
-  {
-    customer_name: string;
-  },
-  [customer_name: string],
+  never,
+  never,
   CustomerPortalStripeCredential
 > = (base = API_BASE) => `${base}/ecp/setup_intent`;
 
 export const createStripeSetupIntent = makeApiNonGETEndpoint<
-  {
-    customer_name: string;
-  },
-  [customer_name: string],
+  never,
+  never,
   CustomerPortalStripeCredential,
   unknown
 >(createStripeSetupIntentUrl);

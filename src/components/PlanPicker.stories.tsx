@@ -1,11 +1,11 @@
-import React from 'react';
-import PlanPicker from 'components/PlanPicker';
-import type { PlanPickerProps } from 'components/PlanPicker';
-import withMock from 'storybook-addon-mock';
-import type { Story, Meta } from '@storybook/react';
-import 'components/PlanPicker.css';
+import type { Meta, Story } from '@storybook/react';
 import { components } from 'apiTypes';
-import { getPricePlansUrl, getCustomerActiveSubscriptionUrl } from 'utils/api';
+import type { PlanPickerProps } from 'components/PlanPicker';
+import PlanPicker from 'components/PlanPicker';
+import 'components/PlanPicker.css';
+import React from 'react';
+import withMock from 'storybook-addon-mock';
+import { getCustomerActiveSubscriptionUrl, getPricePlansUrl } from 'utils/api';
 type PricePlan = components['schemas']['PricePlan'];
 type MeteredComponent = components['schemas']['MeteredComponent'];
 
@@ -161,8 +161,7 @@ const Template: Story<PlanPickerProps> = (args) => <PlanPicker {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  customerToken: 'primary token',
-  customerName: 'joey_pizza',
+  customerToken: '<<YOUR_CUSTOMER_TOKEN>>',
 };
 
 Default.parameters = {
@@ -182,7 +181,7 @@ Default.parameters = {
       ],
     },
     {
-      url: getCustomerActiveSubscriptionUrl(undefined, 'joey_pizza'),
+      url: getCustomerActiveSubscriptionUrl(undefined),
       method: 'GET',
       status: 200,
       response: mockActiveSubscription,
@@ -192,8 +191,7 @@ Default.parameters = {
 
 export const NoSubscription = Template.bind({});
 NoSubscription.args = {
-  customerToken: 'primary token',
-  customerName: 'joey_pizza',
+  customerToken: '<<YOUR_CUSTOMER_TOKEN>>',
 };
 
 NoSubscription.parameters = {
@@ -213,7 +211,7 @@ NoSubscription.parameters = {
       ],
     },
     {
-      url: getCustomerActiveSubscriptionUrl(undefined, 'joey_pizza'),
+      url: getCustomerActiveSubscriptionUrl(undefined),
       method: 'GET',
       status: 200,
       response: null,
