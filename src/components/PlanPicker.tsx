@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import { components } from 'apiTypes';
 import { PricePlanCard } from 'components/PricePlanCard';
-import { getPricePlans, getCustomerActiveSubscription } from 'utils/api';
-import { selectedPricePlan, existingSubscription } from 'utils/sharedState';
+import PropTypes from 'prop-types';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { getCustomerActiveSubscription, getPricePlans } from 'utils/api';
+import { existingSubscription, selectedPricePlan } from 'utils/sharedState';
 
 export type PricePlan = components['schemas']['PricePlan'];
 export type MeteredComponent = components['schemas']['MeteredComponent'];
@@ -75,7 +75,7 @@ function PricePlanManager({
       // As well as the user-provided callback
       onPlanSelect(planName, plan);
     },
-    [setSelected, selectedPricePlan]
+    [onPlanSelect]
   );
 
   useEffect(() => {
@@ -128,7 +128,17 @@ function PricePlanManager({
     Promise.all([activeSubscription(), pricePlans()]).then(() => {
       setLoading('loaded');
     });
-  }, [setLoading, setPricePlans, setSelected, token]);
+  }, [
+    customerName,
+    loading,
+    onSelectPlanName,
+    pricePlanNames,
+    pricePlanTags,
+    setLoading,
+    setPricePlans,
+    setSelected,
+    token,
+  ]);
 
   return (
     <div className='octane-component price-plan-picker'>
