@@ -1,11 +1,10 @@
 import { components } from 'apiTypes';
+import { API_BASE } from 'config';
 type PricePlan = components['schemas']['PricePlan'];
 type ActiveSubscription = components['schemas']['CustomerPortalSubscription'];
 
 type CustomerPortalStripeCredential =
   components['schemas']['CustomerPortalStripeCredential'];
-
-const PROD_API = 'https://api.cloud.getoctane.io';
 
 /* = = = = = = = = = = = = = =
 
@@ -146,7 +145,7 @@ export const getPricePlansUrl: UrlFactory<
   { tags?: string; names?: string },
   [],
   PricePlan[]
-> = (base = PROD_API): string => `${base}/ecp/price_plans/`;
+> = (base = API_BASE): string => `${base}/ecp/price_plans/`;
 
 /**
  * Gets all price plans that can be read using `token`.
@@ -158,7 +157,7 @@ export const getCustomerActiveSubscriptionUrl: UrlFactory<
   never,
   never,
   ActiveSubscription | null
-> = (base = PROD_API) => `${base}/ecp/subscription`;
+> = (base = API_BASE) => `${base}/ecp/subscription`;
 
 /**
  * For a given customer, returns the customer's active subscription (or null
@@ -172,7 +171,7 @@ export const updateSubscriptionUrl: UrlFactory<
   never,
   never,
   ActiveSubscription
-> = (base = PROD_API) => `${base}/ecp/subscription`;
+> = (base = API_BASE) => `${base}/ecp/subscription`;
 
 /**
  * Create a subscription to a price plan for a given customer.
@@ -189,3 +188,20 @@ export const updateSubscription = makeApiNonGETEndpoint<
   ActiveSubscription,
   unknown
 >(updateSubscriptionUrl);
+
+export const createStripeSetupIntentUrl: UrlFactory<
+  {
+    customer_name: string;
+  },
+  [customer_name: string],
+  CustomerPortalStripeCredential
+> = (base = API_BASE) => `${base}/ecp/setup_intent`;
+
+export const createStripeSetupIntent = makeApiNonGETEndpoint<
+  {
+    customer_name: string;
+  },
+  [customer_name: string],
+  CustomerPortalStripeCredential,
+  unknown
+>(createStripeSetupIntentUrl);
