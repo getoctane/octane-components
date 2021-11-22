@@ -5,7 +5,7 @@ import PlanPicker from 'components/PlanPicker';
 import 'components/PlanPicker.css';
 import React from 'react';
 import withMock from 'storybook-addon-mock';
-import { getCustomerActiveSubscriptionUrl, getPricePlansUrl } from 'utils/api';
+import { getCustomerActiveSubscriptionUrl, getPricePlansUrl } from 'api/octane';
 type PricePlan = components['schemas']['PricePlan'];
 type MeteredComponent = components['schemas']['MeteredComponent'];
 

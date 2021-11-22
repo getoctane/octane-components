@@ -2,7 +2,7 @@ import { components } from 'apiTypes';
 import { PricePlanCard } from 'components/PricePlanCard';
 import PropTypes from 'prop-types';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { getCustomerActiveSubscription, getPricePlans } from 'utils/api';
+import { getCustomerActiveSubscription, getPricePlans } from 'api/octane';
 import { existingSubscription, selectedPricePlan } from 'utils/sharedState';
 
 export type PricePlan = components['schemas']['PricePlan'];

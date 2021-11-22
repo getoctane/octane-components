@@ -3,7 +3,7 @@ import {
   existingSubscription,
   billingInfoProvided,
 } from 'utils/sharedState';
-import { updateSubscription } from 'utils/api';
+import { updateSubscription } from 'api/octane';
 import { components } from 'apiTypes';
 type ActiveSubscription = components['schemas']['CustomerPortalSubscription'];
 
