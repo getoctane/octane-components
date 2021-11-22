@@ -1,4 +1,4 @@
-import { getPricePlansUrl, getPricePlans } from 'utils/api';
+import { getPricePlans, getPricePlansUrl } from 'api/octane';
 import fetchMock from 'fetch-mock-jest';
 describe('utils/api', () => {
   afterEach(() => {
