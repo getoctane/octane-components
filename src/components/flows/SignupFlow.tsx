@@ -27,8 +27,6 @@ const SignupFlowContent = ({
   return (
     <div className='octane-component signup-flow-root'>
       <div className='customer-metadata'>
-        <div className='octane-component customer-name'>Customer Name</div>
-
         <div>
           <b>Active Subscription:</b>{' '}
           {selectedPricePlan.get()?.display_name ?? 'No Active Subscription'}

@@ -24,7 +24,7 @@
 
 import { components } from 'apiTypes';
 type PricePlan = components['schemas']['PricePlan'];
-type Subscription = components['schemas']['Subscription'];
+type ActiveSubscription = components['schemas']['CustomerPortalSubscription'];
 
 interface WindowWithOcStorage extends Window {
   _OC_STORAGE_DONT_YOU_THINK_ABOUT_IT?: Record<string, string>;
@@ -161,7 +161,7 @@ export const selectedPricePlan = createStorage<PricePlan | null>(
  * yet been populated.
  */
 export const existingSubscription = createStorage<
-  Subscription | 'no_existing_plan'
+  ActiveSubscription | 'no_existing_plan'
 >('existingPricePlan');
 
 /**
