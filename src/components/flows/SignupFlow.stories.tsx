@@ -19,7 +19,6 @@ const Template: Story<PaymentSubmissionProps> = (args) => (
 );
 
 export const Default = Template.bind({});
-// TODO: Remove defaults; figure out how to generate mats autogically.
 Default.args = {
   customerToken: '{{CUSTOMER TOKEN GOES HERE}}',
 };
