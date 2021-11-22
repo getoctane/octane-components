@@ -4,7 +4,11 @@ import {
   useElements,
   useStripe,
 } from '@stripe/react-stripe-js';
-import { getSetupIntentClientSecret, StripeApiPromise } from 'api/stripe';
+import {
+  getSetupIntentClientSecret,
+  StripeApiConfig,
+  StripeApiFactory,
+} from 'api/stripe';
 import { components } from 'apiTypes';
 import { TokenProvider } from 'hooks/useCustomerToken';
 import useStripeCredential from 'hooks/useStripeCredential';
@@ -15,7 +19,7 @@ import { billingInfoProvided } from 'utils/sharedState';
 export type PricePlan = components['schemas']['PricePlan'];
 export type MeteredComponent = components['schemas']['MeteredComponent'];
 
-export interface PaymentSubmissionProps {
+export interface PaymentSubmissionProps extends Partial<StripeApiConfig> {
   /**
    * An API token with permissions for a specific customer.
    */
@@ -88,6 +92,8 @@ function PaymentSubmissionManager(): JSX.Element {
 
 export default function PaymentSubmission({
   customerToken,
+  platformApiKey,
+  stripeAccountId,
   ...managerProps
 }: PaymentSubmissionProps): JSX.Element {
   useStripeCredential();
@@ -95,7 +101,10 @@ export default function PaymentSubmission({
 
   return (
     <TokenProvider token={customerToken}>
-      <Elements stripe={StripeApiPromise} options={{ clientSecret }}>
+      <Elements
+        stripe={StripeApiFactory({ platformApiKey, stripeAccountId })}
+        options={{ clientSecret }}
+      >
         <PaymentSubmissionManager {...managerProps} />
       </Elements>
     </TokenProvider>
@@ -104,4 +113,6 @@ export default function PaymentSubmission({
 
 PaymentSubmission.propTypes = {
   customerToken: PropTypes.string.isRequired,
+  platformApiKey: PropTypes.string,
+  stripeAccountId: PropTypes.string,
 };
