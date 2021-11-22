@@ -107,12 +107,7 @@ function PricePlanManager({
         existingSubscription.get() ?? 'no_existing_plan';
 
       if (data != null) {
-        existingSubscription.set({
-          ...data,
-          // TODO: Fix or remove the customer_name here.
-          customer_name: 'CNAME',
-          price_plan_name: data.price_plan?.name,
-        });
+        existingSubscription.set(data);
       } else {
         existingSubscription.set(previousExistingSubscription);
       }

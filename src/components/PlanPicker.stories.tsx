@@ -181,7 +181,7 @@ Default.parameters = {
       ],
     },
     {
-      url: getCustomerActiveSubscriptionUrl(undefined),
+      url: getCustomerActiveSubscriptionUrl(),
       method: 'GET',
       status: 200,
       response: mockActiveSubscription,
@@ -211,7 +211,7 @@ NoSubscription.parameters = {
       ],
     },
     {
-      url: getCustomerActiveSubscriptionUrl(undefined),
+      url: getCustomerActiveSubscriptionUrl(),
       method: 'GET',
       status: 200,
       response: null,
