@@ -5,7 +5,7 @@ import {
 import { API_BASE } from 'config';
 import useCustomerToken from 'hooks/useCustomerToken';
 import { useCallback, useEffect } from 'react';
-import { createStripeSetupIntent } from 'utils/api';
+import { createStripeSetupIntent } from 'api/octane';
 
 const useStripeCredential = (): void => {
   const { token } = useCustomerToken();
