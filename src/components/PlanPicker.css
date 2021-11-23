@@ -51,6 +51,19 @@
   vertical-align: top;
 }
 
+.octane-component .loading {
+  background-color: var(--octane-bg-primary);
+  width: 70%;
+  font-weight: bold;
+  text-align: center;
+  padding: calc(var(--octane-spacing) * 2);
+  margin-top: var(--octane-spacing);
+  margin-bottom: var(--octane-spacing);
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: var(--octane-border-radius-lg);
+}
+
 .octane-component .price-plan-card {
   transition: all var(--octane-transition-speed) ease-in-out;
   transform: scale(1);
