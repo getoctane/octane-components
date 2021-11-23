@@ -17,7 +17,7 @@ type LoadingState =
   | 'loaded';
 
 // How long before we should think about showing a loading spinner?
-const PRELOAD_TIME = 1000;
+const PRELOAD_TIME = 300;
 
 interface PricePlanManagerProps {
   /**
@@ -47,12 +47,14 @@ const TokenContext = React.createContext<{
   token: 'NO_TOKEN',
 });
 
+const NOOP = (): void => {
+  /* no-op */
+};
+
 function PricePlanManager({
   pricePlanTags,
   pricePlanNames,
-  onPlanSelect = () => {
-    /* noop */
-  },
+  onPlanSelect = NOOP,
 }: PricePlanManagerProps): JSX.Element {
   const [pricePlans, setPricePlans] = useState<PricePlan[]>([]);
   const [selected, setSelected] = useState<string | undefined>(undefined);
@@ -73,6 +75,9 @@ function PricePlanManager({
   );
 
   useEffect(() => {
+    // Clear any existing state (for example, if we're in storybook and
+    // the customer token changes)
+    setPricePlans([]);
     // Get all price plans
     const pricePlans = async (): Promise<void> => {
       const result = await getPricePlans({
