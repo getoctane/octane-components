@@ -70,7 +70,7 @@
     "prettier": "^2.0.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "^3.4.1",
+    "react-scripts": "4.0.3",
     "sb": "^6.3.12",
     "storybook-addon-mock": "^1.6.0",
     "typescript": "4.4.4"
