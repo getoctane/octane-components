@@ -43,9 +43,6 @@ app.get('/ping', (req, res) => {
   res.send('pong');
 });
 
-// Serve anything in the 'public' dir from /public
-app.use('public', express.static('public'));
-
 // Get the token for the given user
 app.get('/token', (req, res) => {
   // Get the token for the user, given the API key
@@ -66,6 +63,12 @@ app.get('/token', (req, res) => {
       res.send('Something went wrong fetching a token for the current user.');
     });
 });
+
+// Serve anything in the 'public' dir from /
+app.use(express.static('public'));
+
+// Serve anything in the 'dist' dir from /dist
+app.use('/dist', express.static('dist'));
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

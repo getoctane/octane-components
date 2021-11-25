@@ -1,7 +1,8 @@
-import { ExampleComponent } from 'octane-components';
+import React from 'react';
+import { PlanPicker } from 'octane-components';
 
 const App = () => {
-  return <ExampleComponent text='Create React Library Example 😄' />;
+  return <PlanPicker customerToken={4} />;
 };
 
 export default App;
