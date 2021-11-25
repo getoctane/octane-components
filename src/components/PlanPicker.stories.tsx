@@ -1,7 +1,7 @@
 import type { Meta, Story } from '@storybook/react';
 import { components } from 'apiTypes';
 import type { PlanPickerProps } from 'components/PlanPicker';
-import PlanPicker from 'components/PlanPicker';
+import { PlanPicker } from 'components/PlanPicker';
 import 'components/PlanPicker.css';
 import React from 'react';
 import withMock from 'storybook-addon-mock';

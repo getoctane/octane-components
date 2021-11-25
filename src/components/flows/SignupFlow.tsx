@@ -1,6 +1,6 @@
 import 'components/flows/SignupFlow.css';
 import PaymentSubmission from 'components/payment/PaymentSubmission';
-import PlanPicker from 'components/PlanPicker';
+import { PlanPicker } from 'components/PlanPicker';
 import { TokenProvider } from 'hooks/useCustomerToken';
 import React from 'react';
 import {
