@@ -1,8 +1,12 @@
 import React from 'react';
 import { PlanPicker } from 'octane-components';
 
-const App = () => {
-  return <PlanPicker customerToken={4} />;
+interface Props {
+  token: string;
+}
+
+const App = ({ token }: Props) => {
+  return <PlanPicker customerToken={token} />;
 };
 
 export default App;

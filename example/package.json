@@ -6,7 +6,7 @@
   "scripts": {
     "serve": "node server/index.js",
     "build": "esbuild src/index.tsx --bundle --outfile=dist/octane-components-example.js --target=es6 --define:process.env.NODE_ENV=\\'development\\' --define:process.env={} --sourcemap",
-    "watch": "esbuild src/index.tsx --bundle --outfile=dist/octane-components-example.js --target=es6 --define:process.env.NODE_ENV=\\'development\\' --define:process.env={} --sourcemap --watch"
+    "watch": "esbuild src/index.tsx --bundle --outfile=dist/octane-components-example.js --target=es6 --define:process.env.NODE_ENV=\\'development\\' --define:process.env.OCT_API_BASE_OVERRIDE=\\'https://api.dev.getoctane.io\\' --define:process.env={} --sourcemap --watch"
   },
   "dependencies": {
     "@testing-library/jest-dom": "link:../node_modules/@testing-library/jest-dom",
