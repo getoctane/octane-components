@@ -153,7 +153,7 @@ function PricePlanManager({
     </div>
   );
 }
-export default function PlanPicker({
+export function PlanPicker({
   customerToken: token,
   ...managerProps
 }: PlanPickerProps): JSX.Element {
