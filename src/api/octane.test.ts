@@ -1,11 +1,11 @@
+import { enableFetchMocks } from 'jest-fetch-mock';
 import { getPricePlans, getPricePlansUrl } from 'api/octane';
-import fetchMock from 'fetch-mock-jest';
+enableFetchMocks();
+fetchMock.enableMocks();
+
 describe('utils/api', () => {
-  afterEach(() => {
-    fetchMock.resetHistory();
-  });
-  afterAll(() => {
-    fetchMock.restore();
+  beforeEach(() => {
+    fetchMock.resetMocks();
   });
 
   describe('getPricePlansUrl', () => {
@@ -21,19 +21,16 @@ describe('utils/api', () => {
 
   describe('getPricePlans', () => {
     it('calls the price plan URL with no params', async () => {
-      fetchMock.mock('https://api.cloud.getoctane.io/ecp/price_plans/', 200);
+      fetchMock.once(JSON.stringify({ price_plans: ['fake', 'response'] }));
       await getPricePlans({ token: 'some token' });
-      expect(fetchMock).toHaveBeenCalled();
-      expect(fetchMock.lastUrl()).toEqual(
+      expect(fetchMock.mock.calls.length).toEqual(1);
+      expect(fetchMock.mock.calls[0]?.[0]).toEqual(
         'https://api.cloud.getoctane.io/ecp/price_plans/'
       );
     });
 
     it('calls the price plan URL with query params', async () => {
-      fetchMock.mock(
-        'https://api.cloud.getoctane.io/ecp/price_plans/?names=hey%2Cyou&tags=live',
-        200
-      );
+      fetchMock.once(JSON.stringify({ price_plans: ['fake', 'response'] }));
       await getPricePlans({
         token: 'some token',
         params: {
@@ -41,8 +38,8 @@ describe('utils/api', () => {
           tags: 'live',
         },
       });
-      expect(fetchMock).toHaveBeenCalled();
-      expect(fetchMock.lastUrl()).toEqual(
+      expect(fetchMock.mock.calls.length).toEqual(1);
+      expect(fetchMock.mock.calls[0]?.[0]).toEqual(
         'https://api.cloud.getoctane.io/ecp/price_plans/?names=hey%2Cyou&tags=live'
       );
     });
