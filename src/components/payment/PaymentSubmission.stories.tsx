@@ -1,6 +1,7 @@
 import type { Meta, Story } from '@storybook/react';
-import PaymentSubmission, {
+import {
   PaymentSubmissionProps,
+  PaymentSubmission,
 } from 'components/payment/PaymentSubmission';
 import 'components/payment/PaymentSubmission.css';
 import { TokenProvider } from 'hooks/useCustomerToken';
