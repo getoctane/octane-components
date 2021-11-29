@@ -4,6 +4,7 @@ import {
   useElements,
   useStripe,
 } from '@stripe/react-stripe-js';
+import { StripeElementsOptions } from '@stripe/stripe-js/types/stripe-js/elements-group';
 import { API_BASE } from 'config';
 import { StripeApiFactory } from 'api/stripe';
 
@@ -102,11 +103,16 @@ export interface PaymentSubmissionProps {
    * A callback that fires whenever billing info has successfully submitted.
    */
   onSubmit?: () => void;
+  /**
+   * Options passed directly to Stripe's Element component
+   */
+  stripeOptions?: Omit<StripeElementsOptions, 'clientSecret'>;
 }
 
 export function PaymentSubmission({
   customerToken,
   onSubmit,
+  stripeOptions = {},
   ...managerProps
 }: PaymentSubmissionProps): JSX.Element {
   const [creds, setCreds] = useState<CustomerPortalStripeCredential | null>(
@@ -142,7 +148,7 @@ export function PaymentSubmission({
 
   return (
     <TokenProvider token={customerToken}>
-      <Elements stripe={stripe} options={{ clientSecret }}>
+      <Elements stripe={stripe} options={{ ...stripeOptions, clientSecret }}>
         <PaymentSubmissionManager
           clientSecret={clientSecret}
           onSubmit={onSubmit}
