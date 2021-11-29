@@ -29,11 +29,24 @@ const App = ({ token }: Props): JSX.Element => {
     });
   };
 
+  const appearance = {
+    theme: 'night',
+    variables: {
+      colorPrimary: '#8adb9a',
+    },
+  };
+
+  const stripeOptions = { appearance };
+
   return (
     <div>
       <PlanPicker customerToken={token} onPlanSelect={onPlanSelect} />
       {hasSelected && (
-        <PaymentSubmission customerToken={token} onSubmit={onBillingSubmit} />
+        <PaymentSubmission
+          customerToken={token}
+          onSubmit={onBillingSubmit}
+          stripeOptions={stripeOptions}
+        />
       )}
       {hasBilling && (
         <button onClick={onSubscribe}>Click here to subscribe</button>
