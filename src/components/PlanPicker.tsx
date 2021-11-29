@@ -77,9 +77,10 @@ function PricePlanManager({
   useEffect(() => {
     // Clear any existing state (for example, if we're in storybook and
     // the customer token changes)
+
     setPricePlans([]);
     // Get all price plans
-    const pricePlans = async (): Promise<void> => {
+    const fetchPricePlans = async (): Promise<void> => {
       const result = await getPricePlans({
         token,
         params: {
@@ -94,7 +95,7 @@ function PricePlanManager({
       setPricePlans(data);
     };
     // Get the current subscription, if one exists
-    const activeSubscription = async (): Promise<void> => {
+    const fetchActiveSubscription = async (): Promise<void> => {
       const result = await getCustomerActiveSubscription({ token });
       if (!result.ok) {
         throw new Error('Something went wrong fetching price plans');
@@ -124,7 +125,7 @@ function PricePlanManager({
       }
     }, PRELOAD_TIME);
 
-    Promise.all([activeSubscription(), pricePlans()]).then(() => {
+    Promise.all([fetchActiveSubscription(), fetchPricePlans()]).then(() => {
       setLoading('loaded');
     });
   }, [

@@ -90,7 +90,7 @@ function PaymentSubmissionManager(): JSX.Element {
   );
 }
 
-export default function PaymentSubmission({
+export function PaymentSubmission({
   customerToken,
   platformApiKey,
   stripeAccountId,

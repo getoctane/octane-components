@@ -1,4 +1,5 @@
 import { loadStripe, Stripe } from '@stripe/stripe-js';
+import { createStripeSetupIntent } from 'api/octane';
 import assert from 'assert';
 
 export interface StripeApiConfig {

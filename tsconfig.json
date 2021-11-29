@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "src/",
-    "outDir": "dist",
+    "outDir": "./dist",
     "module": "esnext",
     "lib": [
       "dom",
@@ -11,6 +11,8 @@
     "jsx": "react",
     "sourceMap": true,
     "declaration": true,
+    "declarationDir": "./dist",
+    "declarationMap": true,
     "esModuleInterop": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
