@@ -98,10 +98,15 @@ export interface PaymentSubmissionProps {
    * An API token with permissions for a specific customer.
    */
   customerToken: string;
+  /**
+   * A callback that fires whenever billing info has successfully submitted.
+   */
+  onSubmit?: () => void;
 }
 
 export function PaymentSubmission({
   customerToken,
+  onSubmit,
   ...managerProps
 }: PaymentSubmissionProps): JSX.Element {
   const [creds, setCreds] = useState<CustomerPortalStripeCredential | null>(
@@ -140,6 +145,7 @@ export function PaymentSubmission({
       <Elements stripe={stripe} options={{ clientSecret }}>
         <PaymentSubmissionManager
           clientSecret={clientSecret}
+          onSubmit={onSubmit}
           {...managerProps}
         />
       </Elements>
@@ -149,4 +155,5 @@ export function PaymentSubmission({
 
 PaymentSubmission.propTypes = {
   customerToken: PropTypes.string.isRequired,
+  onSubmit: PropTypes.func,
 };
