@@ -36,7 +36,7 @@ describe('sharedState', () => {
     it('gets, sets, and clears price plans', () => {
       expect(existingSubscription.get()).toBeNull();
       existingSubscription.set({});
-      expect(existingSubscription.get()).toEqual(mockSubscription);
+      expect(existingSubscription.get()).toEqual({});
       existingSubscription.clear();
       expect(existingSubscription.get()).toBeNull();
     });
