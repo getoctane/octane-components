@@ -4,29 +4,27 @@ import {
   useElements,
   useStripe,
 } from '@stripe/react-stripe-js';
-import {
-  getSetupIntentClientSecret,
-  StripeApiConfig,
-  StripeApiFactory,
-} from 'api/stripe';
+import { API_BASE } from 'config';
+import { StripeApiFactory } from 'api/stripe';
+
+import { createStripeSetupIntent } from 'api/octane';
 import { components } from 'apiTypes';
 import { TokenProvider } from 'hooks/useCustomerToken';
-import useStripeCredential from 'hooks/useStripeCredential';
 import PropTypes from 'prop-types';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { billingInfoProvided } from 'utils/sharedState';
+type CustomerPortalStripeCredential =
+  components['schemas']['CustomerPortalStripeCredential'];
 
-export type PricePlan = components['schemas']['PricePlan'];
-export type MeteredComponent = components['schemas']['MeteredComponent'];
-
-export interface PaymentSubmissionProps extends Partial<StripeApiConfig> {
-  /**
-   * An API token with permissions for a specific customer.
-   */
-  customerToken: string;
+interface ManagerProps {
+  clientSecret?: string;
+  onSubmit?: () => void;
 }
 
-function PaymentSubmissionManager(): JSX.Element {
+function PaymentSubmissionManager({
+  clientSecret,
+  onSubmit,
+}: ManagerProps): JSX.Element {
   const stripe = useStripe();
   const elements = useElements();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,7 +47,11 @@ function PaymentSubmissionManager(): JSX.Element {
         if (cardElement == null) {
           throw new Error('Card element unavailable.');
         }
-        const clientSecret = getSetupIntentClientSecret();
+        if (clientSecret == null) {
+          throw new Error(
+            'Stripe Intent is missing, could not confirm card setup'
+          );
+        }
         const setup = await stripe.confirmCardSetup(clientSecret, {
           payment_method: { card: cardElement },
         });
@@ -61,13 +63,14 @@ function PaymentSubmissionManager(): JSX.Element {
           );
         }
         billingInfoProvided.set(true);
+        onSubmit && onSubmit();
       } catch (err) {
         console.error(err);
       } finally {
         setIsSubmitting(false);
       }
     },
-    [stripe, elements, isSubmitting]
+    [stripe, elements, isSubmitting, clientSecret, onSubmit]
   );
 
   return (
@@ -90,22 +93,55 @@ function PaymentSubmissionManager(): JSX.Element {
   );
 }
 
+export interface PaymentSubmissionProps {
+  /**
+   * An API token with permissions for a specific customer.
+   */
+  customerToken: string;
+}
+
 export function PaymentSubmission({
   customerToken,
-  platformApiKey,
-  stripeAccountId,
   ...managerProps
 }: PaymentSubmissionProps): JSX.Element {
-  useStripeCredential();
-  const clientSecret = getSetupIntentClientSecret();
+  const [creds, setCreds] = useState<CustomerPortalStripeCredential | null>(
+    null
+  );
+  useEffect(() => {
+    createStripeSetupIntent({
+      token: customerToken,
+      urlOverride: API_BASE,
+    })
+      .then((result) => {
+        if (!result.ok) {
+          console.error(result);
+          throw new Error(`An error occurred: ${result.statusText}`);
+        }
+        return result.json();
+      })
+      .then((data) => {
+        setCreds(data);
+      });
+  }, [customerToken]);
+
+  if (creds == null) {
+    return <div className='loading'>Loading...</div>;
+  }
+
+  const {
+    client_secret: clientSecret,
+    publishable_key: platformApiKey,
+    account_id: stripeAccount,
+  } = creds;
+  const stripe = StripeApiFactory({ platformApiKey, stripeAccount });
 
   return (
     <TokenProvider token={customerToken}>
-      <Elements
-        stripe={StripeApiFactory({ platformApiKey, stripeAccountId })}
-        options={{ clientSecret }}
-      >
-        <PaymentSubmissionManager {...managerProps} />
+      <Elements stripe={stripe} options={{ clientSecret }}>
+        <PaymentSubmissionManager
+          clientSecret={clientSecret}
+          {...managerProps}
+        />
       </Elements>
     </TokenProvider>
   );
@@ -113,6 +149,4 @@ export function PaymentSubmission({
 
 PaymentSubmission.propTypes = {
   customerToken: PropTypes.string.isRequired,
-  platformApiKey: PropTypes.string,
-  stripeAccountId: PropTypes.string,
 };
