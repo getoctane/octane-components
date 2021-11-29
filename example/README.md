@@ -27,7 +27,6 @@ yarn install
 
 # Build the client-side app
 yarn build
-yarn build-css
 
 # Start the web server
 yarn serve
