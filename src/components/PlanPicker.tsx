@@ -21,14 +21,6 @@ const PRELOAD_TIME = 300;
 
 interface PricePlanManagerProps {
   /**
-   * Only show price plans that have these tags
-   */
-  pricePlanTags?: string[];
-  /**
-   * Only show price plans with these names
-   */
-  pricePlanNames?: string[];
-  /**
    * Callback triggered whenever a plan is selected.
    */
   onPlanSelect?: (planName: string, plan: PricePlan) => void;
@@ -52,8 +44,6 @@ const NOOP = (): void => {
 };
 
 function PricePlanManager({
-  pricePlanTags,
-  pricePlanNames,
   onPlanSelect = NOOP,
 }: PricePlanManagerProps): JSX.Element {
   const [pricePlans, setPricePlans] = useState<PricePlan[]>([]);
@@ -77,23 +67,18 @@ function PricePlanManager({
   useEffect(() => {
     // Clear any existing state (for example, if we're in storybook and
     // the customer token changes)
-
     setPricePlans([]);
+
     // Get all price plans
     const fetchPricePlans = async (): Promise<void> => {
-      const result = await getPricePlans({
-        token,
-        params: {
-          ...(pricePlanTags && { tags: pricePlanTags?.join(',') }),
-          ...(pricePlanNames && { names: pricePlanNames?.join(',') }),
-        },
-      });
+      const result = await getPricePlans({ token });
       if (!result.ok) {
         throw new Error('Something went wrong fetching price plans');
       }
       const data = await result.json();
       setPricePlans(data);
     };
+
     // Get the current subscription, if one exists
     const fetchActiveSubscription = async (): Promise<void> => {
       const result = await getCustomerActiveSubscription({ token });
@@ -131,8 +116,6 @@ function PricePlanManager({
   }, [
     loading,
     onSelectPlanName,
-    pricePlanNames,
-    pricePlanTags,
     setLoading,
     setPricePlans,
     setSelected,

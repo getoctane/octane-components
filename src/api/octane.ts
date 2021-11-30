@@ -141,11 +141,9 @@ const makeApiNonGETEndpoint =
 
  = = = = = = = = = = = = = = = */
 
-export const getPricePlansUrl: UrlFactory<
-  { tags?: string; names?: string },
-  [],
-  PricePlan[]
-> = (base = API_BASE): string => `${base}/ecp/price_plans/`;
+export const getPricePlansUrl: UrlFactory<never, [], PricePlan[]> = (
+  base = API_BASE
+): string => `${base}/ecp/price_plans/`;
 
 /**
  * Gets all price plans that can be read using `token`.
