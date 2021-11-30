@@ -2,7 +2,7 @@ import React from 'react';
 import { formatCurrency } from 'utils/format';
 import PropTypes from 'prop-types';
 import { components } from 'apiTypes';
-import { MeteredComponent } from 'components/MeteredComponent';
+import { MeteredComponent } from 'components/PlanPicker/MeteredComponent';
 
 type PricePlan = components['schemas']['PricePlan'];
 type MeteredComponent = components['schemas']['MeteredComponent'];

@@ -2,9 +2,9 @@ import type { Meta, Story } from '@storybook/react';
 import {
   PaymentSubmissionProps,
   PaymentSubmission,
-} from 'components/payment/PaymentSubmission';
+} from 'components/PaymentSubmission/PaymentSubmission';
 import 'components/globals.css';
-import 'components/payment/PaymentSubmission.css';
+import 'components/PaymentSubmission/PaymentSubmission.css';
 import { TokenProvider } from 'hooks/useCustomerToken';
 import React from 'react';
 import withMock from 'storybook-addon-mock';

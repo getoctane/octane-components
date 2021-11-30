@@ -1,8 +1,8 @@
 import type { Meta, Story } from '@storybook/react';
 import { components } from 'apiTypes';
-import type { PlanPickerProps } from 'components/PlanPicker';
-import { PlanPicker } from 'components/PlanPicker';
-import 'components/PlanPicker.css';
+import type { PlanPickerProps } from 'components/PlanPicker/PlanPicker';
+import { PlanPicker } from 'components/PlanPicker/PlanPicker';
+import 'components/PlanPicker/PlanPicker.css';
 import React from 'react';
 import withMock from 'storybook-addon-mock';
 import { getCustomerActiveSubscriptionUrl, getPricePlansUrl } from 'api/octane';
