@@ -33,23 +33,37 @@ const App = ({ token }: Props): JSX.Element => {
     });
   }, [token]);
 
-  const appearance = {
-    theme: 'night',
-    variables: {
-      colorPrimary: '#8adb9a',
+  const cardStyle = {
+    base: {
+      color: '#ffffff',
+      fontFamily:
+        "-apple-system, BlinkMacSystemFont, 'avenir next', avenir, 'helvetica neue', helvetica, ubuntu, roboto, noto, 'segoe ui', arial, sans-serif",
+      fontSmoothing: 'antialiased',
+      fontSize: '16px',
+      '::placeholder': {
+        color: '#d4f5f5',
+      },
+      ':disabled': {
+        color: '#acacac',
+      },
+      iconColor: '#ffffff',
+    },
+    invalid: {
+      color: '#fa755a',
+      iconColor: '#fa755a',
     },
   };
 
-  const stripeOptions = { appearance };
+  const stripeOptions = { style: cardStyle };
 
   return (
-    <div>
+    <div id='example-root'>
       <PlanPicker customerToken={token} onPlanSelect={onPlanSelect} />
       {hasSelected && (
         <PaymentSubmission
           customerToken={token}
           onSubmit={onBillingSubmit}
-          stripeOptions={stripeOptions}
+          options={stripeOptions}
         />
       )}
       {hasBilling && (

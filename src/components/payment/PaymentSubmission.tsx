@@ -3,8 +3,8 @@ import {
   Elements,
   useElements,
   useStripe,
+  CardElementProps,
 } from '@stripe/react-stripe-js';
-import { StripeElementsOptions } from '@stripe/stripe-js/types/stripe-js/elements-group';
 import { API_BASE } from 'config';
 import { StripeApiFactory } from 'api/stripe';
 
@@ -17,14 +17,24 @@ import { billingInfoProvided } from 'utils/sharedState';
 type CustomerPortalStripeCredential =
   components['schemas']['CustomerPortalStripeCredential'];
 
-interface ManagerProps {
+interface ManagerProps extends CardElementProps {
   clientSecret?: string;
+  /**
+   * A callback that fires whenever billing info has successfully submitted.
+   */
   onSubmit?: () => void;
+  /**
+   * Text to show on the "save payment" button. Defaults to "Save".
+   */
+  saveButtonText?: string;
 }
 
 function PaymentSubmissionManager({
   clientSecret,
   onSubmit,
+  saveButtonText = 'SAVE',
+  options,
+  ...cardProps
 }: ManagerProps): JSX.Element {
   const stripe = useStripe();
   const elements = useElements();
@@ -74,45 +84,34 @@ function PaymentSubmissionManager({
     [stripe, elements, isSubmitting, clientSecret, onSubmit]
   );
 
+  const cardOptions = { disabled: isSubmitting, ...options };
+
   return (
     <form
       onSubmit={handleSubmit}
       className='octane-component payment-submission'
     >
-      <CardElement
-        id='card-elem-row'
-        options={{
-          iconStyle: 'solid',
-          disabled: isSubmitting,
-        }}
-      />
+      <CardElement id='card-elem-row' options={cardOptions} {...cardProps} />
 
-      <button className='save-button' type='submit'>
-        Save
+      <button className='save-button' disabled={isSubmitting} type='submit'>
+        {saveButtonText}
       </button>
     </form>
   );
 }
 
-export interface PaymentSubmissionProps {
+export interface PaymentSubmissionProps
+  extends Omit<ManagerProps, 'clientSecret'> {
   /**
    * An API token with permissions for a specific customer.
    */
   customerToken: string;
-  /**
-   * A callback that fires whenever billing info has successfully submitted.
-   */
   onSubmit?: () => void;
-  /**
-   * Options passed directly to Stripe's Element component
-   */
-  stripeOptions?: Omit<StripeElementsOptions, 'clientSecret'>;
 }
 
 export function PaymentSubmission({
   customerToken,
   onSubmit,
-  stripeOptions = {},
   ...managerProps
 }: PaymentSubmissionProps): JSX.Element {
   const [creds, setCreds] = useState<CustomerPortalStripeCredential | null>(
@@ -148,7 +147,7 @@ export function PaymentSubmission({
 
   return (
     <TokenProvider token={customerToken}>
-      <Elements stripe={stripe} options={{ ...stripeOptions, clientSecret }}>
+      <Elements stripe={stripe} options={{ clientSecret }}>
         <PaymentSubmissionManager
           clientSecret={clientSecret}
           onSubmit={onSubmit}

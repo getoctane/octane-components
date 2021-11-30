@@ -53,11 +53,18 @@
 .save-button {
   background-color: var(--octane-bg-accent);
   cursor: pointer;
-
-  padding: var(--octane-spacing);
-  margin: calc(2 * var(--octane-spacing)) 2px;
   width: 100%;
-  justify-content: space-between;
+  color: var(--octane-text-primary);
+  border-radius: 0 0 var(--octane-border-radius-sm)
+    var(--octane-border-radius-sm);
+  border: 0;
+  padding: 12px 16px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: block;
+  transition: all 0.2s ease;
+  box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
 }
 
 .octane-component .save-button:hover {

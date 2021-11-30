@@ -41,7 +41,7 @@
 .octane-component.price-plan-picker {
   overflow-y: auto;
   white-space: nowrap;
-  text-align: left;
+  text-align: center;
   padding: calc(2 * var(--octane-spacing));
 }
 
