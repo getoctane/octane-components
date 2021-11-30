@@ -16,7 +16,7 @@
     "node": ">=12"
   },
   "scripts": {
-    "build": "run-s build:compile build:copy",
+    "build": "run-s clean build:compile build:copy",
     "build:compile": "tsc",
     "build:copy": "copyfiles -V -u 1 \"src/**/*.css\" dist",
     "clean": "rimraf dist/",
