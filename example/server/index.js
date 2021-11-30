@@ -5,7 +5,7 @@ const axios = require('axios');
 
 // Constants
 const app = express();
-const port = process.env.PORT ?? 3000;
+const port = process.env.PORT ?? 3456;
 const octaneKey = process.env.OCTANE_API_KEY;
 const userId = process.env.EXAMPLE_USER_ID;
 const octaneHost =
