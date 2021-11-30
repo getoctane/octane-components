@@ -18,7 +18,7 @@
   "scripts": {
     "build": "run-s build:compile build:copy",
     "build:compile": "tsc",
-    "build:copy": "copyfiles -V -u 1 src/**/*.css dist",
+    "build:copy": "copyfiles -V -u 1 \"src/**/*.css\" dist",
     "clean": "rimraf dist/",
     "start": "tsc --watch",
     "prepare": "run-s build",
