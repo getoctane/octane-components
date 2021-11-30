@@ -1,4 +1,6 @@
+@import 'octane-components/dist/components/globals.css';
 @import 'octane-components/dist/components/PlanPicker.css';
+@import 'octane-components/dist/components/payment/PaymentSubmission.css';
 
 body {
   margin: 0;
@@ -9,31 +11,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-#card-elem-row {
-  border-radius: 4px 4px 0 0;
-  background-color: #071420;
-  padding: 12px;
-  border: 1px solid #d4f5f54d;
-  box-sizing: border-box;
-  max-height: 44px;
-}
-
-.payment-submission .save-button {
-  background: #6ea9aa;
-  color: #ffffff;
-  border-radius: 0 0 4px 4px;
-  border: 0;
-  padding: 12px 16px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  display: block;
-  transition: all 0.2s ease;
-  box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
-  width: 100%;
-}
-
-.payment-submission .save-button:disabled {
-  background: #afcfd0;
+.octane-component.payment-submission {
+  max-width: 500px;
+  margin: 30px auto;
 }

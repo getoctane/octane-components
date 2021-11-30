@@ -3,6 +3,7 @@ import {
   PaymentSubmissionProps,
   PaymentSubmission,
 } from 'components/payment/PaymentSubmission';
+import 'components/globals.css';
 import 'components/payment/PaymentSubmission.css';
 import { TokenProvider } from 'hooks/useCustomerToken';
 import React from 'react';

@@ -2,6 +2,7 @@ import React from 'react';
 import { PricePlanCard } from 'components/PricePlanCard';
 import type { PricePlanCardProps } from 'components/PricePlanCard';
 import type { Story, Meta } from '@storybook/react';
+import 'components/globals.css';
 import 'components/PlanPicker.css';
 import { components } from 'apiTypes';
 type PricePlan = components['schemas']['PricePlan'];
