@@ -12,13 +12,25 @@ export interface PricePlanCardProps {
    * The price plan to render
    */
   pricePlan: PricePlan;
+  /**
+   * Fired when the plan's "Select" button is clicked
+   */
   onSelect?: (planName: string, plan: PricePlan) => void;
+  /**
+   * Whether or not to display this card as selected
+   */
   selected?: boolean;
+  /**
+   * Whether or not to indicate that this plan is the existing plan subscribed
+   * to by the customer.
+   */
+  existing?: boolean;
 }
 
 export function PricePlanCard({
   pricePlan,
   selected = false,
+  existing = false,
   onSelect = () => {
     /* noop */
   },
@@ -37,8 +49,24 @@ export function PricePlanCard({
   const formattedBasePrice = hasBasePrice ? formatCurrency(basePrice) : null;
   const periodAbbrev = period === 'month' ? 'mo' : period;
 
+  const buttonText = (() => {
+    if (existing) {
+      return 'Current subscription';
+    } else if (selected) {
+      return 'Selected';
+    } else {
+      return 'Select';
+    }
+  })();
+
   return (
-    <div className={'price-plan-card' + (selected ? ' selected' : '')}>
+    <div
+      className={
+        'price-plan-card' +
+        (selected ? ' selected' : '') +
+        (existing ? ' existing' : '')
+      }
+    >
       <div className='plan-name'>{displayName} </div>
       {hasBasePrice && (
         <div className='base-price'>
@@ -59,10 +87,10 @@ export function PricePlanCard({
       <div className='label billing-sched'>{billingSchedule}</div>
       <button
         className='select-plan'
-        disabled={selected}
+        disabled={selected || existing}
         onClick={() => onSelect(name, pricePlan)}
       >
-        {selected ? 'Selected' : 'Select'}
+        {buttonText}
       </button>
     </div>
   );

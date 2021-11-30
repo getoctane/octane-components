@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { components } from 'apiTypes';
 import { PricePlanCard } from 'components/PricePlanCard';
 import { getCustomerActiveSubscription, getPricePlans } from 'api/octane';
-import { existingSubscription, selectedPricePlan } from 'utils/sharedState';
 import { TokenProvider, useCustomerToken } from 'hooks/useCustomerToken';
 
 export type PricePlan = components['schemas']['PricePlan'];
@@ -35,11 +34,27 @@ export interface PlanPickerProps extends PricePlanManagerProps {
   customerToken: string;
 }
 
+function getIDForPricePlan(plan: PricePlan): string {
+  return `${plan.name}--${plan.created_at}`;
+}
+
+function planEquals(plan1: PricePlan, plan2: PricePlan | null): boolean {
+  if (plan2 === null) {
+    return false;
+  }
+  return getIDForPricePlan(plan1) === getIDForPricePlan(plan2);
+}
+
 function PricePlanManager({
   onPlanSelect,
 }: PricePlanManagerProps): JSX.Element {
+  // The plans to pick from
   const [pricePlans, setPricePlans] = useState<PricePlan[]>([]);
-  const [selected, setSelected] = useState<string | undefined>(undefined);
+  // The plan the customer is currently subscribed to, if any
+  const [existingPlan, setExistingPlan] = useState<PricePlan | null>(null);
+  // The plan the customer has selected in the UI
+  const [selectedPlan, setSelectedPlan] = useState<PricePlan | null>(null);
+  // Loading state indicator for the UI
   const [loading, setLoading] = useState<LoadingState>('preload');
 
   const { token } = useCustomerToken();
@@ -47,9 +62,7 @@ function PricePlanManager({
   const onSelectPlanName = useCallback(
     (planName: string, plan: PricePlan) => {
       // Update the local state
-      setSelected(planName);
-      // As well as the global state
-      selectedPricePlan.set(plan);
+      setSelectedPlan(plan);
       // As well as the user-provided callback
       onPlanSelect && onPlanSelect(planName, plan);
     },
@@ -80,19 +93,7 @@ function PricePlanManager({
       const data = await result.json();
       // Update component state
       if (data !== null && data.price_plan) {
-        onSelectPlanName(data.price_plan.name, data.price_plan);
-      }
-      // Update shared global state
-      // If there's state already, it means a plan was picked but the customer
-      // wasn't subscribed all the way. If they have no active subscription,
-      // re-select whatever they last picked.
-      const previousExistingSubscription =
-        existingSubscription.get() ?? 'no_existing_plan';
-
-      if (data != null) {
-        existingSubscription.set(data);
-      } else {
-        existingSubscription.set(previousExistingSubscription);
+        setExistingPlan(data.price_plan);
       }
     };
 
@@ -110,7 +111,7 @@ function PricePlanManager({
     onSelectPlanName,
     setLoading,
     setPricePlans,
-    setSelected,
+    setSelectedPlan,
     token,
   ]);
 
@@ -122,7 +123,8 @@ function PricePlanManager({
           <PricePlanCard
             key={plan.name}
             pricePlan={plan}
-            selected={plan.name === selected}
+            selected={planEquals(plan, selectedPlan)}
+            existing={planEquals(plan, existingPlan)}
             onSelect={onSelectPlanName}
           />
         ))}

@@ -1,25 +1,12 @@
-import {
-  selectedPricePlan,
-  existingSubscription,
-  billingInfoProvided,
-} from 'utils/sharedState';
+import { billingInfoProvided } from 'utils/sharedState';
 import { updateSubscription } from 'api/octane';
 import { components } from 'apiTypes';
 type ActiveSubscription = components['schemas']['CustomerPortalSubscription'];
 
 export default function subscribeCustomer(
-  customerToken: string
+  customerToken: string,
+  pricePlanName: string
 ): Promise<ActiveSubscription> {
-  const plan = selectedPricePlan.get();
-  if (plan === null) {
-    return Promise.reject(
-      new Error(
-        'No price plan was selected by the UI.' +
-          ' Make sure the PlanPicker component was rendered and that a plan was selected.'
-      )
-    );
-  }
-
   if (!billingInfoProvided.get()) {
     return Promise.reject(
       new Error(
@@ -29,19 +16,10 @@ export default function subscribeCustomer(
     );
   }
 
-  if (existingSubscription.get() === null) {
-    return Promise.reject(
-      new Error(
-        "The customer's existing subscription was not checked." +
-          ' Make sure the PlanPicker component was rendered and that a plan was selected.'
-      )
-    );
-  }
-
   return updateSubscription({
     token: customerToken,
     body: {
-      price_plan_name: plan.name,
+      price_plan_name: pricePlanName,
     },
   }).then((response) => {
     if (!response.ok) {
