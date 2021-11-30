@@ -27,9 +27,10 @@ const App = ({ token }: Props): JSX.Element => {
   }, [setHasBilling]);
 
   const onSubscribe = useCallback((): void => {
-    subscribeCustomer(token).then(() => {
+    subscribeCustomer(token).then((data) => {
+      alert(`Customer has been subscribed to ${data.price_plan.display_name}`);
       // eslint-disable-next-line no-console
-      console.log('Customer has been subscribed');
+      console.log('subscription data', data);
     });
   }, [token]);
 
@@ -67,7 +68,9 @@ const App = ({ token }: Props): JSX.Element => {
         />
       )}
       {hasBilling && (
-        <button onClick={onSubscribe}>Click here to subscribe</button>
+        <button className='subscribe' onClick={onSubscribe}>
+          Click here to subscribe
+        </button>
       )}
       <div>
         <h2>Internal state</h2>
