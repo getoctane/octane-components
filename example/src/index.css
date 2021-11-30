@@ -1,6 +1,6 @@
 @import 'octane-components/dist/components/globals.css';
-@import 'octane-components/dist/components/PlanPicker.css';
-@import 'octane-components/dist/components/payment/PaymentSubmission.css';
+@import 'octane-components/dist/components/PlanPicker/PlanPicker.css';
+@import 'octane-components/dist/components/PaymentSubmission/PaymentSubmission.css';
 
 body {
   margin: 0;

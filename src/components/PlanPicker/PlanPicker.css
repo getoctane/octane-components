@@ -27,6 +27,7 @@
 .octane-component .price-plan-card {
   transition: all var(--octane-transition-speed) ease-in-out;
   transform: scale(1);
+  opacity: 1;
   box-shadow: 0px 0px 0px var(--octane-shadow-color);
 
   border-color: var(--octane-border-primary);
@@ -46,6 +47,12 @@
     to animate this particular element. */
   transform: scale(1.03);
   box-shadow: 1px 5px 10px var(--octane-shadow-color);
+}
+
+.octane-component .price-plan-card.existing {
+  /* Note: These aren't variables because they're really specific to how I chose
+    to animate this particular element. */
+  opacity: 0.85;
 }
 
 .octane-component .price-plan-card .plan-name {

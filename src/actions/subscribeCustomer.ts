@@ -5,7 +5,7 @@ type ActiveSubscription = components['schemas']['CustomerPortalSubscription'];
 export default function subscribeCustomer(
   customerToken: string,
   pricePlanName: string,
-  checkForBillingInfo = false
+  _checkForBillingInfo = false
 ): Promise<ActiveSubscription> {
   // TODO: if checkForBillingInfo is set to true, check the yet-to-be-implemented API endpoint first.
 
