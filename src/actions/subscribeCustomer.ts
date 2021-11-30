@@ -1,20 +1,13 @@
-import { billingInfoProvided } from 'utils/sharedState';
 import { updateSubscription } from 'api/octane';
 import { components } from 'apiTypes';
 type ActiveSubscription = components['schemas']['CustomerPortalSubscription'];
 
 export default function subscribeCustomer(
   customerToken: string,
-  pricePlanName: string
+  pricePlanName: string,
+  checkForBillingInfo = false
 ): Promise<ActiveSubscription> {
-  if (!billingInfoProvided.get()) {
-    return Promise.reject(
-      new Error(
-        'No billing information was submitted by the UI.' +
-          ' Make sure the BillingInfo component was rendered and that a plan was selected.'
-      )
-    );
-  }
+  // TODO: if checkForBillingInfo is set to true, check the yet-to-be-implemented API endpoint first.
 
   return updateSubscription({
     token: customerToken,

@@ -13,7 +13,6 @@ import { components } from 'apiTypes';
 import { TokenProvider } from 'hooks/useCustomerToken';
 import PropTypes from 'prop-types';
 import React, { useCallback, useState, useEffect } from 'react';
-import { billingInfoProvided } from 'utils/sharedState';
 type CustomerPortalStripeCredential =
   components['schemas']['CustomerPortalStripeCredential'];
 
@@ -73,7 +72,6 @@ function PaymentSubmissionManager({
             error ?? new Error('Payment method could not be saved succesfully.')
           );
         }
-        billingInfoProvided.set(true);
         onSubmit && onSubmit();
       } catch (err) {
         console.error(err);
