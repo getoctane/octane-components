@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   PlanPicker,
   PaymentSubmission,
@@ -15,19 +15,23 @@ const App = ({ token }: Props): JSX.Element => {
   const [hasBilling, setHasBilling] = useState<boolean>(false);
 
   // When any plan has been selected, show the PaymentSubmission
-  const onPlanSelect = (_: string, plan: PricePlan): void => {
-    setHasSelected(plan != null);
-  };
+  const onPlanSelect = useCallback(
+    (_: string, plan: PricePlan): void => {
+      setHasSelected(plan != null);
+    },
+    [setHasSelected]
+  );
 
-  const onBillingSubmit = (): void => {
+  const onBillingSubmit = useCallback((): void => {
     setHasBilling(true);
-  };
-  const onSubscribe = (): void => {
+  }, [setHasBilling]);
+
+  const onSubscribe = useCallback((): void => {
     subscribeCustomer(token).then(() => {
       // eslint-disable-next-line no-console
       console.log('Customer has been subscribed');
     });
-  };
+  }, [token]);
 
   const appearance = {
     theme: 'night',
