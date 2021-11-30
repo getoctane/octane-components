@@ -1,9 +1,11 @@
+import React, { useCallback, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+
 import { components } from 'apiTypes';
 import { PricePlanCard } from 'components/PricePlanCard';
-import PropTypes from 'prop-types';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { getCustomerActiveSubscription, getPricePlans } from 'api/octane';
 import { existingSubscription, selectedPricePlan } from 'utils/sharedState';
+import { TokenProvider, useCustomerToken } from 'hooks/useCustomerToken';
 
 export type PricePlan = components['schemas']['PricePlan'];
 export type MeteredComponent = components['schemas']['MeteredComponent'];
@@ -33,24 +35,14 @@ export interface PlanPickerProps extends PricePlanManagerProps {
   customerToken: string;
 }
 
-const TokenContext = React.createContext<{
-  token: string;
-}>({
-  token: 'NO_TOKEN',
-});
-
-const NOOP = (): void => {
-  /* no-op */
-};
-
 function PricePlanManager({
-  onPlanSelect = NOOP,
+  onPlanSelect,
 }: PricePlanManagerProps): JSX.Element {
   const [pricePlans, setPricePlans] = useState<PricePlan[]>([]);
   const [selected, setSelected] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState<LoadingState>('preload');
 
-  const { token } = useContext(TokenContext);
+  const { token } = useCustomerToken();
 
   const onSelectPlanName = useCallback(
     (planName: string, plan: PricePlan) => {
@@ -59,7 +51,7 @@ function PricePlanManager({
       // As well as the global state
       selectedPricePlan.set(plan);
       // As well as the user-provided callback
-      onPlanSelect(planName, plan);
+      onPlanSelect && onPlanSelect(planName, plan);
     },
     [onPlanSelect]
   );
@@ -142,9 +134,9 @@ export function PlanPicker({
   ...managerProps
 }: PlanPickerProps): JSX.Element {
   return (
-    <TokenContext.Provider value={{ token }}>
+    <TokenProvider token={token}>
       <PricePlanManager {...managerProps} />
-    </TokenContext.Provider>
+    </TokenProvider>
   );
 }
 
