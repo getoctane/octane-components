@@ -1,8 +1,5 @@
 import React, { useState, useCallback } from 'react';
 import { PlanPicker, PaymentSubmission, Actions } from 'octane-components';
-import type { SchemaTypes } from 'octane-components';
-
-type PricePlan = SchemaTypes['PricePlan'];
 
 const { subscribeCustomer } = Actions;
 
@@ -21,13 +18,13 @@ interface ActiveSubscription {
 }
 
 const App = ({ token }: Props): JSX.Element => {
-  const [selectedPlan, setSelectedPlan] = useState<PricePlan | null>(null);
+  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [hasPayment, setHasPayment] = useState<boolean>(false);
   const [isSubscribing, setIsSubscribing] = useState<boolean>(false);
 
   // When any plan has been selected, show the PaymentSubmission
   const onPlanSelect = useCallback(
-    (_: string, plan: PricePlan): void => {
+    (plan: string): void => {
       setSelectedPlan(plan);
     },
     [setSelectedPlan]
@@ -39,8 +36,11 @@ const App = ({ token }: Props): JSX.Element => {
   }, [setHasPayment]);
 
   const onSubscribe = useCallback((): void => {
+    if (selectedPlan === null) {
+      return;
+    }
     setIsSubscribing(true);
-    subscribeCustomer(token, selectedPlan.name, true).then(
+    subscribeCustomer(token, selectedPlan, true).then(
       (data: ActiveSubscription) => {
         alert(
           `Customer has been subscribed to ${data.price_plan.display_name}`
@@ -97,8 +97,7 @@ const App = ({ token }: Props): JSX.Element => {
       <div>
         <h2>Internal state</h2>
         <div>
-          Has a plan selected:{' '}
-          {selectedPlan ? `yes ${selectedPlan.display_name}` : 'no'}
+          Has a plan selected: {selectedPlan ? `yes (${selectedPlan})` : 'no'}
         </div>
         <div>Has submitted billing data: {hasPayment ? 'yes' : 'no'}</div>
       </div>
