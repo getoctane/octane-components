@@ -6,11 +6,17 @@ import {
 import { components } from '../apiTypes';
 type ActiveSubscription = components['schemas']['CustomerPortalSubscription'];
 
+export interface SubscribeCustomerOptions {
+  checkForBillingInfo?: boolean;
+}
+
 export default function subscribeCustomer(
   customerToken: string,
   pricePlanName: string,
-  checkForBillingInfo = false
+  options: SubscribeCustomerOptions = {}
 ): Promise<ActiveSubscription> {
+  const { checkForBillingInfo = false } = options;
+
   const check = checkForBillingInfo
     ? getPaymentMethodStatus({ token: customerToken })
         .then((response) => {

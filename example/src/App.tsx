@@ -30,10 +30,14 @@ const App = ({ token }: Props): JSX.Element => {
       return;
     }
     setIsSubscribing(true);
-    subscribeCustomer(token, selectedPlan, true).then((data) => {
-      alert(`Customer has been subscribed to ${data.price_plan?.display_name}`);
-      location.reload();
-    });
+    subscribeCustomer(token, selectedPlan, { checkForBillingInfo: true }).then(
+      (data) => {
+        alert(
+          `Customer has been subscribed to ${data.price_plan?.display_name}`
+        );
+        location.reload();
+      }
+    );
   }, [token, selectedPlan]);
 
   const cardStyle = {
