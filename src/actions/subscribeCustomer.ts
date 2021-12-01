@@ -1,15 +1,20 @@
-import {
-  updateSubscription,
-  getPaymentMethodStatus,
-  VALID_PAYMENT_METHOD,
-} from '../api/octane';
+import { updateSubscription } from '../api/octane';
 import { components } from '../apiTypes';
+import { hasPaymentInfo } from './hasPaymentInfo';
 type ActiveSubscription = components['schemas']['CustomerPortalSubscription'];
 
 export interface SubscribeCustomerOptions {
+  /**
+   * If true, subscribeCustomer will first query to see if there is payment
+   * information on file for the customer before subscribing them.
+   */
   checkForBillingInfo?: boolean;
 }
 
+/**
+ * Subscribe a customer represented by $customerToken to $pricePlanName.
+ * Resolves to subscription details if successful, fails otherwise.
+ */
 export default function subscribeCustomer(
   customerToken: string,
   pricePlanName: string,
@@ -18,20 +23,13 @@ export default function subscribeCustomer(
   const { checkForBillingInfo = false } = options;
 
   const check = checkForBillingInfo
-    ? getPaymentMethodStatus({ token: customerToken })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Something went wrong checking the payment status');
-          }
-          return response.json();
-        })
-        .then((data) => {
-          if (data.status !== VALID_PAYMENT_METHOD) {
-            throw new Error(
-              'Payment status is missing, cannot subscribe customer'
-            );
-          }
-        })
+    ? hasPaymentInfo(customerToken).then((result) => {
+        if (!result) {
+          throw new Error(
+            'Payment status is missing, cannot subscribe customer'
+          );
+        }
+      })
     : Promise.resolve();
 
   return check
