@@ -117,6 +117,7 @@ function PricePlanManager({
     </div>
   );
 }
+
 export function PlanPicker({
   customerToken: token,
   ...managerProps
@@ -130,4 +131,5 @@ export function PlanPicker({
 
 PlanPicker.propTypes = {
   customerToken: PropTypes.string.isRequired,
+  onPlanSelect: PropTypes.func,
 };

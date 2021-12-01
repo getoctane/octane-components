@@ -217,5 +217,10 @@ export function PaymentSubmission({
 
 PaymentSubmission.propTypes = {
   customerToken: PropTypes.string.isRequired,
-  onSubmit: PropTypes.func,
+  onPaymentSet: PropTypes.func,
+  saveButtonText: PropTypes.string,
+  options: PropTypes.object,
+  onChange: PropTypes.func,
+  onReady: PropTypes.func,
+  onEscape: PropTypes.func,
 };
