@@ -7,16 +7,6 @@ interface Props {
   token: string;
 }
 
-/**
- * This is temporary; until we publish octane-components on NPM, we can't access
- * types as we expect.
- */
-interface ActiveSubscription {
-  price_plan: {
-    display_name: string;
-  };
-}
-
 const App = ({ token }: Props): JSX.Element => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [hasPayment, setHasPayment] = useState<boolean>(false);
@@ -40,16 +30,12 @@ const App = ({ token }: Props): JSX.Element => {
       return;
     }
     setIsSubscribing(true);
-    subscribeCustomer(token, selectedPlan, true).then(
-      (data: ActiveSubscription) => {
-        alert(
-          `Customer has been subscribed to ${data.price_plan.display_name}`
-        );
-        // eslint-disable-next-line no-console
-        console.log('subscription data', data);
-        setIsSubscribing(false);
-      }
-    );
+    subscribeCustomer(token, selectedPlan, true).then((data) => {
+      alert(`Customer has been subscribed to ${data.price_plan?.display_name}`);
+      // eslint-disable-next-line no-console
+      console.log('subscription data', data);
+      setIsSubscribing(false);
+    });
   }, [token, selectedPlan]);
 
   const cardStyle = {
