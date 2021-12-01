@@ -22,7 +22,8 @@ interface ActiveSubscription {
 
 const App = ({ token }: Props): JSX.Element => {
   const [selectedPlan, setSelectedPlan] = useState<PricePlan | null>(null);
-  const [hasBilling, setHasBilling] = useState<boolean>(false);
+  const [hasPayment, setHasPayment] = useState<boolean>(false);
+  const [isSubscribing, setIsSubscribing] = useState<boolean>(false);
 
   // When any plan has been selected, show the PaymentSubmission
   const onPlanSelect = useCallback(
@@ -32,18 +33,21 @@ const App = ({ token }: Props): JSX.Element => {
     [setSelectedPlan]
   );
 
-  const onBillingSubmit = useCallback((): void => {
-    setHasBilling(true);
-  }, [setHasBilling]);
+  // If a payment method is detected, show the "create subscription" button
+  const onPaymentSet = useCallback((): void => {
+    setHasPayment(true);
+  }, [setHasPayment]);
 
   const onSubscribe = useCallback((): void => {
-    subscribeCustomer(token, selectedPlan.name).then(
+    setIsSubscribing(true);
+    subscribeCustomer(token, selectedPlan.name, true).then(
       (data: ActiveSubscription) => {
         alert(
           `Customer has been subscribed to ${data.price_plan.display_name}`
         );
         // eslint-disable-next-line no-console
         console.log('subscription data', data);
+        setIsSubscribing(false);
       }
     );
   }, [token, selectedPlan]);
@@ -77,13 +81,16 @@ const App = ({ token }: Props): JSX.Element => {
       {selectedPlan != null && (
         <PaymentSubmission
           customerToken={token}
-          onSubmit={onBillingSubmit}
-          // onBillingSet
+          onPaymentSet={onPaymentSet}
           options={stripeOptions}
         />
       )}
-      {hasBilling && (
-        <button className='subscribe' onClick={onSubscribe}>
+      {hasPayment && (
+        <button
+          className='subscribe'
+          onClick={onSubscribe}
+          disabled={isSubscribing}
+        >
           Click here to subscribe
         </button>
       )}
@@ -93,7 +100,7 @@ const App = ({ token }: Props): JSX.Element => {
           Has a plan selected:{' '}
           {selectedPlan ? `yes ${selectedPlan.display_name}` : 'no'}
         </div>
-        <div>Has submitted billing data: {hasBilling ? 'yes' : 'no'}</div>
+        <div>Has submitted billing data: {hasPayment ? 'yes' : 'no'}</div>
       </div>
     </div>
   );
