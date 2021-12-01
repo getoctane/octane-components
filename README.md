@@ -167,7 +167,7 @@ import 'octane-components/dist/components/PaymentSubmission/PaymentSubmission.cs
 
 In addition to components, `octane-components` provides access to "actions", or asynchronous interactions with our API. While these complement our React components nicely, they can be used in any client-side app.
 
-### `subscribeCustomer(token, plan, checkForBillingInfo)`
+### `subscribeCustomer(token, plan, options)`
 
 `subscribeCustomer` subscribes a customer to a specific plan. It accepts a the customer token and the name of a plan, and will subscribe that customer to the version of that plan visible to octane-components.
 
@@ -191,7 +191,8 @@ fetch('/token')
 
 - `token` _(required, string)_ — A customer token representing the customer you want to subscribe.
 - `plan` _(required, string)_ — The name of the plan to subscribe the customer to
-- `checkForBillingInfo` _(optional, boolean)_ — Whether or not to verify that there is valid payment information for the customer before subscribing them.
+- `options` _(optional, object)_ — Optional configuration options
+  - `options.checkForBillingInfo` _(optional, boolean)_ — Whether or not to verify that there is valid payment information for the customer before subscribing them. Defaults to `false`.
 
 > Note that `checkForBillingInfo` is a convenience check and does not guarantee that valid billing info will be available in the future. For example, a customer could remove their payment information, or their payment details might expire.
 
