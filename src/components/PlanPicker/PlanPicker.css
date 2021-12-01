@@ -55,6 +55,11 @@
   opacity: 0.85;
 }
 
+.octane-component .price-plan-card.selected .select-plan,
+.octane-component .price-plan-card.existing .select-plan {
+  cursor: default;
+}
+
 .octane-component .price-plan-card .plan-name {
   font-size: var(--octane-plan-title-size);
   font-weight: bold;
@@ -147,6 +152,7 @@
   text-transform: none;
   -webkit-appearance: button;
   border: none;
+  cursor: pointer;
 
   /* octane styling */
   transition: background-color var(--octane-transition-speed) ease-in-out;

@@ -12,7 +12,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.octane-component.payment-submission {
+.octane-component.payment-submission,
+.octane-component.present-payment-method {
   max-width: 500px;
   margin: 30px auto;
 }
