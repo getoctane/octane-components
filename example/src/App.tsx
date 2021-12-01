@@ -32,9 +32,7 @@ const App = ({ token }: Props): JSX.Element => {
     setIsSubscribing(true);
     subscribeCustomer(token, selectedPlan, true).then((data) => {
       alert(`Customer has been subscribed to ${data.price_plan?.display_name}`);
-      // eslint-disable-next-line no-console
-      console.log('subscription data', data);
-      setIsSubscribing(false);
+      location.reload();
     });
   }, [token, selectedPlan]);
 

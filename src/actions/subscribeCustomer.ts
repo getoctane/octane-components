@@ -11,8 +11,6 @@ export default function subscribeCustomer(
   pricePlanName: string,
   checkForBillingInfo = false
 ): Promise<ActiveSubscription> {
-  // TODO: if checkForBillingInfo is set to true, check the yet-to-be-implemented API endpoint first.
-
   const check = checkForBillingInfo
     ? getPaymentMethodStatus({ token: customerToken })
         .then((response) => {
