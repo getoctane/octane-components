@@ -17,9 +17,6 @@ type LoadingState =
   // The component has all the data it needs
   | 'loaded';
 
-// How long before we should think about showing a loading spinner?
-const PRELOAD_TIME = 300;
-
 interface PricePlanManagerProps {
   /**
    * Callback triggered whenever a plan is selected.
@@ -97,27 +94,16 @@ function PricePlanManager({
       }
     };
 
-    setTimeout(() => {
-      if (loading === 'preload') {
-        setLoading('loading');
-      }
-    }, PRELOAD_TIME);
+    setLoading('loading');
 
     Promise.all([fetchActiveSubscription(), fetchPricePlans()]).then(() => {
       setLoading('loaded');
     });
-  }, [
-    loading,
-    onSelectPlanName,
-    setLoading,
-    setPricePlans,
-    setSelectedPlan,
-    token,
-  ]);
+  }, [onSelectPlanName, setLoading, setPricePlans, setSelectedPlan, token]);
 
   return (
     <div className='octane-component price-plan-picker'>
-      {loading === 'loading' && <div className='loading'>Loading...</div>}
+      {loading === 'loading' && <div className='loading'>LOADING...</div>}
       {loading === 'loaded' &&
         pricePlans.map((plan) => (
           <PricePlanCard
