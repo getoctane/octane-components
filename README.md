@@ -165,9 +165,55 @@ import 'octane-components/dist/components/PaymentSubmission/PaymentSubmission.cs
 
 ## Actions
 
-In addition to components, `octane-components` provides access to "actions", or asynchronous interactions with our API. While these complement our React components nicely, they can be used in any client-side app.
+In addition to components, `octane-components` provides access to "actions", or asynchronous interactions with our API. While these complement our React components nicely, they can be used in any client-side app. They all return Promises and work well with `await`, when available.
 
-### `subscribeCustomer(token, plan, options)`
+### `getActiveSubscription(token): Promise<PricePlan | null>`
+
+`hasPaymentInfo` is a simple action that checks for a customer's active subscription. If it's there, it resolves to the PricePlan details for that subscription. If the customer has no subscription, it resolves to `null`.
+
+**Example**
+
+```js
+import { Actions } from 'octane-components';
+const { getActiveSubscription } = Actions;
+
+const planName = 'enterprise_plan';
+
+fetch('/token')
+  .then((resp) => resp.json())
+  .then(({ token }) => getActiveSubscription(token))
+  .then((sub) =>
+    sub !== null ? alert('yeah') : alert('customer needs a subscription')
+  );
+```
+
+**Params**
+
+- `token` _(required, string)_ — A customer token.
+
+### `hasPaymentInfo(token): Promise<boolean>`
+
+`hasPaymentInfo` is a simple action that resolves to `true` if the customer has payment info, and `false` otherwise.
+
+**Example**
+
+```js
+import { Actions } from 'octane-components';
+const { hasPaymentInfo } = Actions;
+
+const planName = 'enterprise_plan';
+
+fetch('/token')
+  .then((resp) => resp.json())
+  .then(({ token }) => hasPaymentInfo(token))
+  .then((hasIt) => (hasIt ? alert('yeah') : alert('need payment info')));
+```
+
+**Params**
+
+- `token` _(required, string)_ — A customer token.
+
+### `subscribeCustomer(token, plan, options): Promise<ActiveSubscription>`
 
 `subscribeCustomer` subscribes a customer to a specific plan. It accepts a the customer token and the name of a plan, and will subscribe that customer to the version of that plan visible to octane-components.
 
@@ -181,20 +227,17 @@ const planName = 'enterprise_plan';
 
 fetch('/token')
   .then((resp) => resp.json())
-  .then((data) => {
-    const { token } = data;
-    subscribeCustomer(token, planName);
-  });
+  .then(({ token }) => subscribeCustomer(token, planName));
 ```
+
+> Note that `checkForBillingInfo` is a convenience check and does not guarantee that valid billing info will be available in the future. For example, a customer could remove their payment information, or their payment details might expire.
 
 **Params**
 
-- `token` _(required, string)_ — A customer token representing the customer you want to subscribe.
+- `token` _(required, string)_ — A customer token.
 - `plan` _(required, string)_ — The name of the plan to subscribe the customer to
 - `options` _(optional, object)_ — Optional configuration options
   - `options.checkForBillingInfo` _(optional, boolean)_ — Whether or not to verify that there is valid payment information for the customer before subscribing them. Defaults to `false`.
-
-> Note that `checkForBillingInfo` is a convenience check and does not guarantee that valid billing info will be available in the future. For example, a customer could remove their payment information, or their payment details might expire.
 
 ## Styling components
 
