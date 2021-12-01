@@ -8,11 +8,8 @@ import {
 import { API_BASE } from '../../config';
 import { StripeApiFactory } from '../../api/stripe';
 
-import {
-  createStripeSetupIntent,
-  getPaymentMethodStatus,
-  VALID_PAYMENT_METHOD,
-} from '../../api/octane';
+import { createStripeSetupIntent } from '../../api/octane';
+import { hasPaymentInfo } from '../../actions/hasPaymentInfo';
 import { components } from '../../apiTypes';
 import { TokenProvider } from '../../hooks/useCustomerToken';
 import PropTypes from 'prop-types';
@@ -119,28 +116,17 @@ export function PaymentSubmission({
   const [isUpdatingPayment, setIsUpdatingPayment] = useState<boolean | null>(
     null
   );
-  // const [hasPayment, setHasPayment] = useState<boolean | null>(null);
   const [creds, setCreds] = useState<CustomerPortalStripeCredential | null>(
     null
   );
 
   useEffect(() => {
-    getPaymentMethodStatus({ token })
-      .then((result) => {
-        if (!result.ok) {
-          throw new Error(
-            `An error occurred fetching payment method status: ${result.statusText}`
-          );
-        }
-        return result.json();
-      })
-      .then((data) => {
-        const hasPayment = data.status === VALID_PAYMENT_METHOD;
-        setIsUpdatingPayment(!hasPayment);
-        if (hasPayment) {
-          onPaymentSet && onPaymentSet();
-        }
-      });
+    hasPaymentInfo(token).then((hasIt) => {
+      setIsUpdatingPayment(!hasIt);
+      if (hasIt) {
+        onPaymentSet && onPaymentSet();
+      }
+    });
   }, [token, setIsUpdatingPayment, onPaymentSet]);
 
   // Fetch a Stripe intent if we are updating the payment method.
