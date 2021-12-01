@@ -8,7 +8,11 @@ import {
 import { API_BASE } from 'config';
 import { StripeApiFactory } from 'api/stripe';
 
-import { createStripeSetupIntent } from 'api/octane';
+import {
+  createStripeSetupIntent,
+  getPaymentMethodStatus,
+  VALID_PAYMENT_METHOD,
+} from 'api/octane';
 import { components } from 'apiTypes';
 import { TokenProvider } from 'hooks/useCustomerToken';
 import PropTypes from 'prop-types';
@@ -21,7 +25,7 @@ interface ManagerProps extends CardElementProps {
   /**
    * A callback that fires whenever billing info has successfully submitted.
    */
-  onSubmit?: () => void;
+  onPaymentSet?: () => void;
   /**
    * Text to show on the "save payment" button. Defaults to "Save".
    */
@@ -30,7 +34,7 @@ interface ManagerProps extends CardElementProps {
 
 function PaymentSubmissionManager({
   clientSecret,
-  onSubmit,
+  onPaymentSet: onSubmit,
   saveButtonText = 'SAVE',
   options,
   ...cardProps
@@ -104,20 +108,48 @@ export interface PaymentSubmissionProps
    * An API token with permissions for a specific customer.
    */
   customerToken: string;
-  onSubmit?: () => void;
+  onPaymentSet?: () => void;
 }
 
 export function PaymentSubmission({
-  customerToken,
-  onSubmit,
+  customerToken: token,
+  onPaymentSet,
   ...managerProps
 }: PaymentSubmissionProps): JSX.Element {
+  const [isUpdatingPayment, setIsUpdatingPayment] = useState<boolean | null>(
+    null
+  );
+  // const [hasPayment, setHasPayment] = useState<boolean | null>(null);
   const [creds, setCreds] = useState<CustomerPortalStripeCredential | null>(
     null
   );
+
   useEffect(() => {
+    getPaymentMethodStatus({ token })
+      .then((result) => {
+        if (!result.ok) {
+          throw new Error(
+            `An error occurred fetching payment method status: ${result.statusText}`
+          );
+        }
+        return result.json();
+      })
+      .then((data) => {
+        const hasPayment = data.status === VALID_PAYMENT_METHOD;
+        setIsUpdatingPayment(!hasPayment);
+        if (hasPayment) {
+          onPaymentSet && onPaymentSet();
+        }
+      });
+  }, [token, setIsUpdatingPayment, onPaymentSet]);
+
+  // Fetch a Stripe intent if we are updating the payment method.
+  useEffect(() => {
+    if (!isUpdatingPayment) {
+      return;
+    }
     createStripeSetupIntent({
-      token: customerToken,
+      token,
       urlOverride: API_BASE,
     })
       .then((result) => {
@@ -130,10 +162,35 @@ export function PaymentSubmission({
       .then((data) => {
         setCreds(data);
       });
-  }, [customerToken]);
+  }, [token, isUpdatingPayment]);
 
-  if (creds == null) {
-    return <div className='loading'>Loading...</div>;
+  // If there's a payment method already, and we're not actively updating the
+  // payment method, say as much.
+  if (isUpdatingPayment === false) {
+    return (
+      <div className='octane-component present-payment-method'>
+        <div className='details'>We have your payment information on file.</div>
+        <button
+          className='update-payment-method'
+          onClick={() => setIsUpdatingPayment(true)}
+        >
+          UPDATE PAYMENT INFO
+        </button>
+      </div>
+    );
+  }
+
+  // Don't do anything until we know if the user has a payment method set up
+  // or if we're waiting on creds before updating the payment method.
+  if (isUpdatingPayment === null || creds === null) {
+    return (
+      <div className='octane-component present-payment-method'>
+        <div className='details'>&nbsp;</div>
+        <button className='update-payment-method' disabled>
+          LOADING...
+        </button>
+      </div>
+    );
   }
 
   const {
@@ -144,15 +201,17 @@ export function PaymentSubmission({
   const stripe = StripeApiFactory({ platformApiKey, stripeAccount });
 
   return (
-    <TokenProvider token={customerToken}>
-      <Elements stripe={stripe} options={{ clientSecret }}>
-        <PaymentSubmissionManager
-          clientSecret={clientSecret}
-          onSubmit={onSubmit}
-          {...managerProps}
-        />
-      </Elements>
-    </TokenProvider>
+    <>
+      <TokenProvider token={token}>
+        <Elements stripe={stripe} options={{ clientSecret }}>
+          <PaymentSubmissionManager
+            clientSecret={clientSecret}
+            onPaymentSet={onPaymentSet}
+            {...managerProps}
+          />
+        </Elements>
+      </TokenProvider>
+    </>
   );
 }
 
