@@ -2,9 +2,10 @@ import { components } from 'apiTypes';
 import { API_BASE } from 'config';
 type PricePlan = components['schemas']['PricePlan'];
 type ActiveSubscription = components['schemas']['CustomerPortalSubscription'];
-
 type CustomerPortalStripeCredential =
   components['schemas']['CustomerPortalStripeCredential'];
+type CustomerPaymentMethodStatus =
+  components['schemas']['CustomerPaymentMethodStatus'];
 
 /* = = = = = = = = = = = = = =
 
@@ -199,3 +200,15 @@ export const createStripeSetupIntent = makeApiNonGETEndpoint<
   CustomerPortalStripeCredential,
   unknown
 >(createStripeSetupIntentUrl);
+
+export const getPaymentMethodStatusUrl: UrlFactory<
+  never,
+  never,
+  CustomerPaymentMethodStatus
+> = (base = API_BASE) => `${base}/ecp/payment_method_status`;
+
+export const getPaymentMethodStatus = makeApiGETEndpoint(
+  getPaymentMethodStatusUrl
+);
+
+export const VALID_PAYMENT_METHOD = 'VALID_PAYMENT_METHOD';
