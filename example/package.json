@@ -22,7 +22,7 @@
     "dotenv": "^10.0.0",
     "esbuild": "^0.13.15",
     "express": "^4.17.1",
-    "octane-components": "link:..",
+    "octane-components": "0.1.1",
     "react": "link:../node_modules/react",
     "react-dom": "link:../node_modules/react-dom",
     "react-scripts": "link:../node_modules/react-scripts",
