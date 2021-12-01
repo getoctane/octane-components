@@ -5,16 +5,16 @@ import {
   useStripe,
   CardElementProps,
 } from '@stripe/react-stripe-js';
-import { API_BASE } from 'config';
-import { StripeApiFactory } from 'api/stripe';
+import { API_BASE } from '../../config';
+import { StripeApiFactory } from '../../api/stripe';
 
 import {
   createStripeSetupIntent,
   getPaymentMethodStatus,
   VALID_PAYMENT_METHOD,
-} from 'api/octane';
-import { components } from 'apiTypes';
-import { TokenProvider } from 'hooks/useCustomerToken';
+} from '../../api/octane';
+import { components } from '../../apiTypes';
+import { TokenProvider } from '../../hooks/useCustomerToken';
 import PropTypes from 'prop-types';
 import React, { useCallback, useState, useEffect } from 'react';
 type CustomerPortalStripeCredential =

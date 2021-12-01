@@ -1,8 +1,8 @@
-import { components } from 'apiTypes';
+import { components } from '../../apiTypes';
 import pluralize from 'pluralize';
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
-import { formatCurrency } from 'utils/format';
+import { formatCurrency } from '../../utils/format';
 
 type MeteredComponent = components['schemas']['MeteredComponent'];
 type PriceScheme = components['schemas']['PriceScheme'];

@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { components } from 'apiTypes';
-import { PricePlanCard } from 'components/PlanPicker/PricePlanCard';
-import { getCustomerActiveSubscription, getPricePlans } from 'api/octane';
-import { TokenProvider, useCustomerToken } from 'hooks/useCustomerToken';
+import { components } from '../../apiTypes';
+import { PricePlanCard } from '../../components/PlanPicker/PricePlanCard';
+import { getCustomerActiveSubscription, getPricePlans } from '../../api/octane';
+import { TokenProvider, useCustomerToken } from '../../hooks/useCustomerToken';
 
 export type PricePlan = components['schemas']['PricePlan'];
 export type MeteredComponent = components['schemas']['MeteredComponent'];

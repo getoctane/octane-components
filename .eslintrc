@@ -44,13 +44,6 @@
         "plugin:prettier/recommended"
       ],
       "rules": {
-        "no-restricted-syntax": [
-          "error",
-          {
-            "selector": "ImportDeclaration Literal[value=/^\\./]",
-            "message": "Please use absolute imports.\nFor example, use `import foo from 'foo/bar'` rather than `import foo from '../bar'`"
-          }
-        ],
         "curly": [
           "error",
           "all"

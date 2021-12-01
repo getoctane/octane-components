@@ -1,5 +1,5 @@
-import { components } from 'apiTypes';
-import { API_BASE } from 'config';
+import { components } from '../apiTypes';
+import { API_BASE } from '../config';
 type PricePlan = components['schemas']['PricePlan'];
 type ActiveSubscription = components['schemas']['CustomerPortalSubscription'];
 type CustomerPortalStripeCredential =
