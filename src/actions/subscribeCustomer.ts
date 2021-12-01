@@ -2,8 +2,8 @@ import {
   updateSubscription,
   getPaymentMethodStatus,
   VALID_PAYMENT_METHOD,
-} from 'api/octane';
-import { components } from 'apiTypes';
+} from '../api/octane';
+import { components } from '../apiTypes';
 type ActiveSubscription = components['schemas']['CustomerPortalSubscription'];
 
 export default function subscribeCustomer(
