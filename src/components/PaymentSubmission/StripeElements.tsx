@@ -1,11 +1,11 @@
 import { Elements } from '@stripe/react-stripe-js';
-import assert from 'assert';
 import React, { useState, useEffect, useContext } from 'react';
 import type { FunctionComponent } from 'react';
 import { API_BASE } from '../../config';
 import { StripeApiFactory } from '../../api/stripe';
 import { createStripeSetupIntent } from '../../api/octane';
 import { components } from '../../apiTypes';
+import { useCustomerToken } from '../../hooks/useCustomerToken';
 type CustomerPortalStripeCredential =
   components['schemas']['CustomerPortalStripeCredential'];
 
@@ -18,18 +18,21 @@ export const StripeClientSecretContext = React.createContext<
  * StripeElements component. This hook must be called from children of the
  * StripeElements component, which is exported from this file.
  */
-export const useStripeClientSecret = (): string => {
+export const useStripeClientSecret = (): string | undefined => {
   const secret = useContext(StripeClientSecretContext);
-
-  assert(
-    secret !== undefined,
-    'Expected non-null Stripe Client Secret. Double-check that you are wrapping your component tree with `StripeElements`'
-  );
   return secret;
 };
 
 interface StripeElementsProps {
-  customerToken: string;
+  /**
+   * An element to render while the Stripe Elements context is set up. Normally,
+   * Stripe's <Elements> component can render immediately and waits for a Stripe
+   * promise to resolve, but it seems to require a client secret string
+   * synchronously. This means that while we're fetching that string, we have
+   * some loading time when we can't render the Element component.
+   *  @see: https://stripe.com/docs/js/elements_object/create#stripe_elements-options-clientSecret
+   */
+  loading?: React.ReactElement;
 }
 
 /**
@@ -41,15 +44,17 @@ interface StripeElementsProps {
  * exported in this file, to access the client secret.
  */
 export const StripeElements: FunctionComponent<StripeElementsProps> = ({
-  customerToken,
+  loading = null,
   children,
 }) => {
+  const { token } = useCustomerToken();
   const [creds, setCreds] = useState<CustomerPortalStripeCredential | null>(
     null
   );
+
   useEffect(() => {
     createStripeSetupIntent({
-      token: customerToken,
+      token,
       urlOverride: API_BASE,
     })
       .then((result) => {
@@ -60,11 +65,13 @@ export const StripeElements: FunctionComponent<StripeElementsProps> = ({
         return result.json();
       })
       .then(setCreds);
-  }, [customerToken]);
+  }, [token]);
 
+  // Render the loading element if one is provided.
   if (creds === null) {
-    return null;
+    return loading;
   }
+
   const {
     client_secret: clientSecret,
     publishable_key: platformApiKey,
