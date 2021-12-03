@@ -19,6 +19,10 @@ export { PaymentSubmission } from './components/PaymentSubmission/PaymentSubmiss
 // Helper components (must be wrapped with TokenProvider)
 export { MeteredComponent } from './components/PlanPicker/MeteredComponent';
 export { PricePlanCard } from './components/PlanPicker/PricePlanCard';
+export {
+  StripeElements,
+  useStripeClientSecret,
+} from './components/PaymentSubmission/StripeElements';
 
 // Token provider
 export { TokenProvider } from './hooks/useCustomerToken';
