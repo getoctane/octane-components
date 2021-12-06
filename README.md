@@ -1,8 +1,26 @@
-# octane-components
+# octane-components <!-- omit in toc -->
 
 > Ready-to-use React components that make it easy to integrate with Octane
 
 [![NPM](https://img.shields.io/npm/v/octane-components.svg)](https://www.npmjs.com/package/octane-components) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+
+- [Getting started](#getting-started)
+  - [TL;DR](#tldr)
+  - [Getting a customer token](#getting-a-customer-token)
+- [Standard Components](#standard-components)
+  - [`PlanPicker`](#planpicker)
+  - [`PaymentSubmission`](#paymentsubmission)
+- [Advanced Components](#advanced-components)
+  - [`TokenProvider`](#tokenprovider)
+  - [`StripeElements`](#stripeelements)
+- [Actions](#actions)
+  - [`getActiveSubscription(token): Promise<PricePlan | null>`](#getactivesubscriptiontoken-promisepriceplan--null)
+  - [`hasPaymentInfo(token): Promise<boolean>`](#haspaymentinfotoken-promiseboolean)
+  - [`subscribeCustomer(token, plan, options): Promise<ActiveSubscription>`](#subscribecustomertoken-plan-options-promiseactivesubscription)
+- [Styling components](#styling-components)
+- [Types](#types)
+- [Local development](#local-development)
+- [License](#license)
 
 ## Getting started
 
@@ -88,7 +106,7 @@ app.get('/token', (req, res) => {
 app.listen(3000);
 ```
 
-## Components
+## Standard Components
 
 Components are interactive building blocks that handle interacting with specific parts of Octane. Most of them only need a customer token in order to work. By default they are unstyled, although they all include default styles that you can use and customize.
 
@@ -162,6 +180,101 @@ import 'octane-components/dist/components/PaymentSubmission/PaymentSubmission.cs
 ```
 
 ![Screenshot of the PlanPicker component](./docs/payment-submission.png)
+
+## Advanced Components
+
+While our basic components are flexible enough for most common use cases, we also provide access to a number of more specific components to allow for more fine-tuned customization.
+
+**All of our Advanced Components must be wrapped in a `TokenProvider` component.** Unlike our basic components, our advanced components expect the customer token to be provided through a React context which we expose through the `TokenProvider` component.
+
+### `TokenProvider`
+
+`TokenProvider` accepts a customer token as its value and makes it available to any of its children.
+
+```jsx
+<TokenProvider token={customerToken}>
+  <YourCustomOctaneComponent />
+</TokenProvider>
+```
+
+### `StripeElements`
+
+`StripeElements` makes it easy to use any of Stripe's own [Elements][stripe-elements] components. It acts as a drop-in replacement to their own `<Elements>` wrapper, but it instead uses your Octane credentials to initialize the Stripe SDK.
+
+```jsx
+import { StripeElements } from 'octane-components';
+import { CardElement } from '@stripe/react-stripe-js';
+
+const MyComponent = ({ customerToken }) => (
+  <TokenProvider token={customerToken}>
+    <StripeElements>
+      <CardElement />
+    </StripeElements>
+  </TokenProvider>
+);
+```
+
+While it is initializing, `StripeElements` does not render anything. If you'd like to render a loading element, you can provide it via the `loading` prop:
+
+```jsx
+const MyComponent = ({ customerToken }) => (
+  <TokenProvider token={customerToken}>
+    <StripeElements loading={<LoadingSpinner />}>
+      <CardElement />
+    </StripeElements>
+  </TokenProvider>
+);
+```
+
+Additionally, we also expose a `useStripeClientSecret` hook that can be called from within the `StripeElements` component. The hook provides access to the Stripe client secret, which allows you to make Stripe API calls. Because it is initialized and owned by `StripeElements`, it can only be used by components within it. Here's an example (for more details on using Stripe's components, please refer to [their docs][stripe-elements]).
+
+```jsx
+import { StripeElements, useStripeClientSecret } from 'octane-components';
+import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
+
+const MyForm = () => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const secret = useStripeClientSecret();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!stripe || !elements || !clientSecret) {
+      // Stripe.js has not yet loaded.
+      // Make sure to disable form submission until Stripe.js has loaded.
+      return;
+    }
+
+    const result = await stripe.confirmCardSetup(secret, {
+      payment_method: { card: elements.getElement(CardElement) },
+    });
+
+    if (result.error) {
+      /* show error */
+    } else {
+      /* the payment has been processed! */
+    }
+  };
+
+  const isDisabled = !stripe || !elements || !clientSecret;
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <CardElement />
+      <button disabled={isDisabled}>Confirm order</button>
+    </form>
+  );
+};
+
+const MyComponent = ({ customerToken }) => (
+  <TokenProvider token={customerToken}>
+    <StripeElements>
+      <MyForm />
+    </StripeElements>
+  </TokenProvider>
+);
+```
 
 ## Actions
 
@@ -281,6 +394,17 @@ You can tweak our styling without writing new styles from scratch by overwriting
 @import 'octane-components/dist/components/PaymentSubmission/PaymentSubmission.css';
 ```
 
+## Types
+
+`octane-components` is written entirely in TypeScript and makes heavy use of Octane's schema types throughout the code. To make accessing them easy, we've made these types accessible:
+
+```ts
+import type { SchemaTypes } from 'octane-components';
+type PricePlan = SchemaTypes['PricePlan'];
+```
+
+These types are generated directly from our [OpenAPI schema file](https://api.cloud.getoctane.io/docs/openapi.json).
+
 ## Local development
 
 The easiest thing to do is to run `yarn storybook`, which will let you see and edit all of our components.
@@ -310,3 +434,4 @@ MIT © [Octane Software Technology, Inc.](https://getoctane.io)
 
 [api-auth]: https://octane.readme.io/docs/api-authentication
 [card-element]: https://stripe.com/docs/payments/integration-builder-card
+[stripe-elements]: https://stripe.com/docs/payments/elements
