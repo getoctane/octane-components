@@ -1,6 +1,6 @@
 import numeral from 'numeral';
 
-const CURRENCY_FORMAT_SM = '$0,0.(00)';
+const CURRENCY_FORMAT_SM = '$0,0.[000000000000]';
 
 const CURRENCY_FORMAT_MD = '$0,0';
 
