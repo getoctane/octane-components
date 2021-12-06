@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { components } from '../../apiTypes';
-import { PricePlanCard } from '../../components/PlanPicker/PricePlanCard';
+import { PricePlanCard } from './PricePlanCard';
 import { getCustomerActiveSubscription, getPricePlans } from '../../api/octane';
 import { TokenProvider, useCustomerToken } from '../../hooks/useCustomerToken';
 
