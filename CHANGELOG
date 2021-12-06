@@ -1,17 +1,32 @@
-Change Log
-====================================================================================================
+# Change Log
+
 All notable changes will be documented in this file.
 NPM Publish adheres to [Semantic Versioning](http://semver.org/).
 
-[v0.1.1](https://github.com/getoctane/octane-components/commit/7c5b64b4bc2ccfd61fe089f2c14531cd02c2416a) (2021-12-01)
-----------------------------------------------------------------------------------------------------
-### Fixes
-- Updated imports to be relative, which should allow types to work properly.
+## [v0.2.0](https://github.com/getoctane/octane-components/commit/c7ccc0b5b7d61f94706a812b3b324811e173d6a8) (2021-12-06)
 
-### Improvements
+**Features**
+
+- Added `hasPaymentInfo` and `getActiveSubscription` actions.
+- Added a `StripeElements` component to make using other Stripe components easier.
+- Updated the docs.
+
+**Improvements**
+
+- Set up a Github workflow to auto-publish updates to NPM when the package.json version updates.
+- Remove unused package-lock.json.
+- Updated dependencies.
+
+## [v0.1.1](https://github.com/getoctane/octane-components/commit/7c5b64b4bc2ccfd61fe089f2c14531cd02c2416a) (2021-12-01)
+
+**Improvements**
+
 - Minor cleanup to the example app
 
+**Fixes**
 
-[v0.1.0](https://github.com/getoctane/octane-components/commit/dd543b6ccbb888a018c1f86777213e625cdfe4a1) (2021-12-01)
-----------------------------------------------------------------------------------------------------
+- Updated imports to be relative, which should allow types to work properly.
+
+## [v0.1.0](https://github.com/getoctane/octane-components/commit/dd543b6ccbb888a018c1f86777213e625cdfe4a1) (2021-12-01)
+
 - Initial release (!!)
