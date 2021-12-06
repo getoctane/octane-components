@@ -1213,16 +1213,9 @@ object.assign@^4.1.2:
     has-symbols "^1.0.1"
     object-keys "^1.1.1"
 
-octane-components@0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/octane-components/-/octane-components-0.1.1.tgz#c4753c874fc1b53df8e56e9fd78c9035f7253ab8"
-  integrity sha512-ef+WolMYLnTyPc7suHD80X+pAQbvbCHoUVG7MlUbXmYRJvNAIQ30c59DFdWlyddM4RuBclGr2WgP3M5Yy1Htsg==
-  dependencies:
-    "@stripe/react-stripe-js" "^1.6.0"
-    "@stripe/stripe-js" "^1.21.1"
-    numeral "^2.0.6"
-    pluralize "^8.0.0"
-    prop-types "^15.7.2"
+"octane-components@link:..":
+  version "0.0.0"
+  uid ""
 
 on-finished@~2.3.0:
   version "2.3.0"
