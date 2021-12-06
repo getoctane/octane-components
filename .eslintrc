@@ -11,7 +11,8 @@
   },
   "plugins": [
     "@typescript-eslint",
-    "unused-imports"
+    "unused-imports",
+    "import"
   ],
   "extends": [
     "standard",
@@ -20,7 +21,10 @@
     "prettier/standard",
     "prettier/react",
     "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:react-hooks/recommended"
+    "plugin:react-hooks/recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript"
+
   ],
   "env": {
     "browser": true,
@@ -31,6 +35,18 @@
   "settings": {
     "react": {
       "version": "16"
+    },
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": [
+          "tsconfig.json",
+          "example/tsconfig.json"
+        ]
+      }
     }
   },
   "overrides": [
@@ -152,7 +168,15 @@
             "argsIgnorePattern": "^_"
           }
         ],
-        "no-underscore-dangle": "off"
+        "no-underscore-dangle": "off",
+        "import/no-absolute-path": "error",
+        "import/no-useless-path-segments": "error",
+        "import/no-named-as-default": "off",
+        "import/no-named-as-default-member": "off",
+        "import/no-commonjs": "error",
+        "import/no-amd": "error",
+        "import/first": "error",
+        "import/no-duplicates": "error"
       }
     }
   ]
