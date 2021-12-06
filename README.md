@@ -169,7 +169,7 @@ In addition to components, `octane-components` provides access to "actions", or 
 
 ### `getActiveSubscription(token): Promise<PricePlan | null>`
 
-`hasPaymentInfo` is a simple action that checks for a customer's active subscription. If it's there, it resolves to the PricePlan details for that subscription. If the customer has no subscription, it resolves to `null`.
+`getActiveSubscription` checks for a customer's active subscription. If it's there, it resolves to the `PricePlan` details for that subscription. If the customer has no subscription, it resolves to `null`.
 
 **Example**
 
@@ -193,7 +193,7 @@ fetch('/token')
 
 ### `hasPaymentInfo(token): Promise<boolean>`
 
-`hasPaymentInfo` is a simple action that resolves to `true` if the customer has payment info, and `false` otherwise.
+`hasPaymentInfo` resolves to `true` if the customer has payment info, and `false` otherwise.
 
 **Example**
 
@@ -215,7 +215,7 @@ fetch('/token')
 
 ### `subscribeCustomer(token, plan, options): Promise<ActiveSubscription>`
 
-`subscribeCustomer` subscribes a customer to a specific plan. It accepts a the customer token and the name of a plan, and will subscribe that customer to the version of that plan visible to octane-components.
+`subscribeCustomer` subscribes a customer to a specific plan. It accepts a customer token and the name of a plan, and will subscribe that customer to the version of that plan visible to octane-components.
 
 **Example**
 
