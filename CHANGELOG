@@ -1,0 +1,17 @@
+Change Log
+====================================================================================================
+All notable changes will be documented in this file.
+NPM Publish adheres to [Semantic Versioning](http://semver.org/).
+
+[v0.1.1](https://github.com/getoctane/octane-components/commit/7c5b64b4bc2ccfd61fe089f2c14531cd02c2416a) (2021-12-01)
+----------------------------------------------------------------------------------------------------
+### Fixes
+- Updated imports to be relative, which should allow types to work properly.
+
+### Improvements
+- Minor cleanup to the example app
+
+
+[v0.1.0](https://github.com/getoctane/octane-components/commit/dd543b6ccbb888a018c1f86777213e625cdfe4a1) (2021-12-01)
+----------------------------------------------------------------------------------------------------
+- Initial release (!!)
