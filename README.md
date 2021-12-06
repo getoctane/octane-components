@@ -13,11 +13,11 @@
 - [Advanced Components](#advanced-components)
   - [`TokenProvider`](#tokenprovider)
   - [`StripeElements`](#stripeelements)
+- [Styling components](#styling-components)
 - [Actions](#actions)
   - [`getActiveSubscription(token): Promise<PricePlan | null>`](#getactivesubscriptiontoken-promisepriceplan--null)
   - [`hasPaymentInfo(token): Promise<boolean>`](#haspaymentinfotoken-promiseboolean)
   - [`subscribeCustomer(token, plan, options): Promise<ActiveSubscription>`](#subscribecustomertoken-plan-options-promiseactivesubscription)
-- [Styling components](#styling-components)
 - [Types](#types)
 - [Local development](#local-development)
 - [License](#license)
@@ -276,6 +276,48 @@ const MyComponent = ({ customerToken }) => (
 );
 ```
 
+## Styling components
+
+By default, components are unstyled. They are decorated with classes that should make it easy to style them to match any sort of branding.
+
+To provide a starting point, each component comes with its own default stylesheet. Each stylesheet depends on CSS variables scoped to the `.octane-component` class. To use a stylesheet, import both the variables and a component's stylesheet wherever you'd like to use them.
+
+```css
+/* index.css */
+
+/* variables */
+@import 'octane-components/dist/components/globals.css';
+/* PlanPicker styles */
+@import 'octane-components/dist/components/PlanPicker/PlanPicker.css';
+/* PaymentSubmission styles */
+@import 'octane-components/dist/components/PaymentSubmission/PaymentSubmission.css';
+```
+
+You can tweak our styling without writing new styles from scratch by overwriting our variables:
+
+```css
+/* variables */
+@import 'octane-components/dist/components/globals.css';
+
+/* overrides */
+.octane-component {
+  /* Light theme */
+  --octane-bg-primary: #d4f5f54d;
+  --octane-text-primary: #071420;
+  --octane-border-primary: #c7dcd5;
+  --octane-text-accent: #128475;
+  --octane-bg-secondary: #becbd8;
+  --octane-bg-lighter: #484e5980;
+  --octane-text-secondary: #282c2c;
+  --octane-border-primary: #d4f5f54d;
+}
+
+/* PlanPicker styles */
+@import 'octane-components/dist/components/PlanPicker/PlanPicker.css';
+/* PaymentSubmission styles */
+@import 'octane-components/dist/components/PaymentSubmission/PaymentSubmission.css';
+```
+
 ## Actions
 
 In addition to components, `octane-components` provides access to "actions", or asynchronous interactions with our API. While these complement our React components nicely, they can be used in any client-side app. They all return Promises and work well with `await`, when available.
@@ -351,48 +393,6 @@ fetch('/token')
 - `plan` _(required, string)_ — The name of the plan to subscribe the customer to
 - `options` _(optional, object)_ — Optional configuration options
   - `options.checkForBillingInfo` _(optional, boolean)_ — Whether or not to verify that there is valid payment information for the customer before subscribing them. Defaults to `false`.
-
-## Styling components
-
-By default, components are unstyled. They are decorated with classes that should make it easy to style them to match any sort of branding.
-
-To provide a starting point, each component comes with its own default stylesheet. Each stylesheet depends on CSS variables scoped to the `.octane-component` class. To use a stylesheet, import both the variables and a component's stylesheet wherever you'd like to use them.
-
-```css
-/* index.css */
-
-/* variables */
-@import 'octane-components/dist/components/globals.css';
-/* PlanPicker styles */
-@import 'octane-components/dist/components/PlanPicker/PlanPicker.css';
-/* PaymentSubmission styles */
-@import 'octane-components/dist/components/PaymentSubmission/PaymentSubmission.css';
-```
-
-You can tweak our styling without writing new styles from scratch by overwriting our variables:
-
-```css
-/* variables */
-@import 'octane-components/dist/components/globals.css';
-
-/* overrides */
-.octane-component {
-  /* Light theme */
-  --octane-bg-primary: #d4f5f54d;
-  --octane-text-primary: #071420;
-  --octane-border-primary: #c7dcd5;
-  --octane-text-accent: #128475;
-  --octane-bg-secondary: #becbd8;
-  --octane-bg-lighter: #484e5980;
-  --octane-text-secondary: #282c2c;
-  --octane-border-primary: #d4f5f54d;
-}
-
-/* PlanPicker styles */
-@import 'octane-components/dist/components/PlanPicker/PlanPicker.css';
-/* PaymentSubmission styles */
-@import 'octane-components/dist/components/PaymentSubmission/PaymentSubmission.css';
-```
 
 ## Types
 
