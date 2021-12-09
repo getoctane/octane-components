@@ -26,7 +26,7 @@
 
 `octane-components` has a collection of React components and actions (utility methods) to make integrating Octane into your UI simple. It works like this:
 
-1. On your backend, use youer Octane API key to request a customer token.
+1. On your backend, use your Octane API key to request a customer token.
 2. Pass this token to your client-side app and provide it to one of our components.
 3. The components handle the rest.
 
