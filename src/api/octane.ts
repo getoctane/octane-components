@@ -20,18 +20,16 @@ type CustomerPaymentMethodStatus =
  * I'd love to put `base` as the last param, but unfortunately TS only lets
  * ...rest params to be at the end of a list of args, not at the beginning.
  */
-type UrlFactory<
-  _QueryArgs extends Record<string, string> | undefined | void = void,
-  PathArgs extends unknown[] = [],
-  _Success = unknown,
-  _Failure = unknown
-> = (base?: string | undefined, ...args: PathArgs) => string;
+type UrlFactory<PathArgs extends unknown[] = []> = (
+  base?: string | undefined,
+  ...pathArgs: PathArgs
+) => string;
 
 /**
  * A config object to let us customize how we make GET requests.
  * Since this config should be optional, all of its keys should also be optional.
  */
-type ApiGETConfig<QueryParams> = {
+export type ApiGETConfig<QueryParams> = {
   token: string;
   urlOverride?: string;
   params?: QueryParams;
@@ -50,19 +48,19 @@ type ApiPOSTConfig<BodyType> = {
 /**
  * A Fetch response that is successful, and has types for json()
  */
-interface TypedSuccessResponse<T> extends Response {
+export interface TypedSuccessResponse<T> extends Response {
   ok: true;
   json(): Promise<T>;
 }
 /**
  * A Fetch response that is unsuccessful, and has types for json()
  */
-interface TypedFailureResponse<T = unknown> extends Response {
+export interface TypedFailureResponse<T = unknown> extends Response {
   ok: false;
   json(): Promise<T>;
 }
 
-type TypedResponse<Success, Failure = unknown> =
+export type TypedResponse<Success, Failure = unknown> =
   | TypedSuccessResponse<Success>
   | TypedFailureResponse<Failure>;
 
@@ -96,17 +94,18 @@ const getFetchConfig = (
  */
 const makeApiGETEndpoint =
   <
-    QueryArgs extends Record<string, string> | undefined | void,
+    QueryParams extends Record<string, string>,
     PathArgs extends unknown[],
     Success,
     Failure
   >(
-    urlFactory: UrlFactory<QueryArgs, PathArgs, Success, Failure>
+    urlFactory: UrlFactory<PathArgs>
   ) =>
   (
-    { token, urlOverride, params }: ApiGETConfig<QueryArgs>,
+    config: ApiGETConfig<QueryParams>,
     ...pathArgs: PathArgs
   ): Promise<TypedResponse<Success, Failure>> => {
+    const { token, urlOverride, params } = config;
     const url = new URL(urlFactory(urlOverride, ...pathArgs));
     if (params) {
       url.search = new URLSearchParams(params).toString();
@@ -116,13 +115,14 @@ const makeApiGETEndpoint =
 
 const makeApiNonGETEndpoint =
   <BodyType, PathArgs extends unknown[], Success, Failure>(
-    urlFactory: UrlFactory<void, PathArgs, Success, Failure>,
+    urlFactory: UrlFactory<PathArgs>,
     method: 'POST' | 'PUT' | 'DELETE' = 'POST'
   ) =>
   (
-    { token, urlOverride, body }: ApiPOSTConfig<BodyType>,
+    config: ApiPOSTConfig<BodyType>,
     ...pathArgs: PathArgs
   ): Promise<TypedResponse<Success, Failure>> => {
+    const { token, urlOverride, body } = config;
     const url = new URL(urlFactory(urlOverride, ...pathArgs));
     return fetch(
       url.toString(),
@@ -142,73 +142,69 @@ const makeApiNonGETEndpoint =
 
  = = = = = = = = = = = = = = = */
 
-export const getPricePlansUrl: UrlFactory<never, [], PricePlan[]> = (
-  base = API_BASE
-): string => `${base}/ecp/price_plans/`;
+export const getPricePlansUrl: UrlFactory = (base = API_BASE): string =>
+  `${base}/ecp/price_plans/`;
 
 /**
  * Gets all price plans that can be read using `token`.
  * The token can be either a vendor token or a customer token.
  */
-export const getPricePlans = makeApiGETEndpoint(getPricePlansUrl);
+export const getPricePlans = makeApiGETEndpoint<
+  never, // No query params
+  never, // No URL path args
+  PricePlan[], // Returns a list of price plans
+  unknown // Undefined failure type
+>(getPricePlansUrl);
 
-export const getCustomerActiveSubscriptionUrl: UrlFactory<
-  never,
-  never,
-  ActiveSubscription | null
-> = (base = API_BASE) => `${base}/ecp/subscription`;
+export const getCustomerActiveSubscriptionUrl: UrlFactory = (base = API_BASE) =>
+  `${base}/ecp/subscription`;
 
 /**
  * For a given customer, returns the customer's active subscription (or null
  * if there is none).
  */
-export const getCustomerActiveSubscription = makeApiGETEndpoint(
-  getCustomerActiveSubscriptionUrl
-);
+export const getCustomerActiveSubscription = makeApiGETEndpoint<
+  never, // No query params
+  [], // No URL path args
+  ActiveSubscription | null, // Optionally returns an ActiveSubscription
+  unknown // Undefined failure type
+>(getCustomerActiveSubscriptionUrl);
 
-export const updateSubscriptionUrl: UrlFactory<
-  never,
-  never,
-  ActiveSubscription
-> = (base = API_BASE) => `${base}/ecp/subscription`;
+export const updateSubscriptionUrl: UrlFactory = (base = API_BASE) =>
+  `${base}/ecp/subscription`;
+
+interface UpdateSubscriptionBody {
+  price_plan_name: string;
+}
 
 /**
  * Create a subscription to a price plan for a given customer.
  */
 export const updateSubscription = makeApiNonGETEndpoint<
-  // TODO: I do _not_ love that you need to pass all these generics in
-  // My plan for having the URL own the request / response types was
-  // maybe not the best idea; I want to refactor this whole file to make the
-  // endpoint function own the return types, parameter types, and body types.
-  {
-    price_plan_name?: string;
-  },
-  never,
-  ActiveSubscription,
-  unknown
->(updateSubscriptionUrl);
+  UpdateSubscriptionBody, // Body type
+  [], // No URL path args
+  ActiveSubscription, // Return an active subscription
+  unknown // Undefined failure type
+>(updateSubscriptionUrl, 'POST');
 
-export const createStripeSetupIntentUrl: UrlFactory<
-  never,
-  never,
-  CustomerPortalStripeCredential
-> = (base = API_BASE) => `${base}/ecp/setup_intent`;
+export const createStripeSetupIntentUrl: UrlFactory = (base = API_BASE) =>
+  `${base}/ecp/setup_intent`;
 
 export const createStripeSetupIntent = makeApiNonGETEndpoint<
-  never,
-  never,
-  CustomerPortalStripeCredential,
-  unknown
+  never, // No body type
+  [], // No URL path args
+  CustomerPortalStripeCredential, // Returns Stripe credentials
+  unknown // Undefined failure type
 >(createStripeSetupIntentUrl);
 
-export const getPaymentMethodStatusUrl: UrlFactory<
-  never,
-  never,
-  CustomerPaymentMethodStatus
-> = (base = API_BASE) => `${base}/ecp/payment_method_status`;
+export const getPaymentMethodStatusUrl: UrlFactory = (base = API_BASE) =>
+  `${base}/ecp/payment_method_status`;
 
-export const getPaymentMethodStatus = makeApiGETEndpoint(
-  getPaymentMethodStatusUrl
-);
+export const getPaymentMethodStatus = makeApiGETEndpoint<
+  never, // No query params
+  [], // No URL path args
+  CustomerPaymentMethodStatus, // Returns Stripe payment method status
+  unknown // Undefined failure type
+>(getPaymentMethodStatusUrl);
 
 export const VALID_PAYMENT_METHOD = 'VALID_PAYMENT_METHOD';
