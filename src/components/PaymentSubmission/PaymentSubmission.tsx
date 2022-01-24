@@ -150,10 +150,12 @@ export function PaymentSubmission({
     return loading;
   }
 
+  const handleError = managerProps.onError;
+
   return (
     <>
       <TokenProvider token={token}>
-        <StripeElements loading={loading}>
+        <StripeElements loading={loading} onError={handleError}>
           <PaymentSubmissionManager
             onPaymentSet={onPaymentSet}
             {...managerProps}

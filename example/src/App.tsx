@@ -6,6 +6,9 @@ const { subscribeCustomer } = Actions;
 interface Props {
   token: string;
 }
+function onError(err: unknown): void {
+  console.error('Error!', err);
+}
 
 const App = ({ token }: Props): JSX.Element => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
@@ -65,12 +68,17 @@ const App = ({ token }: Props): JSX.Element => {
 
   return (
     <div id='example-root'>
-      <PlanPicker customerToken={token} onPlanSelect={onPlanSelect} />
+      <PlanPicker
+        customerToken={token}
+        onPlanSelect={onPlanSelect}
+        onError={onError}
+      />
       {selectedPlan != null && (
         <PaymentSubmission
           customerToken={token}
           onPaymentSet={onPaymentSet}
           options={stripeOptions}
+          onError={onError}
         />
       )}
       {hasPayment && (

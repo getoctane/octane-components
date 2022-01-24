@@ -33,6 +33,7 @@ interface StripeElementsProps {
    *  @see: https://stripe.com/docs/js/elements_object/create#stripe_elements-options-clientSecret
    */
   loading?: React.ReactElement;
+  onError?: (err: unknown) => void;
 }
 
 /**
@@ -45,6 +46,7 @@ interface StripeElementsProps {
  */
 export const StripeElements: FunctionComponent<StripeElementsProps> = ({
   loading = null,
+  onError,
   children,
 }) => {
   const { token } = useCustomerToken();
@@ -53,7 +55,7 @@ export const StripeElements: FunctionComponent<StripeElementsProps> = ({
   );
 
   useEffect(() => {
-    createStripeSetupIntent({
+    const req = createStripeSetupIntent({
       token,
       urlOverride: API_BASE,
     })
@@ -65,6 +67,9 @@ export const StripeElements: FunctionComponent<StripeElementsProps> = ({
         return result.json();
       })
       .then(setCreds);
+    if (onError) {
+      req.catch(onError);
+    }
   }, [token]);
 
   // Render the loading element if one is provided.
