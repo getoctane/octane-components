@@ -4,7 +4,7 @@ import {
   useStripe,
   CardElementProps,
 } from '@stripe/react-stripe-js';
-import { hasPaymentInfo } from '../../actions/hasPaymentInfo';
+import hasPaymentInfo from '../../actions/hasPaymentInfo';
 import { TokenProvider } from '../../hooks/useCustomerToken';
 import PropTypes from 'prop-types';
 import React, { useCallback, useState, useEffect } from 'react';
@@ -12,6 +12,7 @@ import { StripeElements, useStripeClientSecret } from './StripeElements';
 
 interface ManagerProps extends CardElementProps {
   onPaymentSet?: () => void;
+  onError?: (err: unknown) => void;
   /**
    * Text to show on the "save payment" button. Defaults to "Save".
    */
@@ -20,6 +21,7 @@ interface ManagerProps extends CardElementProps {
 
 function PaymentSubmissionManager({
   onPaymentSet: onSubmit,
+  onError,
   saveButtonText = 'SAVE',
   options,
   ...cardProps
@@ -64,12 +66,12 @@ function PaymentSubmissionManager({
         }
         onSubmit && onSubmit();
       } catch (err) {
-        console.error(err);
+        onError && onError(err);
       } finally {
         setIsSubmitting(false);
       }
     },
-    [stripe, elements, isSubmitting, clientSecret, onSubmit]
+    [stripe, elements, isSubmitting, clientSecret, onSubmit, onError]
   );
 
   const cardOptions = { disabled: isSubmitting, ...options };

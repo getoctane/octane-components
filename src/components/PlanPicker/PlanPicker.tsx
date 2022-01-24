@@ -22,6 +22,11 @@ interface PricePlanManagerProps {
    * Callback triggered whenever a plan is selected.
    */
   onPlanSelect?: (planName: string, plan: PricePlan) => void;
+  /**
+   * Error handler. Called if the request for the list of price plans fails, or
+   * if the request for the customer's active subscription fails.
+   */
+  onError?: (err: unknown) => void;
 }
 
 export interface PlanPickerProps extends PricePlanManagerProps {
@@ -44,6 +49,7 @@ function planEquals(plan1: PricePlan, plan2: PricePlan | null): boolean {
 
 function PricePlanManager({
   onPlanSelect,
+  onError,
 }: PricePlanManagerProps): JSX.Element {
   // The plans to pick from
   const [pricePlans, setPricePlans] = useState<PricePlan[]>([]);
@@ -96,10 +102,21 @@ function PricePlanManager({
 
     setLoading('loading');
 
-    Promise.all([fetchActiveSubscription(), fetchPricePlans()]).then(() => {
-      setLoading('loaded');
-    });
-  }, [onSelectPlanName, setLoading, setPricePlans, setSelectedPlan, token]);
+    Promise.all([fetchActiveSubscription(), fetchPricePlans()])
+      .then(() => {
+        setLoading('loaded');
+      })
+      .catch((err) => {
+        onError && onError(err);
+      });
+  }, [
+    onSelectPlanName,
+    setLoading,
+    setPricePlans,
+    setSelectedPlan,
+    token,
+    onError,
+  ]);
 
   return (
     <div className='octane-component price-plan-picker'>
