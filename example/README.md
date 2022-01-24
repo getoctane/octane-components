@@ -33,3 +33,17 @@ yarn serve
 ```
 
 By default, the app runs at `http://localhost:3456`.
+
+## Developing locally
+
+If you're developing in octane-portal and you want to test your changes in the example app:
+
+```sh
+# In the root of this repo, make a fresh build with your changes
+yarn build
+# In the example/ directory, rebuild the app (optionally in watch mode)
+cd example
+yarn watch
+# In a separate shell, start the example web server
+yarn serve
+```
