@@ -70,7 +70,7 @@ export const StripeElements: FunctionComponent<StripeElementsProps> = ({
     if (onError) {
       req.catch(onError);
     }
-  }, [token]);
+  }, [token, onError]);
 
   // Render the loading element if one is provided.
   if (creds === null) {
