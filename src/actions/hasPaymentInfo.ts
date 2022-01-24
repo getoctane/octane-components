@@ -4,7 +4,9 @@ import { getPaymentMethodStatus, VALID_PAYMENT_METHOD } from '../api/octane';
  * Checks if the customer represented by $customerToken has valid payment info.
  * Resolves to `true` if so, `false` if not.
  */
-export function hasPaymentInfo(customerToken: string): Promise<boolean> {
+export default function hasPaymentInfo(
+  customerToken: string
+): Promise<boolean> {
   return getPaymentMethodStatus({ token: customerToken })
     .then((response) => {
       if (!response.ok) {
