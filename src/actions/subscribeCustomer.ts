@@ -1,6 +1,6 @@
 import { updateSubscription } from '../api/octane';
 import { components } from '../apiTypes';
-import { hasPaymentInfo } from './hasPaymentInfo';
+import hasPaymentInfo from './hasPaymentInfo';
 type ActiveSubscription = components['schemas']['CustomerPortalSubscription'];
 
 export interface SubscribeCustomerOptions {

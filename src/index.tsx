@@ -7,8 +7,12 @@ import { components } from './apiTypes';
 
 // Actions
 import subscribeCustomer from './actions/subscribeCustomer';
+import getActiveSubscription from './actions/getActiveSubscription';
+import hasPaymentInfo from './actions/hasPaymentInfo';
 export const Actions = {
   subscribeCustomer,
+  getActiveSubscription,
+  hasPaymentInfo,
 };
 
 // Top-level API components. These only need a customer token and should
