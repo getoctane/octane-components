@@ -428,6 +428,10 @@ yarn build-storybook
 yarn generate
 ```
 
+## Releasing
+
+Releasing is as easy as bumping the version of package.json in this repo. Any changes on the main branch will be automatically published to NPM.
+
 ## License
 
 MIT © [Octane Software Technology, Inc.](https://getoctane.io)
