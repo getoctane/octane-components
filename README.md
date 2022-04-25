@@ -240,7 +240,7 @@ const MyForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!stripe || !elements || !clientSecret) {
+    if (!stripe || !elements || !secret) {
       // Stripe.js has not yet loaded.
       // Make sure to disable form submission until Stripe.js has loaded.
       return;
@@ -257,7 +257,7 @@ const MyForm = () => {
     }
   };
 
-  const isDisabled = !stripe || !elements || !clientSecret;
+  const isDisabled = !stripe || !elements || !secret;
 
   return (
     <form onSubmit={handleSubmit}>
