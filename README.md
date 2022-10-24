@@ -1,8 +1,8 @@
 # octane-components <!-- omit in toc -->
-
-> Ready-to-use React components that make it easy to integrate with Octane
-
 [![NPM](https://img.shields.io/npm/v/octane-components.svg)](https://www.npmjs.com/package/octane-components) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![Octane](./docs/octane-logo.png)](https://www.getoctane.io/)
+
+Ready-to-use React components that make it easy to integrate with **[Octane](https://www.getoctane.io/)**
 
 - [Getting started](#getting-started)
   - [TL;DR](#tldr)
