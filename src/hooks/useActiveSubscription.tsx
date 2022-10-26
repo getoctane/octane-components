@@ -1,17 +1,16 @@
 import { useCallback, useContext } from 'react';
 import getActiveSubscription from 'actions/getActiveSubscription';
 import useAsync from 'hooks/useAsync';
+import type { UseAsyncReturnType } from 'hooks/useAsync';
 import { TokenContext } from 'hooks/useCustomerToken';
 import { components } from '../apiTypes';
 
 type PricePlan = components['schemas']['PricePlan'];
+export type UseActiveSubscriptionReturnType = UseAsyncReturnType<PricePlan>;
 
-export type UseActiveSubscriptionReturnType = {
-  result: PricePlan | null;
-  loading: boolean;
-  error: unknown;
-};
-
+/**
+ * A hook that fetches the customer's active subscription information.
+ */
 const useActiveSubscription = (args?: {
   token?: string;
 }): UseActiveSubscriptionReturnType => {
@@ -27,9 +26,7 @@ const useActiveSubscription = (args?: {
     return getActiveSubscription(userToken);
   }, [userToken]);
 
-  const result = useAsync(asyncFunc);
-
-  return result;
+  return useAsync(asyncFunc);
 };
 
 export default useActiveSubscription;

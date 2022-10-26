@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { getPaymentMethodStatus } from '../api/octane';
 
-type UseAsyncReturnType<Result, Error> =
+export type UseAsyncReturnType<Result, Error = unknown> =
   | {
       loading: true;
       result: null;
