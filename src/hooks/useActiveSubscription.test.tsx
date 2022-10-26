@@ -29,13 +29,14 @@ const MockComponent = (props?: { token?: string }): JSX.Element => {
   return <></>;
 };
 
-describe('Test `useActiveSubscription` hook', () => {
+describe('useActiveSubscription hook', () => {
   beforeEach(() => {
-    fetchMock.resetMocks();
+    fetchMock.once(JSON.stringify({ price_plan: mockPricePlan }));
   });
 
   afterEach(() => {
     jest.clearAllMocks();
+    fetchMock.resetMocks();
     hookResult = null;
   });
 
@@ -43,9 +44,8 @@ describe('Test `useActiveSubscription` hook', () => {
     jest.restoreAllMocks();
   });
 
-  it('Test hook being called correctly with token provided', async () => {
+  it('is called correctly with a token from context', async () => {
     const mockToken = '12345';
-    fetchMock.once(JSON.stringify({ price_plan: mockPricePlan }));
     const spy = jest.spyOn(getActiveSubscription, 'default');
 
     await act(async () => {
@@ -66,9 +66,8 @@ describe('Test `useActiveSubscription` hook', () => {
     expect(hookResult?.error).toBeDefined();
   });
 
-  it('Test hook being called correctly with token passed directly', async () => {
+  it('is called correctly with token passed in directly', async () => {
     const mockToken = '54321';
-    fetchMock.once(JSON.stringify({ price_plan: mockPricePlan }));
     const spy = jest.spyOn(getActiveSubscription, 'default');
 
     await act(async () => {
@@ -83,5 +82,41 @@ describe('Test `useActiveSubscription` hook', () => {
     expect(hookResult?.result).toEqual(mockPricePlan);
     expect(hookResult?.loading).toBeDefined();
     expect(hookResult?.error).toBeDefined();
+  });
+
+  it('should prefer token, which passed in directly', async () => {
+    const tokenAsArgument = '12345';
+    const tokenFromContext = '54321';
+    const spy = jest.spyOn(getActiveSubscription, 'default');
+
+    await act(async () => {
+      render(
+        <TokenProvider token={tokenFromContext}>
+          <MockComponent token={tokenAsArgument} />
+        </TokenProvider>
+      );
+    });
+
+    expect(spy).toHaveBeenCalledWith(tokenAsArgument);
+    expect(fetchMock.mock.calls[0]?.[1]?.headers?.['Authorization']).toBe(
+      `Bearer ${tokenAsArgument}`
+    );
+  });
+
+  it("should throw an error, if customer's token isn't provided at all", async () => {
+    /*
+      React logs in console every thrown error.
+      https://github.com/testing-library/testing-library-docs/issues/1060#issuecomment-1209695531
+      By mocking `console.error` we don't allow React to show it in a console during test running
+    */
+    jest.spyOn(console, 'error').mockImplementation(() => jest.fn());
+
+    expect(() =>
+      render(
+        <TokenProvider token=''>
+          <MockComponent />
+        </TokenProvider>
+      )
+    ).toThrow(Error('Token must be provided.'));
   });
 });
