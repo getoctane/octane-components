@@ -13,7 +13,7 @@ export default function getActiveSubscription(
   return getCustomerActiveSubscription({ token: customerToken })
     .then((response) => {
       if (!response.ok) {
-        throw new Error('Something went wrong checking the payment status');
+        throw new Error('Something went wrong checking active subscription');
       }
       return response.json();
     })
