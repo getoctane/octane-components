@@ -17,7 +17,9 @@ export default function getActiveSubscription(
   return getCustomerActiveSubscription({ token: customerToken })
     .then((response) => {
       if (!response.ok) {
-        throw new Error('Something went wrong checking active subscription');
+        throw new Error(
+          'Something went wrong fetching the active subscription data'
+        );
       }
       return response.json();
     })

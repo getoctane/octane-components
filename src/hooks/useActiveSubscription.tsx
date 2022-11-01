@@ -15,12 +15,11 @@ const useActiveSubscription = (args?: {
   token?: string;
 }): UseActiveSubscriptionReturnType => {
   const { token: tokenFromContext } = useContext(TokenContext);
+  const userToken = args?.token || tokenFromContext;
 
-  if (!args?.token && !tokenFromContext) {
+  if (!userToken) {
     throw new Error('Token must be provided.');
   }
-
-  const userToken = args?.token || tokenFromContext;
 
   const asyncFunc = useCallback(() => {
     return getActiveSubscription(userToken);
