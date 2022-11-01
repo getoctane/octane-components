@@ -20,6 +20,10 @@ export default function subscribeCustomer(
   pricePlanName: string,
   options: SubscribeCustomerOptions = {}
 ): Promise<ActiveSubscription> {
+  if (!customerToken) {
+    throw new Error('Token must be provided.');
+  }
+
   const { checkForBillingInfo = false } = options;
 
   const check = checkForBillingInfo

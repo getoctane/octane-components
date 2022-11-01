@@ -10,6 +10,10 @@ type PricePlan = components['schemas']['PricePlan'];
 export default function getActiveSubscription(
   customerToken: string
 ): Promise<PricePlan | null> {
+  if (!customerToken) {
+    throw new Error('Token must be provided.');
+  }
+
   return getCustomerActiveSubscription({ token: customerToken })
     .then((response) => {
       if (!response.ok) {

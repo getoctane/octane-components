@@ -10,6 +10,10 @@ type CustomerPaymentMethodStatus =
 export default function getCustomerPaymentMethodStatus(
   customerToken: string
 ): Promise<CustomerPaymentMethodStatus | null> {
+  if (!customerToken) {
+    throw new Error('Token must be provided.');
+  }
+
   return getPaymentMethodStatus({ token: customerToken })
     .then((response) => {
       if (!response.ok) {

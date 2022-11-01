@@ -7,6 +7,10 @@ import { getPaymentMethodStatus, VALID_PAYMENT_METHOD } from '../api/octane';
 export default function hasPaymentInfo(
   customerToken: string
 ): Promise<boolean> {
+  if (!customerToken) {
+    throw new Error('Token must be provided.');
+  }
+
   return getPaymentMethodStatus({ token: customerToken })
     .then((response) => {
       if (!response.ok) {

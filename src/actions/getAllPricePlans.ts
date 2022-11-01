@@ -9,6 +9,10 @@ type PricePlan = components['schemas']['PricePlan'];
 export default function getAllPricePlans(
   customerToken: string
 ): Promise<PricePlan[]> {
+  if (!customerToken) {
+    throw new Error('Token must be provided.');
+  }
+
   return getPricePlans({ token: customerToken })
     .then((response) => {
       if (!response.ok) {
@@ -17,6 +21,6 @@ export default function getAllPricePlans(
       return response.json();
     })
     .then((pricePlans) => {
-      return pricePlans ?? [];
+      return pricePlans;
     });
 }

@@ -2,25 +2,23 @@
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 import { enableFetchMocks } from 'jest-fetch-mock';
+import { VALID_PAYMENT_METHOD } from 'api/octane';
+import * as getPaymentMethodStatus from 'actions/getPaymentMethodStatus';
+import usePaymentMethodStatus from './usePaymentMethodStatus';
+import type { UsePaymentMethodStatusReturnType } from './usePaymentMethodStatus';
 import { TokenProvider } from './useCustomerToken';
-import useActiveSubscription from './useActiveSubscription';
-import type { UseActiveSubscriptionReturnType } from './useActiveSubscription';
-import * as getActiveSubscription from 'actions/getActiveSubscription';
 
 enableFetchMocks();
 fetchMock.enableMocks();
 
-const mockPricePlan = {
-  displayName: 'Test Price Plan',
-  name: 'test_price_plan',
-  period: 'quarter',
-  basePrice: 100,
+const paymentStatus = {
+  status: VALID_PAYMENT_METHOD,
 };
 
-let hookResult: UseActiveSubscriptionReturnType | null;
+let hookResult: UsePaymentMethodStatusReturnType | null;
 
 const MockComponent = (props?: { token?: string }): JSX.Element => {
-  const result = useActiveSubscription({
+  const result = usePaymentMethodStatus({
     token: props?.token,
   });
 
@@ -29,9 +27,9 @@ const MockComponent = (props?: { token?: string }): JSX.Element => {
   return <></>;
 };
 
-describe('useActiveSubscription hook', () => {
+describe('usePaymentMethodStatus hook', () => {
   beforeEach(() => {
-    fetchMock.once(JSON.stringify({ price_plan: mockPricePlan }));
+    fetchMock.once(JSON.stringify(paymentStatus));
   });
 
   afterEach(() => {
@@ -46,7 +44,7 @@ describe('useActiveSubscription hook', () => {
 
   it('is called correctly with a token from context', async () => {
     const mockToken = '12345';
-    const spy = jest.spyOn(getActiveSubscription, 'default');
+    const spy = jest.spyOn(getPaymentMethodStatus, 'default');
 
     render(
       <TokenProvider token={mockToken}>
@@ -59,14 +57,14 @@ describe('useActiveSubscription hook', () => {
     expect(fetchMock.mock.calls[0]?.[1]?.headers?.['Authorization']).toBe(
       `Bearer ${mockToken}`
     );
-    expect(hookResult?.result).toEqual(mockPricePlan);
+    expect(hookResult?.result).toEqual(paymentStatus);
     expect(hookResult?.loading).toBeDefined();
     expect(hookResult?.error).toBeDefined();
   });
 
   it('is called correctly with token passed in directly', async () => {
     const mockToken = '54321';
-    const spy = jest.spyOn(getActiveSubscription, 'default');
+    const spy = jest.spyOn(getPaymentMethodStatus, 'default');
 
     render(<MockComponent token={mockToken} />);
 
@@ -75,7 +73,7 @@ describe('useActiveSubscription hook', () => {
     expect(fetchMock.mock.calls[0]?.[1]?.headers?.['Authorization']).toBe(
       `Bearer ${mockToken}`
     );
-    expect(hookResult?.result).toEqual(mockPricePlan);
+    expect(hookResult?.result).toEqual(paymentStatus);
     expect(hookResult?.loading).toBeDefined();
     expect(hookResult?.error).toBeDefined();
   });
@@ -83,7 +81,7 @@ describe('useActiveSubscription hook', () => {
   it('should prefer token, which passed in directly', async () => {
     const tokenAsArgument = '12345';
     const tokenFromContext = '54321';
-    const spy = jest.spyOn(getActiveSubscription, 'default');
+    const spy = jest.spyOn(getPaymentMethodStatus, 'default');
 
     render(
       <TokenProvider token={tokenFromContext}>
