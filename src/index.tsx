@@ -9,10 +9,27 @@ import { components } from './apiTypes';
 import subscribeCustomer from './actions/subscribeCustomer';
 import getActiveSubscription from './actions/getActiveSubscription';
 import hasPaymentInfo from './actions/hasPaymentInfo';
+
+// Hooks
+import useActiveSubscription from 'hooks/useActiveSubscription';
+import useHasPaymentInfo from 'hooks/useHasPaymentInfo';
+import usePaymentMethodStatus from 'hooks/usePaymentMethodStatus';
+import usePricePlans from 'hooks/usePricePlans';
+import useStripeSetupIntent from 'hooks/useStripeSetupIntent';
+import useUpdateSubscription from 'hooks/useUpdateSubscription';
+
 export const Actions = {
   subscribeCustomer,
   getActiveSubscription,
   hasPaymentInfo,
+};
+export const Hooks = {
+  useActiveSubscription,
+  useHasPaymentInfo,
+  usePaymentMethodStatus,
+  usePricePlans,
+  useStripeSetupIntent,
+  useUpdateSubscription,
 };
 
 // Top-level API components. These only need a customer token and should
@@ -33,3 +50,7 @@ export { TokenProvider } from './hooks/useCustomerToken';
 
 // Types
 export type SchemaTypes = components['schemas'];
+export type {
+  UseAsyncReturnType,
+  UseAsyncDelayedReturnType,
+} from 'hooks/useAsync';
