@@ -1,6 +1,6 @@
 import { useCallback, useContext } from 'react';
 import getAllPricePlans from 'actions/getAllPricePlans';
-import useAsync from 'hooks/useAsync';
+import { useAsync } from 'hooks/useAsync';
 import type { UseAsyncReturnType } from 'hooks/useAsync';
 import { TokenContext } from 'hooks/useCustomerToken';
 import { components } from '../apiTypes';
