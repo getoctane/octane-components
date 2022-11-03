@@ -1,7 +1,7 @@
 import { useCallback, useContext } from 'react';
 import { TokenContext } from 'hooks/useCustomerToken';
-import { useAsyncDelayed } from 'hooks/useAsync';
-import type { UseAsyncDelayedReturnType } from 'hooks/useAsync';
+import { useAsyncOnDemand } from 'hooks/useAsync';
+import type { UseAsyncOnDemandReturnType } from 'hooks/useAsync';
 import { createStripeSetupIntent } from 'api/octane';
 import { components } from '../apiTypes';
 
@@ -10,7 +10,7 @@ export type StripeSetupIntent =
 
 const useStripeSetupIntent = (args?: {
   token?: string;
-}): UseAsyncDelayedReturnType<StripeSetupIntent> => {
+}): UseAsyncOnDemandReturnType<StripeSetupIntent> => {
   const { token: tokenFromContext } = useContext(TokenContext);
   const userToken = args?.token || tokenFromContext;
 
@@ -31,7 +31,7 @@ const useStripeSetupIntent = (args?: {
       .then((data) => data);
   }, [userToken]);
 
-  return useAsyncDelayed(mutation);
+  return useAsyncOnDemand(mutation);
 };
 
 export default useStripeSetupIntent;

@@ -1,7 +1,7 @@
 import { useCallback, useContext } from 'react';
 import { TokenContext } from 'hooks/useCustomerToken';
-import { useAsyncDelayed } from 'hooks/useAsync';
-import type { UseAsyncDelayedReturnType } from 'hooks/useAsync';
+import { useAsyncOnDemand } from 'hooks/useAsync';
+import type { UseAsyncOnDemandReturnType } from 'hooks/useAsync';
 import subscribeCustomer from 'actions/subscribeCustomer';
 import type { SubscribeCustomerOptions } from 'actions/subscribeCustomer';
 import { components } from '../apiTypes';
@@ -17,7 +17,7 @@ type Props = {
 
 const useUpdateSubscription = (
   props: Props
-): UseAsyncDelayedReturnType<ActiveSubscription> => {
+): UseAsyncOnDemandReturnType<ActiveSubscription> => {
   const { token: tokenFromContext } = useContext(TokenContext);
   const { token, pricePlanName, options = {} } = props;
   const userToken = token || tokenFromContext;
@@ -34,7 +34,7 @@ const useUpdateSubscription = (
     return subscribeCustomer(userToken, pricePlanName, options);
   }, [userToken, pricePlanName, options]);
 
-  return useAsyncDelayed(mutation);
+  return useAsyncOnDemand(mutation);
 };
 
 export default useUpdateSubscription;

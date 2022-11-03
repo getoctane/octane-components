@@ -52,21 +52,21 @@ export const useAsync = <Result, Error>(
   return result;
 };
 
-export type UseAsyncDelayedReturnType<Result, Error = unknown> = [
+export type UseAsyncOnDemandReturnType<Result, Error = unknown> = [
   () => void,
   UseAsyncReturnType<Result, Error>
 ];
 
-export const useAsyncDelayed = <Args extends unknown[], Result, Error>(
+export const useAsyncOnDemand = <Args extends unknown[], Result, Error>(
   asyncFn: (...args: Args) => Promise<Result>
-): UseAsyncDelayedReturnType<Result, Error> => {
+): UseAsyncOnDemandReturnType<Result, Error> => {
   const [result, setResult] = useState<UseAsyncReturnType<Result, Error>>({
     loading: false,
     result: null,
     error: null,
   });
 
-  const delayedFunc = useCallback(
+  const funcOnDemand = useCallback(
     (...args: Args) => {
       setResult({ result: null, error: null, loading: true });
 
@@ -81,7 +81,7 @@ export const useAsyncDelayed = <Args extends unknown[], Result, Error>(
     [asyncFn]
   );
 
-  return [delayedFunc, result];
+  return [funcOnDemand, result];
 };
 
 export const createApiHook = <Args extends unknown[], Result>(
