@@ -50,7 +50,3 @@ export { TokenProvider } from './hooks/useCustomerToken';
 
 // Types
 export type SchemaTypes = components['schemas'];
-export type {
-  UseAsyncReturnType,
-  UseAsyncDelayedReturnType,
-} from 'hooks/useAsync';
