@@ -1,6 +1,5 @@
 // Based on https://usehooks.com/useAsync/
-import { useState, useEffect } from 'react';
-import { getPaymentMethodStatus } from '../api/octane';
+import { useState, useEffect, useCallback } from 'react';
 
 export type UseAsyncReturnType<Result, Error = unknown> =
   | {
@@ -17,6 +16,11 @@ export type UseAsyncReturnType<Result, Error = unknown> =
       loading: false;
       result: null;
       error: Error;
+    }
+  | {
+      loading: false;
+      result: null;
+      error: null;
     };
 
 /**
@@ -26,7 +30,7 @@ export type UseAsyncReturnType<Result, Error = unknown> =
  * then `error` and `null` are necessarily `null`. If `loading` or `error` are
  * null
  */
-const useAsync = <Result, Error>(
+export const useAsync = <Result, Error>(
   asyncFn: () => Promise<Result>
 ): UseAsyncReturnType<Result, Error> => {
   const [result, setResult] = useState<UseAsyncReturnType<Result, Error>>({
@@ -46,11 +50,39 @@ const useAsync = <Result, Error>(
   }, [asyncFn]);
 
   return result;
-
-  // Loading is false but result hasn't been set;
 };
 
-export default useAsync;
+export type UseAsyncDelayedReturnType<Result, Error = unknown> = [
+  () => void,
+  UseAsyncReturnType<Result, Error>
+];
+
+export const useAsyncDelayed = <Args extends unknown[], Result, Error>(
+  asyncFn: (...args: Args) => Promise<Result>
+): UseAsyncDelayedReturnType<Result, Error> => {
+  const [result, setResult] = useState<UseAsyncReturnType<Result, Error>>({
+    loading: false,
+    result: null,
+    error: null,
+  });
+
+  const delayedFunc = useCallback(
+    (...args: Args) => {
+      setResult({ result: null, error: null, loading: true });
+
+      asyncFn(...args)
+        .then((result) => {
+          setResult({ result, error: null, loading: false });
+        })
+        .catch((error) => {
+          setResult({ result: null, error, loading: false });
+        });
+    },
+    [asyncFn]
+  );
+
+  return [delayedFunc, result];
+};
 
 export const createApiHook = <Args extends unknown[], Result>(
   apiMethod: (...args: Args) => Promise<Result>
@@ -59,5 +91,3 @@ export const createApiHook = <Args extends unknown[], Result>(
     return useAsync(() => apiMethod(...args));
   };
 };
-
-export const usePaymentMethodStatus = createApiHook(getPaymentMethodStatus);
