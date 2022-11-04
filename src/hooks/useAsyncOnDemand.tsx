@@ -31,7 +31,7 @@ export type UseAsyncOnDemandReturnType<Result, Error = unknown> = [
   UseAsyncOnDemandResultType<Result, Error>
 ];
 
-export const useAsyncOnDemand = <Args extends unknown[], Result, Error>(
+export const useAsyncOnDemand = <Args extends unknown[], Result>(
   asyncFn: (...args: Args) => Promise<Result>
 ): UseAsyncOnDemandReturnType<Result, Error> => {
   const [result, setResult] = useState<
@@ -44,7 +44,7 @@ export const useAsyncOnDemand = <Args extends unknown[], Result, Error>(
   });
 
   const funcOnDemand = useCallback(
-    (...args: Args) => {
+    async (...args: Args) => {
       setResult({
         result: null,
         error: null,
@@ -52,13 +52,24 @@ export const useAsyncOnDemand = <Args extends unknown[], Result, Error>(
         status: 'IN_FLIGHT',
       });
 
-      asyncFn(...args)
-        .then((result) => {
-          setResult({ result, error: null, loading: false, status: 'DONE' });
-        })
-        .catch((error) => {
-          setResult({ result: null, error, loading: false, status: 'DONE' });
+      try {
+        const result = await asyncFn(...args);
+        setResult({
+          result,
+          error: null,
+          loading: false,
+          status: 'DONE',
         });
+      } catch (error) {
+        if (error instanceof Error) {
+          setResult({
+            result: null,
+            error,
+            loading: false,
+            status: 'DONE',
+          });
+        }
+      }
     },
     [asyncFn]
   );
