@@ -4,7 +4,7 @@ import { render, waitFor } from '@testing-library/react';
 import { enableFetchMocks } from 'jest-fetch-mock';
 import { VALID_PAYMENT_METHOD } from 'api/octane';
 import * as getPaymentMethodStatus from 'actions/getPaymentMethodStatus';
-import useHasPaymentInfo from './useHasPaymentInfo';
+import { useHasPaymentInfo } from './useHasPaymentInfo';
 import { TokenProvider } from './useCustomerToken';
 
 enableFetchMocks();

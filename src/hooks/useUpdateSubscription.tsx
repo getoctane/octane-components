@@ -15,7 +15,7 @@ type Props = {
   options?: SubscribeCustomerOptions;
 };
 
-const useUpdateSubscription = ({
+export const useUpdateSubscription = ({
   token,
   pricePlanName,
   options = {},
@@ -37,5 +37,3 @@ const useUpdateSubscription = ({
 
   return useAsyncOnDemand(mutation);
 };
-
-export default useUpdateSubscription;

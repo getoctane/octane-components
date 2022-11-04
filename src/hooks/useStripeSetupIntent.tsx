@@ -8,7 +8,7 @@ import { components } from '../apiTypes';
 export type StripeSetupIntent =
   components['schemas']['CustomerPortalStripeCredential'];
 
-const useStripeSetupIntent = (args?: {
+export const useStripeSetupIntent = (args?: {
   token?: string;
 }): UseAsyncOnDemandReturnType<StripeSetupIntent> => {
   const { token: tokenFromContext } = useContext(TokenContext);
@@ -33,5 +33,3 @@ const useStripeSetupIntent = (args?: {
 
   return useAsyncOnDemand(mutation);
 };
-
-export default useStripeSetupIntent;
