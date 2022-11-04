@@ -7,7 +7,7 @@ import { enableFetchMocks } from 'jest-fetch-mock';
 import { TokenProvider } from './useCustomerToken';
 import type { StripeSetupIntent } from 'hooks/useStripeSetupIntent';
 import useStripeSetupIntent from 'hooks/useStripeSetupIntent';
-import type { UseAsyncReturnType } from './useAsync';
+import type { UseAsyncOnDemandResultType } from './useAsyncOnDemand';
 
 enableFetchMocks();
 fetchMock.enableMocks();
@@ -18,7 +18,7 @@ const mockStripeResponse = {
   publishable_key: 'test_publishable_key',
 };
 
-let hookResult: UseAsyncReturnType<StripeSetupIntent> | null;
+let hookResult: UseAsyncOnDemandResultType<StripeSetupIntent> | null;
 let funcToExecute: (() => void) | null;
 
 const MockComponent = (props?: { token?: string }): JSX.Element => {
@@ -66,6 +66,7 @@ describe('useStripeSetupIntent hook', () => {
         result: null,
         error: null,
         loading: false,
+        status: 'UNSENT',
       })
     );
     expect(funcToExecute).not.toBeNull();
