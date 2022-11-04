@@ -15,11 +15,12 @@ type Props = {
   options?: SubscribeCustomerOptions;
 };
 
-const useUpdateSubscription = (
-  props: Props
-): UseAsyncOnDemandReturnType<ActiveSubscription> => {
+const useUpdateSubscription = ({
+  token,
+  pricePlanName,
+  options = {},
+}: Props): UseAsyncOnDemandReturnType<ActiveSubscription> => {
   const { token: tokenFromContext } = useContext(TokenContext);
-  const { token, pricePlanName, options = {} } = props;
   const userToken = token || tokenFromContext;
 
   if (!userToken) {
