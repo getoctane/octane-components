@@ -81,8 +81,13 @@ describe('useStripeSetupIntent hook', () => {
     // Call mutation returned from the hook
     userEvent.click(screen.getByText('Click to call mutation'));
 
-    await waitFor(() => expect(hookResult?.result).toEqual(mockStripeResponse));
-    expect(fetchMock.mock.calls.length).toEqual(1);
+    await waitFor(() => expect(fetchMock.mock.calls.length).toEqual(1));
+    expect(hookResult).toEqual({
+      loading: false,
+      error: null,
+      result: mockStripeResponse,
+      status: 'DONE',
+    });
     expect(fetchMock.mock.calls[0]?.[1]?.headers?.['Authorization']).toBe(
       `Bearer ${mockToken}`
     );

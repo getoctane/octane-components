@@ -89,9 +89,16 @@ describe('useUpdateSubscription hook', () => {
     userEvent.click(screen.getByText('Click to call mutation'));
 
     await waitFor(() =>
-      expect(hookResult?.result?.price_plan).toEqual(mockPricePlan)
+      expect(spy).toHaveBeenCalledWith(mockToken, mockPricePlan.name, {})
     );
-    expect(spy).toHaveBeenCalledWith(mockToken, mockPricePlan.name, {});
+    expect(hookResult).toEqual({
+      loading: false,
+      error: null,
+      result: {
+        price_plan: mockPricePlan,
+      },
+      status: 'DONE',
+    });
     expect(fetchMock.mock.calls.length).toEqual(1);
     expect(fetchMock.mock.calls[0]?.[1]?.headers?.['Authorization']).toBe(
       `Bearer ${mockToken}`
