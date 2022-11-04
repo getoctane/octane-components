@@ -3,7 +3,7 @@ import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 import { enableFetchMocks } from 'jest-fetch-mock';
 import { TokenProvider } from './useCustomerToken';
-import useActiveSubscription from './useActiveSubscription';
+import { useActiveSubscription } from './useActiveSubscription';
 import type { UseActiveSubscriptionReturnType } from './useActiveSubscription';
 import * as getActiveSubscription from 'actions/getActiveSubscription';
 

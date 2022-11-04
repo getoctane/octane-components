@@ -13,7 +13,7 @@ export type UsePaymentMethodStatusReturnType =
 /**
  * A hook that fetches customer's payment method status.
  */
-const usePaymentMethodStatus = (args?: {
+export const usePaymentMethodStatus = (args?: {
   token?: string;
 }): UsePaymentMethodStatusReturnType => {
   const { token: tokenFromContext } = useContext(TokenContext);
@@ -29,5 +29,3 @@ const usePaymentMethodStatus = (args?: {
 
   return useAsync(asyncFunc);
 };
-
-export default usePaymentMethodStatus;

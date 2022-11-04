@@ -11,7 +11,9 @@ export type UsePricePlansReturnType = UseAsyncReturnType<PricePlan[]>;
 /**
  * A hook that fetches all price plans associated with a vendor.
  */
-const usePricePlans = (args?: { token?: string }): UsePricePlansReturnType => {
+export const usePricePlans = (args?: {
+  token?: string;
+}): UsePricePlansReturnType => {
   const { token: tokenFromContext } = useContext(TokenContext);
   const userToken = args?.token || tokenFromContext;
 
@@ -25,5 +27,3 @@ const usePricePlans = (args?: { token?: string }): UsePricePlansReturnType => {
 
   return useAsync(asyncFunc);
 };
-
-export default usePricePlans;

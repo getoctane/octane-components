@@ -6,7 +6,7 @@ import { enableFetchMocks } from 'jest-fetch-mock';
 
 import * as subscribeCustomer from 'actions/subscribeCustomer';
 import { TokenProvider } from './useCustomerToken';
-import useUpdateSubscription from './useUpdateSubscription';
+import { useUpdateSubscription } from './useUpdateSubscription';
 import type { ActiveSubscription } from './useUpdateSubscription';
 import type { UseAsyncOnDemandResultType } from './useAsyncOnDemand';
 

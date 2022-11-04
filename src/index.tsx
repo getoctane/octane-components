@@ -11,25 +11,17 @@ import getActiveSubscription from './actions/getActiveSubscription';
 import hasPaymentInfo from './actions/hasPaymentInfo';
 
 // Hooks
-import useActiveSubscription from 'hooks/useActiveSubscription';
-import useHasPaymentInfo from 'hooks/useHasPaymentInfo';
-import usePaymentMethodStatus from 'hooks/usePaymentMethodStatus';
-import usePricePlans from 'hooks/usePricePlans';
-import useStripeSetupIntent from 'hooks/useStripeSetupIntent';
-import useUpdateSubscription from 'hooks/useUpdateSubscription';
+export { useActiveSubscription } from 'hooks/useActiveSubscription';
+export { useHasPaymentInfo } from 'hooks/useHasPaymentInfo';
+export { usePaymentMethodStatus } from 'hooks/usePaymentMethodStatus';
+export { usePricePlans } from 'hooks/usePricePlans';
+export { useStripeSetupIntent } from 'hooks/useStripeSetupIntent';
+export { useUpdateSubscription } from 'hooks/useUpdateSubscription';
 
 export const Actions = {
   subscribeCustomer,
   getActiveSubscription,
   hasPaymentInfo,
-};
-export const Hooks = {
-  useActiveSubscription,
-  useHasPaymentInfo,
-  usePaymentMethodStatus,
-  usePricePlans,
-  useStripeSetupIntent,
-  useUpdateSubscription,
 };
 
 // Top-level API components. These only need a customer token and should

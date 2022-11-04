@@ -11,7 +11,7 @@ export type UseActiveSubscriptionReturnType = UseAsyncReturnType<PricePlan>;
 /**
  * A hook that fetches the customer's active subscription information.
  */
-const useActiveSubscription = (args?: {
+export const useActiveSubscription = (args?: {
   token?: string;
 }): UseActiveSubscriptionReturnType => {
   const { token: tokenFromContext } = useContext(TokenContext);
@@ -27,5 +27,3 @@ const useActiveSubscription = (args?: {
 
   return useAsync(asyncFunc);
 };
-
-export default useActiveSubscription;

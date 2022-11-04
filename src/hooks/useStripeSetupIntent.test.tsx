@@ -6,7 +6,7 @@ import { enableFetchMocks } from 'jest-fetch-mock';
 
 import { TokenProvider } from './useCustomerToken';
 import type { StripeSetupIntent } from 'hooks/useStripeSetupIntent';
-import useStripeSetupIntent from 'hooks/useStripeSetupIntent';
+import { useStripeSetupIntent } from 'hooks/useStripeSetupIntent';
 import type { UseAsyncOnDemandResultType } from './useAsyncOnDemand';
 
 enableFetchMocks();
