@@ -8,7 +8,7 @@ import * as subscribeCustomer from 'actions/subscribeCustomer';
 import { TokenProvider } from './useCustomerToken';
 import useUpdateSubscription from './useUpdateSubscription';
 import type { ActiveSubscription } from './useUpdateSubscription';
-import type { UseAsyncReturnType } from './useAsync';
+import type { UseAsyncOnDemandResultType } from './useAsyncOnDemand';
 
 enableFetchMocks();
 fetchMock.enableMocks();
@@ -20,7 +20,7 @@ const mockPricePlan = {
   basePrice: 100,
 };
 
-let hookResult: UseAsyncReturnType<ActiveSubscription> | null;
+let hookResult: UseAsyncOnDemandResultType<ActiveSubscription> | null;
 let funcToExecute: (() => void) | null = null;
 
 const MockComponent = (props: {
@@ -72,6 +72,7 @@ describe('useUpdateSubscription hook', () => {
         result: null,
         error: null,
         loading: false,
+        status: 'UNSENT',
       })
     );
     expect(funcToExecute).not.toBeNull();

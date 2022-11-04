@@ -1,7 +1,7 @@
 import { useCallback, useContext } from 'react';
 import { TokenContext } from 'hooks/useCustomerToken';
-import { useAsyncOnDemand } from 'hooks/useAsync';
-import type { UseAsyncOnDemandReturnType } from 'hooks/useAsync';
+import { useAsyncOnDemand } from 'hooks/useAsyncOnDemand';
+import type { UseAsyncOnDemandReturnType } from 'hooks/useAsyncOnDemand';
 import { createStripeSetupIntent } from 'api/octane';
 import { components } from '../apiTypes';
 

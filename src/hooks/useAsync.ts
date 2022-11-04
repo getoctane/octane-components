@@ -1,5 +1,5 @@
 // Based on https://usehooks.com/useAsync/
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 export type UseAsyncReturnType<Result, Error = unknown> =
   | {
@@ -16,11 +16,6 @@ export type UseAsyncReturnType<Result, Error = unknown> =
       loading: false;
       result: null;
       error: Error;
-    }
-  | {
-      loading: false;
-      result: null;
-      error: null;
     };
 
 /**
@@ -50,38 +45,6 @@ export const useAsync = <Result, Error>(
   }, [asyncFn]);
 
   return result;
-};
-
-export type UseAsyncOnDemandReturnType<Result, Error = unknown> = [
-  () => void,
-  UseAsyncReturnType<Result, Error>
-];
-
-export const useAsyncOnDemand = <Args extends unknown[], Result, Error>(
-  asyncFn: (...args: Args) => Promise<Result>
-): UseAsyncOnDemandReturnType<Result, Error> => {
-  const [result, setResult] = useState<UseAsyncReturnType<Result, Error>>({
-    loading: false,
-    result: null,
-    error: null,
-  });
-
-  const funcOnDemand = useCallback(
-    (...args: Args) => {
-      setResult({ result: null, error: null, loading: true });
-
-      asyncFn(...args)
-        .then((result) => {
-          setResult({ result, error: null, loading: false });
-        })
-        .catch((error) => {
-          setResult({ result: null, error, loading: false });
-        });
-    },
-    [asyncFn]
-  );
-
-  return [funcOnDemand, result];
 };
 
 export const createApiHook = <Args extends unknown[], Result>(
