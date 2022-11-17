@@ -1,9 +1,9 @@
 import { useCallback, useContext } from 'react';
-import { TokenContext } from 'hooks/useCustomerToken';
-import { useAsyncOnDemand } from 'hooks/useAsyncOnDemand';
-import type { UseAsyncOnDemandReturnType } from 'hooks/useAsyncOnDemand';
-import subscribeCustomer from 'actions/subscribeCustomer';
-import type { SubscribeCustomerOptions } from 'actions/subscribeCustomer';
+import { TokenContext } from './useCustomerToken';
+import { useAsyncOnDemand } from './useAsyncOnDemand';
+import type { UseAsyncOnDemandReturnType } from './useAsyncOnDemand';
+import subscribeCustomer from '../actions/subscribeCustomer';
+import type { SubscribeCustomerOptions } from '../actions/subscribeCustomer';
 import { components } from '../apiTypes';
 
 export type ActiveSubscription =

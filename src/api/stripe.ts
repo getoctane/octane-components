@@ -6,6 +6,8 @@ export interface StripeApiConfig {
   stripeAccount: string;
 }
 
+let promise: Promise<Stripe | null>;
+
 export const StripeApiFactory = ({
   platformApiKey = process.env.OCT_PLATFORM_API_KEY,
   stripeAccount = process.env.OCT_STRIPE_ACCOUNT_ID,
@@ -18,7 +20,11 @@ export const StripeApiFactory = ({
     platformApiKey != null,
     'Expected non-null Stripe (public) key. Double-check that you are setting `OCT_PLATFORM_API_KEY` in your env variables.'
   );
-  return loadStripe(platformApiKey, {
-    stripeAccount: stripeAccount,
-  });
+  if (!promise) {
+    promise = loadStripe(platformApiKey, {
+      stripeAccount: stripeAccount,
+    });
+  }
+
+  return promise;
 };

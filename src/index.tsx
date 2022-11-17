@@ -11,12 +11,12 @@ import getActiveSubscription from './actions/getActiveSubscription';
 import hasPaymentInfo from './actions/hasPaymentInfo';
 
 // Hooks
-export { useActiveSubscription } from 'hooks/useActiveSubscription';
-export { useHasPaymentInfo } from 'hooks/useHasPaymentInfo';
-export { usePaymentMethodStatus } from 'hooks/usePaymentMethodStatus';
-export { usePricePlans } from 'hooks/usePricePlans';
-export { useStripeSetupIntent } from 'hooks/useStripeSetupIntent';
-export { useUpdateSubscription } from 'hooks/useUpdateSubscription';
+export { useActiveSubscription } from './hooks/useActiveSubscription';
+export { useHasPaymentInfo } from './hooks/useHasPaymentInfo';
+export { usePaymentMethodStatus } from './hooks/usePaymentMethodStatus';
+export { usePricePlans } from './hooks/usePricePlans';
+export { useStripeSetupIntent } from './hooks/useStripeSetupIntent';
+export { useUpdateSubscription } from './hooks/useUpdateSubscription';
 
 export const Actions = {
   subscribeCustomer,

@@ -5,19 +5,19 @@
   "author": "Octane (http://getoctane.io)",
   "license": "MIT",
   "repository": "getoctane/octane-components",
-  "main": "dist/index.js",
+  "main": "dist/cmjs/index.js",
+  "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "/dist"
   ],
-  "module": "dist/index.modern.js",
   "source": "src/index.tsx",
   "engines": {
     "node": ">=12"
   },
   "scripts": {
     "build": "run-s clean build:compile build:copy",
-    "build:compile": "tsc",
+    "build:compile": "tsc -p tsconfig-esm.json && tsc -p tsconfig-cjs.json",
     "build:copy": "copyfiles -V -u 1 \"src/**/*.css\" dist",
     "clean": "rimraf dist/",
     "start": "tsc --watch",

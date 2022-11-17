@@ -1,7 +1,6 @@
 import { Elements } from '@stripe/react-stripe-js';
 import React, { useState, useEffect, useContext } from 'react';
 import type { FunctionComponent } from 'react';
-import { API_BASE } from '../../config';
 import { StripeApiFactory } from '../../api/stripe';
 import { createStripeSetupIntent } from '../../api/octane';
 import { components } from '../../apiTypes';
@@ -34,6 +33,7 @@ interface StripeElementsProps {
    */
   loading?: React.ReactElement;
   onError?: (err: unknown) => void;
+  baseApiUrl?: string;
 }
 
 /**
@@ -48,6 +48,7 @@ export const StripeElements: FunctionComponent<StripeElementsProps> = ({
   loading = null,
   onError,
   children,
+  baseApiUrl,
 }) => {
   const { token } = useCustomerToken();
   const [creds, setCreds] = useState<CustomerPortalStripeCredential | null>(
@@ -57,7 +58,7 @@ export const StripeElements: FunctionComponent<StripeElementsProps> = ({
   useEffect(() => {
     const req = createStripeSetupIntent({
       token,
-      urlOverride: API_BASE,
+      urlOverride: baseApiUrl,
     })
       .then((result) => {
         if (!result.ok) {
@@ -70,7 +71,7 @@ export const StripeElements: FunctionComponent<StripeElementsProps> = ({
     if (onError) {
       req.catch(onError);
     }
-  }, [token, onError]);
+  }, [token, onError, baseApiUrl]);
 
   // Render the loading element if one is provided.
   if (creds === null) {

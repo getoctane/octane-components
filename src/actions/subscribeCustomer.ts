@@ -9,6 +9,7 @@ export interface SubscribeCustomerOptions {
    * information on file for the customer before subscribing them.
    */
   checkForBillingInfo?: boolean;
+  baseApiUrl?: string;
 }
 
 /**
@@ -24,10 +25,10 @@ export default function subscribeCustomer(
     throw new Error('Token must be provided.');
   }
 
-  const { checkForBillingInfo = false } = options;
+  const { checkForBillingInfo = false, baseApiUrl } = options;
 
   const check = checkForBillingInfo
-    ? hasPaymentInfo(customerToken).then((result) => {
+    ? hasPaymentInfo(customerToken, { baseApiUrl }).then((result) => {
         if (!result) {
           throw new Error(
             'Payment status is missing, cannot subscribe customer'
@@ -43,6 +44,7 @@ export default function subscribeCustomer(
         body: {
           price_plan_name: pricePlanName,
         },
+        urlOverride: baseApiUrl,
       })
     )
     .then((response) => {

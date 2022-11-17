@@ -1,18 +1,24 @@
 import { useCallback, useContext } from 'react';
-import { TokenContext } from 'hooks/useCustomerToken';
-import { useAsyncOnDemand } from 'hooks/useAsyncOnDemand';
-import type { UseAsyncOnDemandReturnType } from 'hooks/useAsyncOnDemand';
-import { createStripeSetupIntent } from 'api/octane';
+import { TokenContext } from './useCustomerToken';
+import { useAsyncOnDemand } from './useAsyncOnDemand';
+import type { UseAsyncOnDemandReturnType } from './useAsyncOnDemand';
+import { createStripeSetupIntent } from '../api/octane';
 import { components } from '../apiTypes';
 
 export type StripeSetupIntent =
   components['schemas']['CustomerPortalStripeCredential'];
 
+type Options = {
+  baseApiUrl?: string;
+};
+
 export const useStripeSetupIntent = (args?: {
   token?: string;
+  options?: Options;
 }): UseAsyncOnDemandReturnType<StripeSetupIntent> => {
   const { token: tokenFromContext } = useContext(TokenContext);
   const userToken = args?.token || tokenFromContext;
+  const baseApiUrl = args?.options?.baseApiUrl;
 
   if (!userToken) {
     throw new Error('Token must be provided.');
@@ -21,6 +27,7 @@ export const useStripeSetupIntent = (args?: {
   const mutation = useCallback(() => {
     return createStripeSetupIntent({
       token: userToken,
+      urlOverride: baseApiUrl,
     })
       .then((result) => {
         if (!result.ok) {
@@ -29,7 +36,7 @@ export const useStripeSetupIntent = (args?: {
         return result.json();
       })
       .then((data) => data);
-  }, [userToken]);
+  }, [baseApiUrl, userToken]);
 
   return useAsyncOnDemand(mutation);
 };
