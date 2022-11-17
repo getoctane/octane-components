@@ -89,7 +89,9 @@ describe('useUpdateSubscription hook', () => {
     userEvent.click(screen.getByText('Click to call mutation'));
 
     await waitFor(() =>
-      expect(spy).toHaveBeenCalledWith(mockToken, mockPricePlan.name, {})
+      expect(spy).toHaveBeenCalledWith(mockToken, mockPricePlan.name, {
+        baseApiUrl: undefined,
+      })
     );
     expect(hookResult).toEqual({
       loading: false,

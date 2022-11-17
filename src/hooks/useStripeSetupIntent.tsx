@@ -8,17 +8,13 @@ import { components } from '../apiTypes';
 export type StripeSetupIntent =
   components['schemas']['CustomerPortalStripeCredential'];
 
-type Options = {
-  baseApiUrl?: string;
-};
-
 export const useStripeSetupIntent = (args?: {
   token?: string;
-  options?: Options;
+  baseApiUrl?: string;
 }): UseAsyncOnDemandReturnType<StripeSetupIntent> => {
   const { token: tokenFromContext } = useContext(TokenContext);
   const userToken = args?.token || tokenFromContext;
-  const baseApiUrl = args?.options?.baseApiUrl;
+  const baseApiUrl = args?.baseApiUrl;
 
   if (!userToken) {
     throw new Error('Token must be provided.');
