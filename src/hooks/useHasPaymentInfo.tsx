@@ -1,7 +1,14 @@
-import { usePaymentMethodStatus } from 'hooks/usePaymentMethodStatus';
-import { VALID_PAYMENT_METHOD } from 'api/octane';
+import { usePaymentMethodStatus } from './usePaymentMethodStatus';
+import { VALID_PAYMENT_METHOD } from '../api/octane';
 
-export const useHasPaymentInfo = (args?: { token?: string }): boolean => {
+type Options = {
+  baseApiUrl?: string;
+};
+
+export const useHasPaymentInfo = (args?: {
+  token?: string;
+  options: Options;
+}): boolean => {
   const { result: paymentInfo } = usePaymentMethodStatus(args);
   return paymentInfo?.status === VALID_PAYMENT_METHOD;
 };

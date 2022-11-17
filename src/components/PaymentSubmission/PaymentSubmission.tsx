@@ -97,11 +97,13 @@ export interface PaymentSubmissionProps
    */
   customerToken: string;
   onPaymentSet?: () => void;
+  baseApiUrl?: string;
 }
 
 export function PaymentSubmission({
   customerToken: token,
   onPaymentSet,
+  baseApiUrl,
   ...managerProps
 }: PaymentSubmissionProps): JSX.Element {
   const [isUpdatingPayment, setIsUpdatingPayment] = useState<boolean | null>(
@@ -111,13 +113,13 @@ export function PaymentSubmission({
   // Figure out if the customer has payment info on file or not.
   // If they do, we don't need to create a Stripe intent for them right away.
   useEffect(() => {
-    hasPaymentInfo(token).then((hasIt) => {
+    hasPaymentInfo(token, { baseApiUrl }).then((hasIt) => {
       setIsUpdatingPayment(!hasIt);
       if (hasIt) {
         onPaymentSet && onPaymentSet();
       }
     });
-  }, [token, setIsUpdatingPayment, onPaymentSet]);
+  }, [token, setIsUpdatingPayment, onPaymentSet, baseApiUrl]);
 
   // If there's a payment method already, and we're not actively updating the
   // payment method, say as much.
@@ -155,7 +157,11 @@ export function PaymentSubmission({
   return (
     <>
       <TokenProvider token={token}>
-        <StripeElements loading={loading} onError={handleError}>
+        <StripeElements
+          loading={loading}
+          onError={handleError}
+          baseApiUrl={baseApiUrl}
+        >
           <PaymentSubmissionManager
             onPaymentSet={onPaymentSet}
             {...managerProps}
