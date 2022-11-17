@@ -7,9 +7,6 @@ import { components } from '../apiTypes';
 
 type CustomerPaymentMethodStatus =
   components['schemas']['CustomerPaymentMethodStatus'];
-type Options = {
-  baseApiUrl?: string;
-};
 
 export type UsePaymentMethodStatusReturnType =
   UseAsyncReturnType<CustomerPaymentMethodStatus>;
@@ -19,11 +16,11 @@ export type UsePaymentMethodStatusReturnType =
  */
 export const usePaymentMethodStatus = (args?: {
   token?: string;
-  options?: Options;
+  baseApiUrl?: string;
 }): UsePaymentMethodStatusReturnType => {
   const { token: tokenFromContext } = useContext(TokenContext);
   const userToken = args?.token || tokenFromContext;
-  const baseApiUrl = args?.options?.baseApiUrl;
+  const baseApiUrl = args?.baseApiUrl;
 
   if (!userToken) {
     throw new Error('Token must be provided.');

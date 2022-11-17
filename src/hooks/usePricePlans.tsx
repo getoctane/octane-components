@@ -6,9 +6,6 @@ import { TokenContext } from './useCustomerToken';
 import { components } from '../apiTypes';
 
 type PricePlan = components['schemas']['PricePlan'];
-type Options = {
-  baseApiUrl?: string;
-};
 
 export type UsePricePlansReturnType = UseAsyncReturnType<PricePlan[]>;
 
@@ -17,11 +14,11 @@ export type UsePricePlansReturnType = UseAsyncReturnType<PricePlan[]>;
  */
 export const usePricePlans = (args?: {
   token?: string;
-  options?: Options;
+  baseApiUrl?: string;
 }): UsePricePlansReturnType => {
   const { token: tokenFromContext } = useContext(TokenContext);
   const userToken = args?.token || tokenFromContext;
-  const baseApiUrl = args?.options?.baseApiUrl;
+  const baseApiUrl = args?.baseApiUrl;
 
   if (!userToken) {
     throw new Error('Token must be provided.');

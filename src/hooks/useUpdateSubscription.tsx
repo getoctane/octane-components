@@ -12,12 +12,14 @@ export type ActiveSubscription =
 type Props = {
   token?: string;
   pricePlanName: string;
+  baseApiUrl?: string;
   options?: SubscribeCustomerOptions;
 };
 
 export const useUpdateSubscription = ({
   token,
   pricePlanName,
+  baseApiUrl,
   options = {},
 }: Props): UseAsyncOnDemandReturnType<ActiveSubscription> => {
   const { token: tokenFromContext } = useContext(TokenContext);
@@ -32,8 +34,11 @@ export const useUpdateSubscription = ({
   }
 
   const mutation = useCallback(() => {
-    return subscribeCustomer(userToken, pricePlanName, options);
-  }, [userToken, pricePlanName, options]);
+    return subscribeCustomer(userToken, pricePlanName, {
+      ...options,
+      baseApiUrl,
+    });
+  }, [userToken, pricePlanName, options, baseApiUrl]);
 
   return useAsyncOnDemand(mutation);
 };

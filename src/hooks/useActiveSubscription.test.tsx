@@ -54,7 +54,9 @@ describe('useActiveSubscription hook', () => {
       </TokenProvider>
     );
 
-    await waitFor(() => expect(spy).toHaveBeenCalledWith(mockToken));
+    await waitFor(() =>
+      expect(spy).toHaveBeenCalledWith(mockToken, { baseApiUrl: undefined })
+    );
     expect(fetchMock.mock.calls.length).toEqual(1);
     expect(fetchMock.mock.calls[0]?.[1]?.headers?.['Authorization']).toBe(
       `Bearer ${mockToken}`
@@ -70,7 +72,9 @@ describe('useActiveSubscription hook', () => {
 
     render(<MockComponent token={mockToken} />);
 
-    await waitFor(() => expect(spy).toHaveBeenCalledWith(mockToken));
+    await waitFor(() =>
+      expect(spy).toHaveBeenCalledWith(mockToken, { baseApiUrl: undefined })
+    );
     expect(fetchMock.mock.calls.length).toEqual(1);
     expect(fetchMock.mock.calls[0]?.[1]?.headers?.['Authorization']).toBe(
       `Bearer ${mockToken}`
@@ -91,7 +95,11 @@ describe('useActiveSubscription hook', () => {
       </TokenProvider>
     );
 
-    await waitFor(() => expect(spy).toHaveBeenCalledWith(tokenAsArgument));
+    await waitFor(() =>
+      expect(spy).toHaveBeenCalledWith(tokenAsArgument, {
+        baseApiUrl: undefined,
+      })
+    );
     expect(fetchMock.mock.calls[0]?.[1]?.headers?.['Authorization']).toBe(
       `Bearer ${tokenAsArgument}`
     );
