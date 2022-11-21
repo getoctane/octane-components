@@ -1480,33 +1480,25 @@ export interface components {
       total_revenue?: number;
     };
     Invoice: {
-      /** Non-empty string if there was an error while sending out invoice */
-      invoicing_error?: string;
-      /** False if invoice has not been sent to the customer */
-      is_invoiced?: boolean;
       /** Total amount due */
       amount_due?: number;
       /** Amount due before any credits are applied */
       sub_total?: number;
       due_date?: string;
-      /** False if not paid yet */
-      is_paid?: boolean;
+      issue_date?: string;
       end_time?: string;
       line_items?: components['schemas']['LineItems'][];
       id?: string;
       start_time?: string;
-      latest_invoice_attempt_at?: string;
       /** False if not approved */
       is_approved?: boolean;
-      /** The number of retries done to send the invoice */
-      invoice_retry_attempt?: number;
-      /** Non-empty string if there was an error while processing payment */
-      payment_error?: string;
-      /** The number of retries done to process the payment */
-      payment_retry_attempt?: number;
-      latest_payment_attempt_at?: string;
       /** Any discount credits applied to the invoice */
       discount_credit?: number;
+      tax_amount?: number | null;
+      min_item_start_time?: string | null;
+      max_item_end_time?: string | null;
+      pdf_url?: string | null;
+      status?: string | null;
     };
     Coupon: {
       /** Unique name identifier. */
