@@ -1,6 +1,7 @@
 import { components } from '../apiTypes';
 import { API_BASE } from '../config';
 
+type ContactInfo = components['schemas']['ContactInfo'];
 type Invoice = components['schemas']['Invoice'];
 type PricePlan = components['schemas']['PricePlan'];
 type ActiveSubscription =
@@ -187,6 +188,20 @@ export const getCustomerInvoices = makeApiGETEndpoint<
   Invoice[] | null, // Optionally returns Invoices
   unknown // Undefined failure type
 >(getCustomerInvoicesUrl);
+
+export const getContactInfoUrl: UrlFactory = (base = API_BASE) =>
+  `${base}/ecp/contact_info`;
+
+/**
+ * For a given customer, returns the all customer's invoices (or null
+ * if there is none).
+ */
+export const getContactInfo = makeApiGETEndpoint<
+  never, // No query params
+  [], // No URL path args
+  ContactInfo | null, // Optionally returns Invoices
+  unknown // Undefined failure type
+>(getContactInfoUrl);
 
 export const updateSubscriptionUrl: UrlFactory = (base = API_BASE) =>
   `${base}/ecp/subscription`;

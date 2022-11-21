@@ -1229,14 +1229,16 @@ export interface components {
       address_line_1?: string | null;
       address_line_2?: string | null;
       city?: string | null;
-      state?: string | null;
       country?: string | null;
-      zipcode?: string | null;
-      url?: string | null;
-      logo_url?: string | null;
       email?: string | null;
-      phone?: string | null;
       legal_name?: string | null;
+      logo_url?: string | null;
+      phone?: string | null;
+      secondary_emails?: string | null;
+      state?: string | null;
+      url?: string | null;
+      vat_id?: string | null;
+      zipcode?: string | null;
     };
     Vendor: {
       /** Unique name identifier of a Vendor */
