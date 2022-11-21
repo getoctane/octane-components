@@ -1,7 +1,7 @@
 import { updateSubscription } from '../api/octane';
 import { components } from '../apiTypes';
 import hasPaymentInfo from './hasPaymentInfo';
-type ActiveSubscription = components['schemas']['CustomerPortalSubscription'];
+type ActivePricePlan = components['schemas']['CustomerPortalSubscription'];
 
 export interface SubscribeCustomerOptions {
   /**
@@ -20,7 +20,7 @@ export default function subscribeCustomer(
   customerToken: string,
   pricePlanName: string,
   options: SubscribeCustomerOptions = {}
-): Promise<ActiveSubscription> {
+): Promise<ActivePricePlan> {
   if (!customerToken) {
     throw new Error('Token must be provided.');
   }

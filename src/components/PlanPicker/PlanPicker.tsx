@@ -6,7 +6,7 @@ import { PricePlanCard } from './PricePlanCard';
 import { getCustomerActiveSubscription, getPricePlans } from '../../api/octane';
 import { TokenProvider, useCustomerToken } from '../../hooks/useCustomerToken';
 
-export type PricePlan = components['schemas']['PricePlan'];
+export type PricePlan = components['schemas']['CustomerPortalPricePlan'];
 export type MeteredComponent = components['schemas']['MeteredComponent'];
 
 type LoadingState =
@@ -95,8 +95,8 @@ function PricePlanManager({
       }
       const data = await result.json();
       // Update component state
-      if (data !== null && data.price_plan) {
-        setExistingPlan(data.price_plan);
+      if (data !== null && data.subscription?.price_plan) {
+        setExistingPlan(data.subscription?.price_plan);
       }
     };
 

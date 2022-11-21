@@ -1,7 +1,8 @@
 import { getCustomerActiveSubscription } from '../api/octane';
 import { components } from '../apiTypes';
 
-type PricePlan = components['schemas']['PricePlan'];
+type ActiveSubscription =
+  components['schemas']['CustomerPortalActiveSubscription'];
 
 type Options = {
   baseApiUrl?: string;
@@ -14,7 +15,7 @@ type Options = {
 export default function getActiveSubscription(
   customerToken: string,
   options: Options = {}
-): Promise<PricePlan | null> {
+): Promise<ActiveSubscription | null> {
   if (!customerToken) {
     throw new Error('Token must be provided.');
   }
@@ -32,6 +33,6 @@ export default function getActiveSubscription(
       return response.json();
     })
     .then((data) => {
-      return data?.price_plan ?? null;
+      return data;
     });
 }

@@ -6,7 +6,7 @@ import subscribeCustomer from '../actions/subscribeCustomer';
 import type { SubscribeCustomerOptions } from '../actions/subscribeCustomer';
 import { components } from '../apiTypes';
 
-export type ActiveSubscription =
+export type ActivePricePlan =
   components['schemas']['CustomerPortalSubscription'];
 
 type Props = {
@@ -21,7 +21,7 @@ export const useUpdateSubscription = ({
   pricePlanName,
   baseApiUrl,
   options = {},
-}: Props): UseAsyncOnDemandReturnType<ActiveSubscription> => {
+}: Props): UseAsyncOnDemandReturnType<ActivePricePlan> => {
   const { token: tokenFromContext } = useContext(TokenContext);
   const userToken = token || tokenFromContext;
 

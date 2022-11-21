@@ -1,7 +1,9 @@
 import { components } from '../apiTypes';
 import { API_BASE } from '../config';
 type PricePlan = components['schemas']['PricePlan'];
-type ActiveSubscription = components['schemas']['CustomerPortalSubscription'];
+type ActiveSubscription =
+  components['schemas']['CustomerPortalActiveSubscription'];
+type ActivePricePlan = components['schemas']['CustomerPortalSubscription'];
 type CustomerPortalStripeCredential =
   components['schemas']['CustomerPortalStripeCredential'];
 type CustomerPaymentMethodStatus =
@@ -157,7 +159,7 @@ export const getPricePlans = makeApiGETEndpoint<
 >(getPricePlansUrl);
 
 export const getCustomerActiveSubscriptionUrl: UrlFactory = (base = API_BASE) =>
-  `${base}/ecp/subscription`;
+  `${base}/ecp/active_subscription`;
 
 /**
  * For a given customer, returns the customer's active subscription (or null
@@ -183,7 +185,7 @@ interface UpdateSubscriptionBody {
 export const updateSubscription = makeApiNonGETEndpoint<
   UpdateSubscriptionBody, // Body type
   [], // No URL path args
-  ActiveSubscription, // Return an active subscription
+  ActivePricePlan, // Return an active subscription
   unknown // Undefined failure type
 >(updateSubscriptionUrl, 'POST');
 

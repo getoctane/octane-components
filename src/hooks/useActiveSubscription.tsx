@@ -5,9 +5,11 @@ import type { UseAsyncReturnType } from './useAsync';
 import { TokenContext } from './useCustomerToken';
 import { components } from '../apiTypes';
 
-type PricePlan = components['schemas']['PricePlan'];
+type ActiveSubscription =
+  components['schemas']['CustomerPortalActiveSubscription'];
 
-export type UseActiveSubscriptionReturnType = UseAsyncReturnType<PricePlan>;
+export type UseActiveSubscriptionReturnType =
+  UseAsyncReturnType<ActiveSubscription>;
 
 /**
  * A hook that fetches the customer's active subscription information.
