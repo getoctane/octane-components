@@ -6,7 +6,7 @@ import 'components/PlanPicker/PlanPicker.css';
 import React from 'react';
 import withMock from 'storybook-addon-mock';
 import { getCustomerActiveSubscriptionUrl, getPricePlansUrl } from 'api/octane';
-type PricePlan = components['schemas']['PricePlan'];
+type PricePlan = components['schemas']['CustomerPortalPricePlan'];
 type MeteredComponent = components['schemas']['MeteredComponent'];
 
 const config: Meta = {

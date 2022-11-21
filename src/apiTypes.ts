@@ -1519,20 +1519,22 @@ export interface components {
       price: number;
     };
     PriceScheme: {
+      batch_size?: number | null;
       display_name?: string | null;
       name?: string | null;
       scheme_type?: unknown;
       /** Array of price tiers, each of which consists of `price` and `cap` key:value pairs */
-      prices?: components['schemas']['PriceTier'][];
+      prices?: components['schemas']['PriceTier'][] | null;
+      priceList?: unknown;
       time_unit_name?: string | null;
       unit_name?: string | null;
     };
     MeteredComponent: {
-      /** Unique name identifier */
+      display_name?: string | null;
+      limit?: number | null;
+      meter_display_name?: unknown;
       meter_name?: unknown;
       price_scheme?: components['schemas']['PriceScheme'];
-      /** Limit to set on the metered component. */
-      limit?: number | null;
     };
     Discount: {
       discount_type?: unknown;
@@ -1806,6 +1808,44 @@ export interface components {
     CustomerPortalSubscription: {
       price_plan?: components['schemas']['PricePlan'];
     };
+    SubscriptionAddOn: {
+      add_on?: components['schemas']['AddOnInputArgs'][];
+      price?: number | null;
+      quantity?: number;
+    };
+    CustomerPortalPricePlan: {
+      add_ons?: components['schemas']['AddOnInputArgs'][];
+      base_price?: number | null;
+      base_price_description?: string | null;
+      base_price_frequency?: number | null;
+      coupon?: components['schemas']['Coupon'];
+      created_at?: string;
+      description?: string | null;
+      discount?: components['schemas']['Discount'];
+      display_name?: string;
+      features?: components['schemas']['Feature'][];
+      limits?: components['schemas']['Limit'][];
+      metered_components?: components['schemas']['MeteredComponent'][];
+      minimum_charge?: number | null;
+      name: string;
+      period: string;
+      tags?: components['schemas']['PricePlanTag'][];
+      trial?: components['schemas']['Trial'];
+    };
+    CustomerPortalSubscription1: {
+      add_ons: components['schemas']['SubscriptionAddOn'][];
+      align_to_calendar?: boolean;
+      base_prive_override?: number | null;
+      customer_name?: string;
+      discount_override?: components['schemas']['Discount']  | null;
+      effective_at?: string;
+      expired_at?: string | null;
+      features_override?: components['schemas']['Feature'][] | null;
+      limits_override?: components['schemas']['Limit'][] | null;
+      price_plan?: components['schemas']['CustomerPortalPricePlan'];
+      price_plan_name?: string;
+      trial_override?: components['schemas']['Trial'] | null;
+    };
     CustomerPortalSubscriptionInputArgs: {
       price_plan_name?: string;
     };
@@ -1813,6 +1853,13 @@ export interface components {
       client_secret?: string;
       account_id?: string;
       publishable_key?: string;
+    };
+    CustomerPortalActiveSubscription: {
+      billing_cycle?: components['schemas']['BillingCycleDate']; 
+      discounted_fixed_price?: number;
+      invoicing_date?: string;
+      subscription?: components['schemas']['CustomerPortalSubscription1']
+      total_fixed_price?: number;
     };
   };
   responses: {
