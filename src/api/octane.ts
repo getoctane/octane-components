@@ -193,13 +193,13 @@ export const getContactInfoUrl: UrlFactory = (base = API_BASE) =>
   `${base}/ecp/contact_info`;
 
 /**
- * For a given customer, returns the all customer's invoices (or null
+ * For a given customer, returns the contact info (or null
  * if there is none).
  */
 export const getContactInfo = makeApiGETEndpoint<
   never, // No query params
   [], // No URL path args
-  ContactInfo | null, // Optionally returns Invoices
+  ContactInfo | null, // Optionally returns Contact Info
   unknown // Undefined failure type
 >(getContactInfoUrl);
 

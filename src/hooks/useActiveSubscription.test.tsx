@@ -6,15 +6,25 @@ import { TokenProvider } from './useCustomerToken';
 import { useActiveSubscription } from './useActiveSubscription';
 import type { UseActiveSubscriptionReturnType } from './useActiveSubscription';
 import * as getActiveSubscription from 'actions/getActiveSubscription';
+import { components } from '../apiTypes';
 
 enableFetchMocks();
 fetchMock.enableMocks();
 
-const mockPricePlan = {
-  displayName: 'Test Price Plan',
-  name: 'test_price_plan',
-  period: 'quarter',
-  basePrice: 100,
+type ActiveSubscription =
+  components['schemas']['CustomerPortalActiveSubscription'];
+
+const subscriptionResponse: ActiveSubscription = {
+  total_fixed_price: 100,
+  subscription: {
+    add_ons: [],
+    price_plan: {
+      display_name: 'Test Price Plan',
+      name: 'test_price_plan',
+      period: 'quarter',
+      base_price: 100,
+    },
+  },
 };
 
 let hookResult: UseActiveSubscriptionReturnType | null;
@@ -31,7 +41,7 @@ const MockComponent = (props?: { token?: string }): JSX.Element => {
 
 describe('useActiveSubscription hook', () => {
   beforeEach(() => {
-    fetchMock.once(JSON.stringify({ price_plan: mockPricePlan }));
+    fetchMock.once(JSON.stringify(subscriptionResponse));
   });
 
   afterEach(() => {
@@ -61,7 +71,7 @@ describe('useActiveSubscription hook', () => {
     expect(fetchMock.mock.calls[0]?.[1]?.headers?.['Authorization']).toBe(
       `Bearer ${mockToken}`
     );
-    expect(hookResult?.result).toEqual(mockPricePlan);
+    expect(hookResult?.result).toEqual(subscriptionResponse);
     expect(hookResult?.loading).toBeDefined();
     expect(hookResult?.error).toBeDefined();
   });
@@ -79,7 +89,8 @@ describe('useActiveSubscription hook', () => {
     expect(fetchMock.mock.calls[0]?.[1]?.headers?.['Authorization']).toBe(
       `Bearer ${mockToken}`
     );
-    expect(hookResult?.result).toEqual(mockPricePlan);
+
+    expect(hookResult?.result).toEqual(subscriptionResponse);
     expect(hookResult?.loading).toBeDefined();
     expect(hookResult?.error).toBeDefined();
   });
