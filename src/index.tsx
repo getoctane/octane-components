@@ -17,6 +17,8 @@ export { usePaymentMethodStatus } from './hooks/usePaymentMethodStatus';
 export { usePricePlans } from './hooks/usePricePlans';
 export { useStripeSetupIntent } from './hooks/useStripeSetupIntent';
 export { useUpdateSubscription } from './hooks/useUpdateSubscription';
+export { useContactInfo } from './hooks/useContactInfo';
+export { useInvoices } from './hooks/useInvoices';
 
 export const Actions = {
   subscribeCustomer,
