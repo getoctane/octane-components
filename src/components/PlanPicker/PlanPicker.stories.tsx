@@ -152,7 +152,9 @@ const mockActiveSubscription = {
     start_date: '2021-08-12T17:02:00.986000',
   },
   effective_at: '2021-08-12T17:02:00.986000',
-  price_plan: mockPricePlan,
+  subscription: {
+    price_plan: mockPricePlan,
+  },
   price_plan_name: 'basic',
   trial_override: null,
 };
