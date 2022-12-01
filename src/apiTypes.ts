@@ -1259,6 +1259,8 @@ export interface components {
       legal_name?: string;
       city?: string;
       logo_url?: string;
+      secondary_emails?: string;
+      vat_id?: string;
     };
     CreateVendorArgs: {
       name?: string;
@@ -1523,11 +1525,20 @@ export interface components {
       time_unit_name?: string | null;
       unit_name?: string | null;
     };
+    LabelLimitLabel: {
+      key: string;
+      value: string;
+    },
+    LabelLimit: {
+      labels: components['schemas']['LabelLimitLabel'][];
+      limit: number;
+    },
     MeteredComponent: {
       display_name?: string | null;
       limit?: number | null;
-      meter_display_name?: unknown;
-      meter_name?: unknown;
+      label_limits?: components['schemas']['LabelLimit'][];
+      meter_display_name?: string;
+      meter_name?: string;
       price_scheme?: components['schemas']['PriceScheme'];
     };
     Discount: {
@@ -1849,10 +1860,10 @@ export interface components {
       publishable_key?: string;
     };
     CustomerPortalActiveSubscription: {
-      billing_cycle?: components['schemas']['BillingCycleDate']; 
+      billing_cycle: components['schemas']['BillingCycleDate']; 
       discounted_fixed_price?: number;
-      invoicing_date?: string;
-      subscription?: components['schemas']['CustomerPortalSubscription1']
+      invoicing_date: string;
+      subscription: components['schemas']['CustomerPortalSubscription1']
       total_fixed_price?: number;
     };
   };
