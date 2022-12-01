@@ -16,6 +16,11 @@ type ActiveSubscription =
 
 const subscriptionResponse: ActiveSubscription = {
   total_fixed_price: 100,
+  invoicing_date: '2021-07-31',
+  billing_cycle: {
+    cycle_end: '2021-07-31',
+    cycle_start: '2021-07-01',
+  },
   subscription: {
     add_ons: [],
     price_plan: {

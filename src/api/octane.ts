@@ -1,16 +1,16 @@
 import { components } from '../apiTypes';
 import { API_BASE } from '../config';
 
-type ContactInfo = components['schemas']['ContactInfo'];
-type Invoice = components['schemas']['Invoice'];
-type PricePlan = components['schemas']['PricePlan'];
-type ActiveSubscription =
-  components['schemas']['CustomerPortalActiveSubscription'];
-type ActivePricePlan = components['schemas']['CustomerPortalSubscription'];
-type CustomerPortalStripeCredential =
-  components['schemas']['CustomerPortalStripeCredential'];
-type CustomerPaymentMethodStatus =
-  components['schemas']['CustomerPaymentMethodStatus'];
+type Schemas = components['schemas'];
+
+type ContactInfo = Schemas['ContactInfo'];
+type ContactInfoInput = Schemas['ContactInfoInputArgs'];
+type Invoice = Schemas['Invoice'];
+type PricePlan = Schemas['PricePlan'];
+type ActiveSubscription = Schemas['CustomerPortalActiveSubscription'];
+type ActivePricePlan = Schemas['CustomerPortalSubscription'];
+type CustomerPortalStripeCredential = Schemas['CustomerPortalStripeCredential'];
+type CustomerPaymentMethodStatus = Schemas['CustomerPaymentMethodStatus'];
 
 /* = = = = = = = = = = = = = =
 
@@ -202,6 +202,16 @@ export const getContactInfo = makeApiGETEndpoint<
   ContactInfo | null, // Optionally returns Contact Info
   unknown // Undefined failure type
 >(getContactInfoUrl);
+
+/**
+ * For a given customer, allows to update contact info
+ */
+export const updateContactInfo = makeApiNonGETEndpoint<
+  ContactInfoInput, // body type
+  [], // No URL path args
+  ContactInfo, // Returns updated Contact info
+  unknown // Undefined failure type
+>(getContactInfoUrl, 'PUT');
 
 export const updateSubscriptionUrl: UrlFactory = (base = API_BASE) =>
   `${base}/ecp/subscription`;
