@@ -1240,6 +1240,12 @@ export interface components {
       vat_id?: string | null;
       zipcode?: string | null;
     };
+    VendorInfo: {
+      currency: string;
+      name: string;
+      display_name?: string;
+      contact_info?: components['schemas']['ContactInfo'] | null;
+    };
     Vendor: {
       /** Unique name identifier of a Vendor */
       name: string;

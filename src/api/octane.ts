@@ -11,6 +11,7 @@ type ActiveSubscription = Schemas['CustomerPortalActiveSubscription'];
 type ActivePricePlan = Schemas['CustomerPortalSubscription'];
 type CustomerPortalStripeCredential = Schemas['CustomerPortalStripeCredential'];
 type CustomerPaymentMethodStatus = Schemas['CustomerPaymentMethodStatus'];
+type VendorInfo = Schemas['VendorInfo'];
 
 /* = = = = = = = = = = = = = =
 
@@ -189,11 +190,25 @@ export const getCustomerInvoices = makeApiGETEndpoint<
   unknown // Undefined failure type
 >(getCustomerInvoicesUrl);
 
+export const getVendorInfoUrl: UrlFactory = (base = API_BASE) =>
+  `${base}/ecp/vendor`;
+
+/**
+ * For a given customer, returns it's vendor info or null
+ * if there is none).
+ */
+export const getVendorInfo = makeApiGETEndpoint<
+  never, // No query params
+  [], // No URL path args
+  VendorInfo | null, // Optionally returns Vendor's Info
+  unknown // Undefined failure type
+>(getVendorInfoUrl);
+
 export const getContactInfoUrl: UrlFactory = (base = API_BASE) =>
   `${base}/ecp/contact_info`;
 
 /**
- * For a given customer, returns the contact info (or null
+ * For a given customer, returns the contact info or null
  * if there is none).
  */
 export const getContactInfo = makeApiGETEndpoint<
