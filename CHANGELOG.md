@@ -3,19 +3,19 @@
 All notable changes will be documented in this file.
 NPM Publish adheres to [Semantic Versioning](http://semver.org/).
 
-## [v0.6.1]
+## [v0.6.1](https://github.com/getoctane/octane-components/commit/804b4e9e37b58a7ad3a885ecb55348c4936bf0b8)
 
 **Fixes**
 
 - Fixed a bug where package versions were published prematurely
 
-## [v0.6.0]
+## [v0.6.0](https://github.com/getoctane/octane-components/commit/18bd3414f2c3468d1e3ddf2bcfbd92045c48b987)
 
 **Features**
 
 - Added a `useUpdateContactInfo` hook
 
-## [v0.5.0]
+## [v0.5.0](https://github.com/getoctane/octane-components/commit/58fe02b8c047b4a7b52fbb7e2117620798bcc608)
 
 **Features**
 
@@ -25,7 +25,7 @@ NPM Publish adheres to [Semantic Versioning](http://semver.org/).
 
 - Updated types for the `useActiveSubscription` hook.
 
-## [v0.4.0]
+## [v0.4.0](https://github.com/getoctane/octane-components/commit/9825057bcd28a092ef8623ef86242216da909476)
 
 **BREAKING**
 
