@@ -1,7 +1,6 @@
 import { useCallback, useContext } from 'react';
 import { TokenContext } from './useCustomerToken';
 import { useAsyncOnDemand } from './useAsyncOnDemand';
-import type { UseAsyncOnDemandReturnType } from './useAsyncOnDemand';
 import subscribeCustomer from '../actions/subscribeCustomer';
 import type { SubscribeCustomerOptions } from '../actions/subscribeCustomer';
 import { components } from '../apiTypes';
@@ -11,17 +10,15 @@ export type ActivePricePlan =
 
 type Props = {
   token?: string;
-  pricePlanName: string;
   baseApiUrl?: string;
   options?: SubscribeCustomerOptions;
 };
 
 export const useUpdateSubscription = ({
   token,
-  pricePlanName,
   baseApiUrl,
   options = {},
-}: Props): UseAsyncOnDemandReturnType<ActivePricePlan> => {
+}: Props) => {
   const { token: tokenFromContext } = useContext(TokenContext);
   const userToken = token || tokenFromContext;
 
@@ -29,16 +26,19 @@ export const useUpdateSubscription = ({
     throw new Error('Token must be provided.');
   }
 
-  if (!pricePlanName) {
-    throw new Error('Price plan name must be provided.');
-  }
+  const mutation = useCallback(
+    (pricePlanName: string) => {
+      if (!pricePlanName) {
+        throw new Error('Price plan name must be provided.');
+      }
 
-  const mutation = useCallback(() => {
-    return subscribeCustomer(userToken, pricePlanName, {
-      ...options,
-      baseApiUrl,
-    });
-  }, [userToken, pricePlanName, options, baseApiUrl]);
+      return subscribeCustomer(userToken, pricePlanName, {
+        ...options,
+        baseApiUrl,
+      });
+    },
+    [userToken, options, baseApiUrl]
+  );
 
   return useAsyncOnDemand(mutation);
 };
