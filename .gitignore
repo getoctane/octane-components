@@ -3,4 +3,5 @@ dist/
 .DS_Store
 storybook-static/
 .env.local
+.vscode/
 
