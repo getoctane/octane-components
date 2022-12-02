@@ -26,14 +26,15 @@ export type UseAsyncOnDemandResultType<Result, Error = unknown> =
       status: 'UNSENT';
     };
 
-export type UseAsyncOnDemandReturnType<Result, Error = unknown> = [
-  () => void,
-  UseAsyncOnDemandResultType<Result, Error>
-];
+export type UseAsyncOnDemandReturnType<
+  Result,
+  Args extends unknown[],
+  Error = unknown
+> = [(...args: Args) => void, UseAsyncOnDemandResultType<Result, Error>];
 
 export const useAsyncOnDemand = <Args extends unknown[], Result>(
   asyncFn: (...args: Args) => Promise<Result>
-): UseAsyncOnDemandReturnType<Result, Error> => {
+): UseAsyncOnDemandReturnType<Result, Args, Error> => {
   const [result, setResult] = useState<
     UseAsyncOnDemandResultType<Result, Error>
   >({

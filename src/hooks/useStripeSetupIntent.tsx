@@ -1,7 +1,6 @@
 import { useCallback, useContext } from 'react';
 import { TokenContext } from './useCustomerToken';
 import { useAsyncOnDemand } from './useAsyncOnDemand';
-import type { UseAsyncOnDemandReturnType } from './useAsyncOnDemand';
 import { createStripeSetupIntent } from '../api/octane';
 import { components } from '../apiTypes';
 
@@ -11,7 +10,7 @@ export type StripeSetupIntent =
 export const useStripeSetupIntent = (args?: {
   token?: string;
   baseApiUrl?: string;
-}): UseAsyncOnDemandReturnType<StripeSetupIntent> => {
+}) => {
   const { token: tokenFromContext } = useContext(TokenContext);
   const userToken = args?.token || tokenFromContext;
   const baseApiUrl = args?.baseApiUrl;

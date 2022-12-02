@@ -21,7 +21,7 @@ const mockPricePlan = {
 };
 
 let hookResult: UseAsyncOnDemandResultType<ActivePricePlan> | null;
-let funcToExecute: (() => void) | null = null;
+let funcToExecute: ((ppName: string) => void) | null = null;
 
 const MockComponent = (props: {
   token?: string;
@@ -29,13 +29,16 @@ const MockComponent = (props: {
 }): JSX.Element => {
   const [mutation, result] = useUpdateSubscription({
     token: props?.token,
-    pricePlanName: props.ppName,
   });
 
   hookResult = result;
   funcToExecute = mutation;
 
-  return <button onClick={mutation}>Click to call mutation</button>;
+  return (
+    <button onClick={() => mutation(props.ppName)}>
+      Click to call mutation
+    </button>
+  );
 };
 
 describe('useUpdateSubscription hook', () => {
@@ -115,15 +118,5 @@ describe('useUpdateSubscription hook', () => {
         </TokenProvider>
       )
     ).toThrow(Error('Token must be provided.'));
-  });
-
-  it("should throw an error, if price plan name isn't provided", async () => {
-    expect(() =>
-      render(
-        <TokenProvider token='12345'>
-          <MockComponent ppName='' />
-        </TokenProvider>
-      )
-    ).toThrow(Error('Price plan name must be provided.'));
   });
 });
