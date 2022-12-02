@@ -3,6 +3,49 @@
 All notable changes will be documented in this file.
 NPM Publish adheres to [Semantic Versioning](http://semver.org/).
 
+## [v0.6.1]
+
+**Fixes**
+
+- Fixed a bug where package versions were published prematurely
+
+## [v0.6.0]
+
+**Features**
+
+- Added a `useUpdateContactInfo` hook
+
+## [v0.5.0]
+
+**Features**
+
+- Added `useInvoices` and `useContactInfo` hooks and actions.
+
+**Improvements**
+
+- Updated types for the `useActiveSubscription` hook.
+
+## [v0.4.0]
+
+**BREAKING**
+
+- `octane-components` now builds separate CommonJS and ESModule builds. This may impact import paths in your project, particularly if you were importing non-top-level exports in this package. If your build system is happy with this change, you're likely fine, but feel free to get in touch with us by opening a GitHub issue if you encounter upgrade problems.
+
+**Features**
+
+- Add React hooks for all of our current actions.
+
+## [v0.3.0](https://github.com/getoctane/octane-components/commit/f12e4eebf3443eb963cadd55a0fcfae57bfd1ab8)
+
+**Features**
+
+- Pre-built components all include an `onError` prop which accepts a callback for handling errors.
+
+**Improvements**
+
+- Currencies now support fractional cents up to 12 digits long.
+- Expose `hasPaymentInfo` and `getActiveSubscriptions` through the named `Actions` export.
+
 ## [v0.2.0](https://github.com/getoctane/octane-components/commit/c7ccc0b5b7d61f94706a812b3b324811e173d6a8) (2021-12-06)
 
 **Features**
