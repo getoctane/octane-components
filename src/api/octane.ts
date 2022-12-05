@@ -4,14 +4,14 @@ import { API_BASE } from '../config';
 type Schemas = components['schemas'];
 
 type ContactInfo = Schemas['ContactInfo'];
-type ContactInfoInput = Schemas['ContactInfoInputArgs'];
-type Invoice = Schemas['Invoice'];
+type ContactInfoInputArgs = Schemas['ContactInfoInputArgs'];
+type Invoice = Schemas['CustomerPortalInvoice'];
 type PricePlan = Schemas['PricePlan'];
 type ActiveSubscription = Schemas['CustomerPortalActiveSubscription'];
 type ActivePricePlan = Schemas['CustomerPortalSubscription'];
 type CustomerPortalStripeCredential = Schemas['CustomerPortalStripeCredential'];
 type CustomerPaymentMethodStatus = Schemas['CustomerPaymentMethodStatus'];
-type VendorInfo = Schemas['VendorInfo'];
+type VendorInfo = Schemas['CustomerPortalVendor'];
 
 /* = = = = = = = = = = = = = =
 
@@ -222,7 +222,7 @@ export const getContactInfo = makeApiGETEndpoint<
  * For a given customer, allows to update contact info
  */
 export const updateContactInfo = makeApiNonGETEndpoint<
-  ContactInfoInput, // body type
+  ContactInfoInputArgs, // body type
   [], // No URL path args
   ContactInfo, // Returns updated Contact info
   unknown // Undefined failure type

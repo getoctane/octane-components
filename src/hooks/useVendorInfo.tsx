@@ -5,12 +5,12 @@ import { TokenContext } from './useCustomerToken';
 import { components } from '../apiTypes';
 import getCustomerVendorInfo from '../actions/getVendorInfo';
 
-type VendorInfo = components['schemas']['VendorInfo'];
+type VendorInfo = components['schemas']['CustomerPortalVendor'];
 
 export type UseVendorInfoReturnType = UseAsyncReturnType<VendorInfo>;
 
 /**
- * A hook that fetches the related to the customer vendor's contact info.
+ * A hook that fetches data about the customer's vendor.
  */
 export const useVendorInfo = (args?: {
   token?: string;

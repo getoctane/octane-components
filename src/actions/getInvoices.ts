@@ -1,7 +1,7 @@
 import { getCustomerInvoices } from '../api/octane';
 import { components } from '../apiTypes';
 
-type Invoices = components['schemas']['Invoice'][];
+type Invoices = components['schemas']['CustomerPortalInvoice'][];
 
 type Options = {
   baseApiUrl?: string;
