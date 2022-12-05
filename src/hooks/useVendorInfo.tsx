@@ -10,7 +10,7 @@ type VendorInfo = components['schemas']['VendorInfo'];
 export type UseVendorInfoReturnType = UseAsyncReturnType<VendorInfo>;
 
 /**
- * A hook that fetches the customer's contact info.
+ * A hook that fetches the related to the customer vendor's contact info.
  */
 export const useVendorInfo = (args?: {
   token?: string;
