@@ -1,4 +1,5 @@
 # octane-components <!-- omit in toc -->
+
 [![NPM](https://img.shields.io/npm/v/octane-components.svg)](https://www.npmjs.com/package/octane-components) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![Octane](./docs/octane-logo.png)](https://www.getoctane.io/)
 
@@ -18,8 +19,10 @@ Ready-to-use React components that make it easy to integrate with **[Octane](htt
   - [`getActiveSubscription(token): Promise<PricePlan | null>`](#getactivesubscriptiontoken-promisepriceplan--null)
   - [`hasPaymentInfo(token): Promise<boolean>`](#haspaymentinfotoken-promiseboolean)
   - [`subscribeCustomer(token, plan, options): Promise<ActiveSubscription>`](#subscribecustomertoken-plan-options-promiseactivesubscription)
+- [Hooks](#hooks)
 - [Types](#types)
 - [Local development](#local-development)
+- [Releasing](#releasing)
 - [License](#license)
 
 ## Getting started
@@ -393,6 +396,52 @@ fetch('/token')
 - `plan` _(required, string)_ — The name of the plan to subscribe the customer to
 - `options` _(optional, object)_ — Optional configuration options
   - `options.checkForBillingInfo` _(optional, boolean)_ — Whether or not to verify that there is valid payment information for the customer before subscribing them. Defaults to `false`.
+
+## Hooks
+
+If you use React Hooks, we've wrapped all of our actions in hooks to make things a little easier.
+Hooks accept a token (which can be omitted if you're using `<TokenProvider />`) and fetch any data
+whenever your component laods.
+
+```ts
+const token = useOctaneComponentsToken();
+const { loading, result: invoices } = useInvoices({ token });
+
+return loading ? <Spinner /> : <InvoicesTable invoices={invoices} />;
+```
+
+A few hooks perform mutations, which is to say that they update data rather than fetching it.
+Those hooks return a callback and a `results` object. Calling the callback triggers the request,
+which causes `results` to update.
+
+```ts
+const [updateContactInfo, results] = useUpdateContactInfo();
+const info: ContactInfoInputArgs = getYourNewContactInfo();
+
+return (
+  <>
+    <div>Your request is {results.loading ? 'loading' : 'done'}.</div>
+    <Button onClick={() => updateContactInfo(info)}>Click me!</Button>
+  </>
+);
+```
+
+These hooks fetch data from our end-customer API:
+
+- `useActiveSubscription` - fetch data about the customer's current subscription
+- `useContactInfo` - fetch the customer's contact info
+- `useCustomerUsage` - fetch the customer's usage
+- `useHasPaymentInfo` - fetch whether or not the customer has payment info on file
+- `useInvoices` - fetch a list of invoice metadata for the cusotmer
+- `usePaymentMethodStatus` - fetch the customer's payment method status
+- `usePricePlans` - fetch a list of price plans this custouer could subscribe to
+- `useVendorInfo` - fetch information about this customer's vendor
+
+And these ones allow you to update data through the same API.
+
+- `useUpdateContactInfo` - update the customer's contact info
+- `useUpdateSubscription` - update the customer's subscription
+- `useStripeSetupIntent` - create a [Stripe SetupIntent](https://stripe.com/docs/api/setup_intents) for the customer
 
 ## Types
 
