@@ -1,4 +1,5 @@
 import { Elements } from '@stripe/react-stripe-js';
+import { StripeElementsOptions } from '@stripe/stripe-js';
 import React, { useState, useEffect, useContext } from 'react';
 import type { FunctionComponent } from 'react';
 import { StripeApiFactory } from '../../api/stripe';
@@ -34,6 +35,10 @@ interface StripeElementsProps {
   loading?: React.ReactElement;
   onError?: (err: unknown) => void;
   baseApiUrl?: string;
+  /**
+   * Use options object to customize the Stripe Elements component.
+   */
+  options?: Omit<StripeElementsOptions, 'clientSecret'>;
 }
 
 /**
@@ -49,6 +54,7 @@ export const StripeElements: FunctionComponent<StripeElementsProps> = ({
   onError,
   children,
   baseApiUrl,
+  options = {},
 }) => {
   const { token } = useCustomerToken();
   const [creds, setCreds] = useState<CustomerPortalStripeCredential | null>(
@@ -88,7 +94,7 @@ export const StripeElements: FunctionComponent<StripeElementsProps> = ({
 
   return (
     <StripeClientSecretContext.Provider value={clientSecret}>
-      <Elements stripe={stripePromise} options={{ clientSecret }}>
+      <Elements stripe={stripePromise} options={{ clientSecret, ...options }}>
         {children}
       </Elements>
     </StripeClientSecretContext.Provider>

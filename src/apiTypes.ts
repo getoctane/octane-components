@@ -1489,26 +1489,37 @@ export interface components {
       line_items?: components['schemas']['LineItems'][];
       total_revenue?: number;
     };
+    InvoiceStatus: {
+      action: string | null;
+      created_at: string;
+      error: string | null;
+      pending_action_time: string | null;
+      status: string | null;
+      update_source: ('MANUAL'
+      | 'OCTANE'
+      | 'PADDLE'
+      | 'STRIPE') | null;
+    },
     Invoice: {
       /** Total amount due */
-      amount_due?: number;
+      amount_due: number;
+      /** Any discount credits applied to the invoice */
+      discount_credit: number | null;
+      due_date: string;
+      end_time: string;
+      id: string;
+      issue_date: string;
+      line_items: components['schemas']['LineItems'][];
+      max_item_end_time: string | null;
+      min_item_start_time: string | null;
+      pdf_url: string | null;
+      start_time: string;
+      status: string | null;
       /** Amount due before any credits are applied */
-      sub_total?: number;
-      due_date?: string;
-      issue_date?: string;
-      end_time?: string;
-      line_items?: components['schemas']['LineItems'][];
-      id?: string;
-      start_time?: string;
+      sub_total: number;
+      tax_amount: number | null;
       /** False if not approved */
       is_approved?: boolean;
-      /** Any discount credits applied to the invoice */
-      discount_credit?: number;
-      tax_amount?: number | null;
-      min_item_start_time?: string | null;
-      max_item_end_time?: string | null;
-      pdf_url?: string | null;
-      status?: string | null;
     };
     Coupon: {
       /** Unique name identifier. */
@@ -1540,31 +1551,31 @@ export interface components {
       limit: number;
     },
     MeteredComponent: {
-      display_name?: string | null;
-      limit?: number | null;
-      label_limits?: components['schemas']['LabelLimit'][];
-      meter_display_name?: string;
-      meter_name?: string;
-      price_scheme?: components['schemas']['PriceScheme'];
+      display_name: string | null;
+      limit: number | null;
+      label_limits: components['schemas']['LabelLimit'][];
+      meter_display_name: string | null;
+      meter_name: string;
+      price_scheme: components['schemas']['PriceScheme'];
     };
     Discount: {
-      discount_type?: unknown;
-      amount?: number | null;
+      discount_type: unknown;
+      amount: number | null;
       /** The date when the discount is applied from. */
-      start_date?: string | null;
+      start_date: string | null;
       /** The date when the discount ends. */
-      end_date?: string | null;
+      end_date: string | null;
       /** The id of coupon associated with this discount, none if discount does not originate from coupon */
-      coupon_id?: number | null;
+      coupon_id: number | null;
     };
     Feature: {
-      description?: string | null;
+      description: string | null;
       /** Unique name of a feature */
       name: string;
-      display_name?: string;
+      display_name: string | null;
     };
     Limit: {
-      feature?: components['schemas']['Feature'];
+      feature: components['schemas']['Feature'];
       /** Limit on feature */
       limit: number;
     };
@@ -1573,9 +1584,9 @@ export interface components {
       tag: string;
     };
     Trial: {
-      time_length?: number | null;
-      time_unit_name?: string | null;
-      credit?: number | null;
+      time_length: number | null;
+      time_unit_name: string | null;
+      credit: number | null;
     };
     PricePlan: {
       /** Unique name indentifier of a price plan */
@@ -1652,8 +1663,8 @@ export interface components {
       customer_id?: number;
     };
     BillingCycleDate: {
-      cycle_start?: string;
-      cycle_end?: string;
+      cycle_start: string;
+      cycle_end: string;
     };
     ActiveSubscription: {
       /** Unique name identifier of a customer */
@@ -1699,8 +1710,8 @@ export interface components {
       meter_name?: string;
     };
     AddOnInputArgs: {
-      price?: number;
-      feature?: components['schemas']['FeatureInputArgs'];
+      price: number;
+      feature: components['schemas']['FeatureInputArgs'];
     };
     CreatePricePlanArgs: {
       vendor_id?: number;
@@ -1751,29 +1762,29 @@ export interface components {
       /** Unique name identifier. */
       name: string;
       /** UI-friendly name used for data display. Defaults to `name`. */
-      display_name?: string;
+      display_name: string | null;
       /** The time when the coupon will stop being effective one its applied. */
-      duration_length?: number | null;
+      duration_length: number | null;
       /** The unit time unit to apply to the specified duration length. */
-      duration_unit?: string | null;
+      duration_unit: string | null;
       /** ISO-8601 formatted timestamp that defines after what timestamp this coupon cannot be applied. */
-      expiration_time?: string | null;
+      expiration_time: string | null;
       /** One of RECURRRING or ONCE. */
-      frequency?: ('ONCE' | 'RECURRING') | null;
+      frequency: ('ONCE' | 'RECURRING') | null;
       /** The maximum number of times this coupon can be used. */
-      max_uses?: number | null;
+      max_uses: number | null;
       /** Customer facing code that can be used to apply coupon. */
-      code?: string | null;
+      code: string | null;
       /** True if prorate at application date, false otherwise */
-      is_start_prorated?: boolean | null;
+      is_start_prorated: boolean | null;
       /** True if prorate at end of duration, false otherwise */
-      is_end_prorated?: boolean | null;
+      is_end_prorated: boolean | null;
       /** One of FLAT or PERCENT. */
       discount_type: 'FLAT' | 'PERCENT';
       /** The amount of discount to give based on discount_type */
       discount_amount: number;
-      excluded_customers?: components['schemas']['Customer1'][];
-      excluded_price_plans?: components['schemas']['PricePlan1'][];
+      excluded_customers: components['schemas']['Customer1'][];
+      excluded_price_plans: components['schemas']['PricePlan1'][];
     };
     CouponInputArgs: {
       vendor_id?: number;
@@ -1820,42 +1831,42 @@ export interface components {
       price_plan?: components['schemas']['PricePlan'];
     };
     SubscriptionAddOn: {
-      add_on?: components['schemas']['AddOnInputArgs'][];
-      price?: number | null;
-      quantity?: number;
+      add_on: components['schemas']['AddOnInputArgs'][];
+      price: number | null;
+      quantity: number;
     };
     CustomerPortalPricePlan: {
-      add_ons?: components['schemas']['AddOnInputArgs'][];
-      base_price?: number | null;
-      base_price_description?: string | null;
-      base_price_frequency?: number | null;
-      coupon?: components['schemas']['Coupon'];
-      created_at?: string;
-      description?: string | null;
-      discount?: components['schemas']['Discount'];
-      display_name?: string;
-      features?: components['schemas']['Feature'][];
-      limits?: components['schemas']['Limit'][];
-      metered_components?: components['schemas']['MeteredComponent'][];
-      minimum_charge?: number | null;
+      add_ons: components['schemas']['AddOnInputArgs'][];
+      base_price: number | null;
+      base_price_description: string | null;
+      base_price_frequency: number | null;
+      coupon: components['schemas']['Coupon'];
+      created_at: string;
+      description: string | null;
+      discount: components['schemas']['Discount'];
+      display_name: string;
+      features: components['schemas']['Feature'][];
+      limits: components['schemas']['Limit'][];
+      metered_components: components['schemas']['MeteredComponent'][];
+      minimum_charge: number | null;
       name: string;
       period: string;
-      tags?: components['schemas']['PricePlanTag'][];
-      trial?: components['schemas']['Trial'];
+      tags: components['schemas']['PricePlanTag'][];
+      trial: components['schemas']['Trial'];
     };
     CustomerPortalSubscription1: {
       add_ons: components['schemas']['SubscriptionAddOn'][];
-      align_to_calendar?: boolean;
-      base_prive_override?: number | null;
-      customer_name?: string;
-      discount_override?: components['schemas']['Discount']  | null;
-      effective_at?: string;
-      expired_at?: string | null;
-      features_override?: components['schemas']['Feature'][] | null;
-      limits_override?: components['schemas']['Limit'][] | null;
-      price_plan?: components['schemas']['CustomerPortalPricePlan'];
-      price_plan_name?: string;
-      trial_override?: components['schemas']['Trial'] | null;
+      align_to_calendar: boolean;
+      base_prive_override: number | null;
+      customer_name: string;
+      discount_override: components['schemas']['Discount']  | null;
+      effective_at: string;
+      expired_at: string | null;
+      features_override: components['schemas']['Feature'][];
+      limits_override: components['schemas']['Limit'][];
+      price_plan: components['schemas']['CustomerPortalPricePlan'];
+      price_plan_name: string;
+      trial_override: components['schemas']['Trial'] | null;
     };
     CustomerPortalSubscriptionInputArgs: {
       price_plan_name?: string;
@@ -1867,10 +1878,10 @@ export interface components {
     };
     CustomerPortalActiveSubscription: {
       billing_cycle: components['schemas']['BillingCycleDate']; 
-      discounted_fixed_price?: number;
+      discounted_fixed_price: number | null;
       invoicing_date: string;
       subscription: components['schemas']['CustomerPortalSubscription1']
-      total_fixed_price?: number;
+      total_fixed_price: number | null;
     };
   };
   responses: {
