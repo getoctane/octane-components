@@ -12,6 +12,7 @@ type ActivePricePlan = Schemas['CustomerPortalSubscription'];
 type CustomerPortalStripeCredential = Schemas['CustomerPortalStripeCredential'];
 type CustomerPaymentMethodStatus = Schemas['CustomerPaymentMethodStatus'];
 type VendorInfo = Schemas['CustomerPortalVendor'];
+type CustomerUsage = Schemas['CustomerPortalUsage'];
 
 /* = = = = = = = = = = = = = =
 
@@ -254,6 +255,16 @@ export const createStripeSetupIntent = makeApiNonGETEndpoint<
   CustomerPortalStripeCredential, // Returns Stripe credentials
   unknown // Undefined failure type
 >(createStripeSetupIntentUrl);
+
+export const getCustomerUsageUrl: UrlFactory = (base = API_BASE) =>
+  `${base}/ecp/usage`;
+
+export const getCustomerUsage = makeApiGETEndpoint<
+  never, // No query params
+  [], // No URL path args
+  CustomerUsage, // Returns customer's usage
+  unknown // Undefined failure type
+>(getCustomerUsageUrl);
 
 export const getPaymentMethodStatusUrl: UrlFactory = (base = API_BASE) =>
   `${base}/ecp/payment_method_status`;
