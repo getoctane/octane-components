@@ -1,14 +1,14 @@
 import { getVendorInfo } from '../api/octane';
 import { components } from '../apiTypes';
 
-type VendorInfo = components['schemas']['VendorInfo'];
+type VendorInfo = components['schemas']['CustomerPortalVendor'];
 
 type Options = {
   baseApiUrl?: string;
 };
 
 /**
- * Fetches the vendor's info related to the customer, or `null` if there is none.
+ * Fetches data about the customer's vendor, or `null` if there is none.
  */
 export default async function getCustomersVendorInfo(
   customerToken: string,

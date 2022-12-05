@@ -5,7 +5,8 @@ import updateCustomerContactInfo from '../actions/updateContactInfo';
 import { components } from '../apiTypes';
 
 export type ContactInfo = components['schemas']['ContactInfo'];
-export type ContactInfoInput = components['schemas']['ContactInfoInputArgs'];
+export type ContactInfoInputArgs =
+  components['schemas']['ContactInfoInputArgs'];
 
 type Props = {
   token?: string;
@@ -21,7 +22,7 @@ export const useUpdateContactInfo = ({ token, baseApiUrl }: Props) => {
   }
 
   const mutation = useCallback(
-    (contactInfoToUpdate: ContactInfoInput) => {
+    (contactInfoToUpdate: ContactInfoInputArgs) => {
       if (!contactInfoToUpdate) {
         throw new Error('Contact info object must be provided.');
       }

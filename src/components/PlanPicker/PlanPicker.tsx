@@ -6,7 +6,7 @@ import { PricePlanCard } from './PricePlanCard';
 import { getCustomerActiveSubscription, getPricePlans } from '../../api/octane';
 import { TokenProvider, useCustomerToken } from '../../hooks/useCustomerToken';
 
-export type PricePlan = components['schemas']['CustomerPortalPricePlan'];
+export type PricePlan = components['schemas']['PricePlan'];
 export type MeteredComponent = components['schemas']['MeteredComponent'];
 
 type LoadingState =

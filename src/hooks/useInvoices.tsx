@@ -5,7 +5,7 @@ import type { UseAsyncReturnType } from './useAsync';
 import { TokenContext } from './useCustomerToken';
 import { components } from '../apiTypes';
 
-type Invoices = components['schemas']['Invoice'][];
+type Invoices = components['schemas']['CustomerPortalInvoice'][];
 
 export type UseInvoicesReturnType = UseAsyncReturnType<Invoices>;
 

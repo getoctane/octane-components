@@ -22,6 +22,8 @@ const subscriptionResponse: ActiveSubscription = {
     cycle_start: '2021-07-01',
   },
   subscription: {
+    customer_name: 'Test Customer',
+    price_plan_name: 'Test Plan',
     add_ons: [],
     price_plan: {
       display_name: 'Test Price Plan',
