@@ -1,7 +1,7 @@
 import { getCustomerUsage } from '../api/octane';
 import { components } from '../apiTypes';
 
-type CustomerUsage = components['schemas']['CustomerPortalUsage'];
+type CustomerUsage = components['schemas']['CustomerPortalUsage'][];
 
 type Options = {
   baseApiUrl?: string;
