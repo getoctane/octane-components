@@ -5,7 +5,7 @@ import { TokenContext } from './useCustomerToken';
 import { components } from '../apiTypes';
 import getCusomerUsage from '../actions/getUsage';
 
-type CustomerUsage = components['schemas']['CustomerPortalUsage'];
+type CustomerUsage = components['schemas']['CustomerPortalUsage'][];
 
 export type UseCustomerUsageReturnType = UseAsyncReturnType<CustomerUsage>;
 

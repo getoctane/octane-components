@@ -262,7 +262,7 @@ export const getCustomerUsageUrl: UrlFactory = (base = API_BASE) =>
 export const getCustomerUsage = makeApiGETEndpoint<
   never, // No query params
   [], // No URL path args
-  CustomerUsage, // Returns customer's usage
+  CustomerUsage[], // Returns customer's usage
   unknown // Undefined failure type
 >(getCustomerUsageUrl);
 
