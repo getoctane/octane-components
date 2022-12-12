@@ -16,6 +16,7 @@ import getInvoices from './actions/getInvoices';
 import getPaymentMethodStatus from './actions/getPaymentMethodStatus';
 import getVendorInfo from './actions/getVendorInfo';
 import getCustomerUsage from './actions/getUsage';
+import getPaymentMethodInfo from './actions/getPaymentMethodInfo';
 
 // Hooks
 export { useActiveSubscription } from './hooks/useActiveSubscription';
@@ -29,6 +30,7 @@ export { useInvoices } from './hooks/useInvoices';
 export { useUpdateContactInfo } from './hooks/useUpdateContactInfo';
 export { useVendorInfo } from './hooks/useVendorInfo';
 export { useCustomerUsage } from './hooks/useCustomerUsage';
+export { usePaymentMethodInfo } from './hooks/usePaymentMethodInfo';
 
 export const Actions = {
   subscribeCustomer,
@@ -41,6 +43,7 @@ export const Actions = {
   getPaymentMethodStatus,
   getVendorInfo,
   getCustomerUsage,
+  getPaymentMethodInfo,
 };
 
 // Top-level API components. These only need a customer token and should
