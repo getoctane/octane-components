@@ -13,6 +13,7 @@ type CustomerPortalStripeCredential = Schemas['CustomerPortalStripeCredential'];
 type CustomerPaymentMethodStatus = Schemas['CustomerPaymentMethodStatus'];
 type VendorInfo = Schemas['CustomerPortalVendor'];
 type CustomerUsage = Schemas['CustomerPortalUsage'];
+type CustomerPortalPaymentInfo = Schemas['CustomerPortalPaymentMethod'];
 
 /* = = = = = = = = = = = = = =
 
@@ -275,5 +276,15 @@ export const getPaymentMethodStatus = makeApiGETEndpoint<
   CustomerPaymentMethodStatus, // Returns Stripe payment method status
   unknown // Undefined failure type
 >(getPaymentMethodStatusUrl);
+
+export const getPaymentMethodInfoUrl: UrlFactory = (base = API_BASE) =>
+  `${base}/ecp/payment_method`;
+
+export const getPaymentMethodInfo = makeApiGETEndpoint<
+  never, // No query params
+  [], // No URL path args
+  CustomerPortalPaymentInfo, // Returns payment method info
+  unknown // Undefined failure type
+>(getPaymentMethodInfoUrl);
 
 export const VALID_PAYMENT_METHOD = 'VALID_PAYMENT_METHOD';
