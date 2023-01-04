@@ -19,5 +19,9 @@ export const EmbeddedComponent = (props: Props) => {
     return null;
   }
 
-  return <iframe src={`https://${result?.url}`} {...iframeProps} />;
+  const link = result.url.includes('https://')
+    ? result.url
+    : `https://${result.url}`;
+
+  return <iframe src={link} {...iframeProps} />;
 };

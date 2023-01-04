@@ -21,7 +21,9 @@ const config: Meta = {
 const mockMeteredComponents: MeteredComponent[] = [
   {
     limit: null,
+    label_limits: [],
     meter_name: 'processing_time',
+    meter_display_name: 'processing_time',
     price_scheme: {
       display_name: null,
       name: null,
@@ -33,7 +35,9 @@ const mockMeteredComponents: MeteredComponent[] = [
   },
   {
     limit: 400.0,
+    label_limits: [],
     meter_name: 'storage',
+    meter_display_name: 'storage',
     price_scheme: {
       display_name: null,
       name: null,
@@ -45,7 +49,9 @@ const mockMeteredComponents: MeteredComponent[] = [
   },
   {
     limit: null,
+    label_limits: [],
     meter_name: 'storage',
+    meter_display_name: 'storage',
     price_scheme: {
       display_name: null,
       name: null,
@@ -57,7 +63,9 @@ const mockMeteredComponents: MeteredComponent[] = [
   },
   {
     limit: null,
+    label_limits: [],
     meter_name: 'storage',
+    meter_display_name: 'storage',
     price_scheme: {
       display_name: null,
       name: null,
@@ -82,6 +90,7 @@ const mockPricePlan: PricePlan = {
   metered_components: [
     {
       meter_name: 'storage_photos',
+      meter_display_name: 'storage_photos',
       price_scheme: {
         display_name: '[Media] Storage Prices (volume-based)',
         name: 'media_storage_volume_prices',
@@ -96,6 +105,7 @@ const mockPricePlan: PricePlan = {
         unit_name: 'gigabyte',
       },
       limit: 0,
+      label_limits: [],
     },
   ],
   discount: {

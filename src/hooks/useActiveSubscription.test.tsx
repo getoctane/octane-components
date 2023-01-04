@@ -30,6 +30,7 @@ const subscriptionResponse: ActiveSubscription = {
       name: 'test_price_plan',
       period: 'quarter',
       base_price: 100,
+      metered_components: [],
     },
   },
 };
