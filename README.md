@@ -14,6 +14,7 @@ Ready-to-use React components that make it easy to integrate with **[Octane](htt
 - [Advanced Components](#advanced-components)
   - [`TokenProvider`](#tokenprovider)
   - [`StripeElements`](#stripeelements)
+  - [`EmbeddedComponent`](#embeddedcomponent)
 - [Styling components](#styling-components)
 - [Actions](#actions)
   - [`getActiveSubscription(token): Promise<PricePlan | null>`](#getactivesubscriptiontoken-promisepriceplan--null)
@@ -279,6 +280,27 @@ const MyComponent = ({ customerToken }) => (
 );
 ```
 
+### `EmbeddedComponent`
+
+`EmbeddedComponent` allows you to embed a customer's page on your website. This is a simple wrapper over `iframe`, which generates a link to customer's page and requires `apiKey` and `customerName` from you. The component also allows you to specify other `iframe` attributes.
+
+```jsx
+import { EmbeddedComponent } from 'octane-components';
+
+<EmbeddedComponent
+  // (Required) Your apiKey from Octane Portal.
+  apiKey="OCTANE_API_KEY"
+  // (Required) Customer's name.
+  customerName="test_customer"
+  // (Optional) List of the iframe attributes
+  width={1200}
+  height={500}
+  title="Customer's Page"
+  referrerPolicy='no-referrer'
+  allowFullScreen
+/>
+```
+
 ## Styling components
 
 By default, components are unstyled. They are decorated with classes that should make it easy to style them to match any sort of branding.
@@ -432,12 +454,13 @@ These hooks fetch data from our end-customer API:
 - `useContactInfo` - fetch the customer's contact info
 - `useCustomerUsage` - fetch the customer's usage
 - `useHasPaymentInfo` - fetch whether or not the customer has payment info on file
-- `useInvoices` - fetch a list of invoice metadata for the cusotmer
+- `useInvoices` - fetch a list of invoice metadata for the customer
 - `usePaymentMethodStatus` - fetch the customer's payment method status
-- `usePricePlans` - fetch a list of price plans this custouer could subscribe to
+- `usePricePlans` - fetch a list of price plans this customer could subscribe to
 - `useVendorInfo` - fetch information about this customer's vendor
+- `useCustomerLink` - fetch a link to customer's page
 
-And these ones allow you to update data through the same API.
+And these ones allow you to update data through the same API:
 
 - `useUpdateContactInfo` - update the customer's contact info
 - `useUpdateSubscription` - update the customer's subscription
