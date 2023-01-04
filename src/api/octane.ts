@@ -14,6 +14,7 @@ type CustomerPaymentMethodStatus = Schemas['CustomerPaymentMethodStatus'];
 type VendorInfo = Schemas['CustomerPortalVendor'];
 type CustomerUsage = Schemas['CustomerPortalUsage'];
 type CustomerPortalPaymentInfo = Schemas['CustomerPortalPaymentMethod'];
+type CustomerPortalUrl = Schemas['CustomerPortalUrl'];
 
 /* = = = = = = = = = = = = = =
 
@@ -286,5 +287,15 @@ export const getPaymentMethodInfo = makeApiGETEndpoint<
   CustomerPortalPaymentInfo, // Returns payment method info
   unknown // Undefined failure type
 >(getPaymentMethodInfoUrl);
+
+export const getCustomersLinkUrl: UrlFactory = (base = API_BASE) =>
+  `${base}/ecp/customer_portal_url`;
+
+export const getCustomersLink = makeApiNonGETEndpoint<
+  { customer_name: string }, // Body type
+  [], // No URL path args
+  CustomerPortalUrl, // Returns a link to customer's page
+  unknown // Undefined failure type
+>(getCustomersLinkUrl);
 
 export const VALID_PAYMENT_METHOD = 'VALID_PAYMENT_METHOD';

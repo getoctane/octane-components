@@ -17,6 +17,7 @@ import getPaymentMethodStatus from './actions/getPaymentMethodStatus';
 import getVendorInfo from './actions/getVendorInfo';
 import getCustomerUsage from './actions/getUsage';
 import getPaymentMethodInfo from './actions/getPaymentMethodInfo';
+import getLinkToCustomerPage from './actions/getCustomerLink';
 
 // Hooks
 export { useActiveSubscription } from './hooks/useActiveSubscription';
@@ -31,6 +32,7 @@ export { useUpdateContactInfo } from './hooks/useUpdateContactInfo';
 export { useVendorInfo } from './hooks/useVendorInfo';
 export { useCustomerUsage } from './hooks/useCustomerUsage';
 export { usePaymentMethodInfo } from './hooks/usePaymentMethodInfo';
+export { useCustomerLink } from './hooks/useCustomerLink';
 
 export const Actions = {
   subscribeCustomer,
@@ -44,6 +46,7 @@ export const Actions = {
   getVendorInfo,
   getCustomerUsage,
   getPaymentMethodInfo,
+  getLinkToCustomerPage,
 };
 
 // Top-level API components. These only need a customer token and should
@@ -58,6 +61,7 @@ export {
   StripeElements,
   useStripeClientSecret,
 } from './components/PaymentSubmission/StripeElements';
+export { EmbeddedComponent } from './components/EmbeddedComponent';
 
 // Token provider
 export { TokenProvider, useCustomerToken } from './hooks/useCustomerToken';
