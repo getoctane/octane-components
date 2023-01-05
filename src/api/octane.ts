@@ -289,10 +289,10 @@ export const getPaymentMethodInfo = makeApiGETEndpoint<
 >(getPaymentMethodInfoUrl);
 
 export const getCustomersLinkUrl: UrlFactory = (base = API_BASE) =>
-  `${base}/ecp/customer_portal_url`;
+  `${base}/ecp/portal_url`;
 
-export const getCustomersLink = makeApiNonGETEndpoint<
-  { customer_name: string }, // Body type
+export const getCustomersLink = makeApiGETEndpoint<
+  never, // No query params
   [], // No URL path args
   CustomerPortalUrl, // Returns a link to customer's page
   unknown // Undefined failure type

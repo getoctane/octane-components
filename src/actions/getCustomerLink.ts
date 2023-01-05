@@ -12,22 +12,14 @@ type Options = {
  */
 export default async function getLinkToCustomerPage(
   customerToken: string,
-  customerName: string,
   options: Options = {}
 ): Promise<ContactLink | null> {
   if (!customerToken) {
     throw new Error('Token must be provided.');
   }
 
-  if (!customerName) {
-    throw new Error("Customer's name must be provided.");
-  }
-
   const response = await getCustomersLink({
     token: customerToken,
-    body: {
-      customer_name: customerName,
-    },
     urlOverride: options.baseApiUrl,
   });
   if (!response.ok) {
