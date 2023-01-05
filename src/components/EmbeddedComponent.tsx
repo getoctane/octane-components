@@ -3,16 +3,14 @@ import { useCustomerLink } from 'hooks/useCustomerLink';
 
 type IFrameProps = Omit<IframeHTMLAttributes<HTMLIFrameElement>, 'src'>;
 type Props = {
-  apiKey: string;
-  customerName: string;
+  customerToken: string;
   baseApiUrl?: string;
 } & IFrameProps;
 
 export const EmbeddedComponent = (props: Props) => {
-  const { apiKey, customerName, ...iframeProps } = props;
+  const { customerToken, ...iframeProps } = props;
   const { result } = useCustomerLink({
-    apiKey,
-    customerName,
+    token: customerToken,
   });
 
   if (!result?.url) {

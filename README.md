@@ -282,16 +282,14 @@ const MyComponent = ({ customerToken }) => (
 
 ### `EmbeddedComponent`
 
-`EmbeddedComponent` allows you to embed a customer's page on your website. This is a simple wrapper over `iframe`, which generates a link to customer's page and requires `apiKey` and `customerName` from you. The component also allows you to specify other `iframe` attributes.
+`EmbeddedComponent` allows you to embed a customer's page on your website. This is a simple wrapper over `iframe`, which generates a link to customer's page and requires `customerToken` from you. The component also allows you to specify other `iframe` attributes.
 
 ```jsx
 import { EmbeddedComponent } from 'octane-components';
 
 <EmbeddedComponent
-  // (Required) Your apiKey from Octane Portal.
-  apiKey="OCTANE_API_KEY"
-  // (Required) Customer's name.
-  customerName="test_customer"
+  // (Required) Customer's token.
+  customerToken="CUSTOMER_TOKEN"
   // (Optional) List of the iframe attributes
   width={1200}
   height={500}
