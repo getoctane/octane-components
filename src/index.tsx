@@ -61,7 +61,7 @@ export {
   StripeElements,
   useStripeClientSecret,
 } from './components/PaymentSubmission/StripeElements';
-export { EmbeddedComponent } from './components/EmbeddedComponent';
+export { EmbeddedPortal } from './components/EmbeddedPortal';
 
 // Token provider
 export { TokenProvider, useCustomerToken } from './hooks/useCustomerToken';

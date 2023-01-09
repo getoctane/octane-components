@@ -7,7 +7,7 @@ type Props = {
   baseApiUrl?: string;
 } & IFrameProps;
 
-export const EmbeddedComponent = (props: Props) => {
+export const EmbeddedPortal = (props: Props) => {
   const { customerToken, ...iframeProps } = props;
   const { result } = useCustomerLink({
     token: customerToken,

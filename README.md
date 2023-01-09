@@ -14,7 +14,7 @@ Ready-to-use React components that make it easy to integrate with **[Octane](htt
 - [Advanced Components](#advanced-components)
   - [`TokenProvider`](#tokenprovider)
   - [`StripeElements`](#stripeelements)
-  - [`EmbeddedComponent`](#embeddedcomponent)
+  - [`EmbeddedPortal`](#embeddedportal)
 - [Styling components](#styling-components)
 - [Actions](#actions)
   - [`getActiveSubscription(token): Promise<PricePlan | null>`](#getactivesubscriptiontoken-promisepriceplan--null)
@@ -280,14 +280,14 @@ const MyComponent = ({ customerToken }) => (
 );
 ```
 
-### `EmbeddedComponent`
+### `EmbeddedPortal`
 
-`EmbeddedComponent` allows you to embed a customer's page on your website. This is a simple wrapper over `iframe`, which generates a link to customer's page and requires `customerToken` from you. The component also allows you to specify other `iframe` attributes.
+`EmbeddedPortal` allows you to embed a customer portal on your website. This is a simple wrapper around an `iframe`, which generates a link to customer's page and requires `customerToken` from you. The component also allows you to specify other `iframe` attributes.
 
 ```jsx
-import { EmbeddedComponent } from 'octane-components';
+import { EmbeddedPortal } from 'octane-components';
 
-<EmbeddedComponent
+<EmbeddedPortal
   // (Required) Customer's token.
   customerToken="CUSTOMER_TOKEN"
   // (Optional) List of the iframe attributes
