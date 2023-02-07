@@ -1,5 +1,5 @@
 import React, { IframeHTMLAttributes } from 'react';
-import { useCustomerLink } from 'hooks/useCustomerLink';
+import { useCustomerLink } from '../hooks/useCustomerLink';
 
 type IFrameProps = Omit<IframeHTMLAttributes<HTMLIFrameElement>, 'src'>;
 type Props = {
