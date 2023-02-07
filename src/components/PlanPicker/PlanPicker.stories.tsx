@@ -87,9 +87,6 @@ const mockPricePlan: PricePlan = {
     'Same rates as standard plan. Additionally, metered usage for managed storage component is included.',
   base_price: 1000,
   period: 'month',
-  coupon: {
-    name: 'flat_discount_coupon',
-  },
   metered_components: [
     {
       meter_name: 'storage_photos',
@@ -111,13 +108,6 @@ const mockPricePlan: PricePlan = {
       label_limits: [],
     },
   ],
-  discount: {
-    discount_type: 'string',
-    amount: 15,
-    start_date: '2021-11-04T22:40:49.995Z',
-    end_date: '2021-11-04T22:40:49.995Z',
-    coupon_id: 0,
-  },
   features: [
     {
       description: 'Some really cool feature description',

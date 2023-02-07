@@ -15,6 +15,7 @@ type VendorInfo = Schemas['CustomerPortalVendor'];
 type CustomerUsage = Schemas['CustomerPortalUsage'];
 type CustomerPortalPaymentInfo = Schemas['CustomerPortalPaymentMethod'];
 type CustomerPortalUrl = Schemas['CustomerPortalUrl'];
+type SelfServeSettings = Schemas['SelfServeSettings'];
 
 /* = = = = = = = = = = = = = =
 
@@ -297,5 +298,15 @@ export const getCustomersLink = makeApiGETEndpoint<
   CustomerPortalUrl, // Returns a link to customer's page
   unknown // Undefined failure type
 >(getCustomersLinkUrl);
+
+export const getSelfServeSettingsUrl: UrlFactory = (base = API_BASE) =>
+  `${base}/ecp/self_serve_settings`;
+
+export const getSelfServeSettings = makeApiGETEndpoint<
+  never, // No query params
+  [], // No URL path args
+  SelfServeSettings, // Returns the vendor's self-serve settings
+  unknown // Undefined failure type
+>(getSelfServeSettingsUrl);
 
 export const VALID_PAYMENT_METHOD = 'VALID_PAYMENT_METHOD';
