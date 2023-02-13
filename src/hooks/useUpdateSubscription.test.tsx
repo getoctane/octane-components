@@ -7,25 +7,27 @@ import { enableFetchMocks } from 'jest-fetch-mock';
 import * as subscribeCustomer from 'actions/subscribeCustomer';
 import { TokenProvider } from './useCustomerToken';
 import { useUpdateSubscription } from './useUpdateSubscription';
-import type { ActivePricePlan } from './useUpdateSubscription';
+import type {
+  ActivePricePlan,
+  ActiveSubscriptionInputArgs,
+} from './useUpdateSubscription';
 import type { UseAsyncOnDemandResultType } from './useAsyncOnDemand';
 
 enableFetchMocks();
 fetchMock.enableMocks();
 
-const mockPricePlan = {
-  displayName: 'Test Price Plan',
-  name: 'test_price_plan',
-  period: 'quarter',
-  basePrice: 100,
+const mockPricePlanInfo = {
+  price_plan_uuid: '12345',
+  add_ons: [],
 };
 
 let hookResult: UseAsyncOnDemandResultType<ActivePricePlan> | null;
-let funcToExecute: ((ppName: string) => void) | null = null;
+let funcToExecute: ((ppInfo: ActiveSubscriptionInputArgs) => void) | null =
+  null;
 
 const MockComponent = (props: {
   token?: string;
-  ppName: string;
+  ppInfo: ActiveSubscriptionInputArgs;
 }): JSX.Element => {
   const [mutation, result] = useUpdateSubscription({
     token: props?.token,
@@ -35,7 +37,7 @@ const MockComponent = (props: {
   funcToExecute = mutation;
 
   return (
-    <button onClick={() => mutation(props.ppName)}>
+    <button onClick={() => mutation(props.ppInfo)}>
       Click to call mutation
     </button>
   );
@@ -47,7 +49,7 @@ describe('useUpdateSubscription hook', () => {
   });
 
   beforeEach(() => {
-    fetchMock.once(JSON.stringify({ price_plan: mockPricePlan }));
+    fetchMock.once(JSON.stringify({ price_plan: mockPricePlanInfo }));
   });
 
   afterEach(() => {
@@ -66,7 +68,7 @@ describe('useUpdateSubscription hook', () => {
 
     render(
       <TokenProvider token={mockToken}>
-        <MockComponent ppName={mockPricePlan.name} />
+        <MockComponent ppInfo={mockPricePlanInfo} />
       </TokenProvider>
     );
 
@@ -85,14 +87,14 @@ describe('useUpdateSubscription hook', () => {
     const mockToken = '12345';
     const spy = jest.spyOn(subscribeCustomer, 'default');
 
-    render(<MockComponent token={mockToken} ppName={mockPricePlan.name} />);
+    render(<MockComponent token={mockToken} ppInfo={mockPricePlanInfo} />);
     await waitFor(() => expect(funcToExecute).not.toBeNull());
 
     // Call mutation returned from the hook
     userEvent.click(screen.getByText('Click to call mutation'));
 
     await waitFor(() =>
-      expect(spy).toHaveBeenCalledWith(mockToken, mockPricePlan.name, {
+      expect(spy).toHaveBeenCalledWith(mockToken, mockPricePlanInfo, {
         baseApiUrl: undefined,
       })
     );
@@ -100,7 +102,7 @@ describe('useUpdateSubscription hook', () => {
       loading: false,
       error: null,
       result: {
-        price_plan: mockPricePlan,
+        price_plan: mockPricePlanInfo,
       },
       status: 'DONE',
     });
@@ -114,7 +116,7 @@ describe('useUpdateSubscription hook', () => {
     expect(() =>
       render(
         <TokenProvider token=''>
-          <MockComponent ppName='new price plan' />
+          <MockComponent ppInfo={mockPricePlanInfo} />
         </TokenProvider>
       )
     ).toThrow(Error('Token must be provided.'));

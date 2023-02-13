@@ -5,7 +5,9 @@ import subscribeCustomer from '../actions/subscribeCustomer';
 import type { SubscribeCustomerOptions } from '../actions/subscribeCustomer';
 import { components } from '../apiTypes';
 
-type ActiveSubscriptionInputArgs =
+export type ActivePricePlan =
+  components['schemas']['CustomerPortalSubscription'];
+export type ActiveSubscriptionInputArgs =
   components['schemas']['CustomerPortalActiveSubscriptionInputArgs'];
 
 type Props = {
