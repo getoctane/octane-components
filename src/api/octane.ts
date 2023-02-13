@@ -16,6 +16,8 @@ type CustomerUsage = Schemas['CustomerPortalUsage'];
 type CustomerPortalPaymentInfo = Schemas['CustomerPortalPaymentMethod'];
 type CustomerPortalUrl = Schemas['CustomerPortalUrl'];
 type SelfServeSettings = Schemas['SelfServeSettings'];
+type ActiveSubscriptionInputArgs =
+  Schemas['CustomerPortalActiveSubscriptionInputArgs'];
 
 /* = = = = = = = = = = = = = =
 
@@ -235,15 +237,11 @@ export const updateContactInfo = makeApiNonGETEndpoint<
 export const updateSubscriptionUrl: UrlFactory = (base = API_BASE) =>
   `${base}/ecp/subscription`;
 
-interface UpdateSubscriptionBody {
-  price_plan_name: string;
-}
-
 /**
- * Create a subscription to a price plan for a given customer.
+ * Create/update a subscription to a price plan for a given customer.
  */
 export const updateSubscription = makeApiNonGETEndpoint<
-  UpdateSubscriptionBody, // Body type
+  ActiveSubscriptionInputArgs, // Body type
   [], // No URL path args
   ActivePricePlan, // Return an active subscription
   unknown // Undefined failure type

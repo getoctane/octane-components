@@ -2,6 +2,8 @@ import { updateSubscription } from '../api/octane';
 import { components } from '../apiTypes';
 import hasPaymentInfo from './hasPaymentInfo';
 type ActivePricePlan = components['schemas']['CustomerPortalSubscription'];
+type ActiveSubscriptionInputArgs =
+  components['schemas']['CustomerPortalActiveSubscriptionInputArgs'];
 
 export interface SubscribeCustomerOptions {
   /**
@@ -18,7 +20,7 @@ export interface SubscribeCustomerOptions {
  */
 export default function subscribeCustomer(
   customerToken: string,
-  pricePlanName: string,
+  pricePlanInfo: ActiveSubscriptionInputArgs,
   options: SubscribeCustomerOptions = {}
 ): Promise<ActivePricePlan> {
   if (!customerToken) {
@@ -42,7 +44,7 @@ export default function subscribeCustomer(
       updateSubscription({
         token: customerToken,
         body: {
-          price_plan_name: pricePlanName,
+          ...pricePlanInfo,
         },
         urlOverride: baseApiUrl,
       })
