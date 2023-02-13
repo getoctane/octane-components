@@ -4,9 +4,7 @@ import { useAsyncOnDemand } from './useAsyncOnDemand';
 import updateCustomerContactInfo from '../actions/updateContactInfo';
 import { components } from '../apiTypes';
 
-export type ContactInfo = components['schemas']['ContactInfo'];
-export type ContactInfoInputArgs =
-  components['schemas']['ContactInfoInputArgs'];
+type ContactInfoInputArgs = components['schemas']['ContactInfoInputArgs'];
 
 type Props = {
   token?: string;

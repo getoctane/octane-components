@@ -5,8 +5,8 @@ import subscribeCustomer from '../actions/subscribeCustomer';
 import type { SubscribeCustomerOptions } from '../actions/subscribeCustomer';
 import { components } from '../apiTypes';
 
-export type ActivePricePlan =
-  components['schemas']['CustomerPortalSubscription'];
+type ActiveSubscriptionInputArgs =
+  components['schemas']['CustomerPortalActiveSubscriptionInputArgs'];
 
 type Props = {
   token?: string;
@@ -27,12 +27,12 @@ export const useUpdateSubscription = ({
   }
 
   const mutation = useCallback(
-    (pricePlanName: string) => {
-      if (!pricePlanName) {
-        throw new Error('Price plan name must be provided.');
+    (pricePlanInfo: ActiveSubscriptionInputArgs) => {
+      if (!pricePlanInfo?.price_plan_uuid) {
+        throw new Error('Price plan uuid must be provided.');
       }
 
-      return subscribeCustomer(userToken, pricePlanName, {
+      return subscribeCustomer(userToken, pricePlanInfo, {
         ...options,
         baseApiUrl,
       });
