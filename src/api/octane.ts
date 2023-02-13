@@ -182,6 +182,16 @@ export const getCustomerActiveSubscription = makeApiGETEndpoint<
   unknown // Undefined failure type
 >(getCustomerActiveSubscriptionUrl);
 
+/**
+ * Create/update a subscription to a price plan for a given customer.
+ */
+export const updateSubscription = makeApiNonGETEndpoint<
+  ActiveSubscriptionInputArgs, // Body type
+  [], // No URL path args
+  ActivePricePlan, // Return an active subscription
+  unknown // Undefined failure type
+>(getCustomerActiveSubscriptionUrl, 'POST');
+
 export const getCustomerInvoicesUrl: UrlFactory = (base = API_BASE) =>
   `${base}/ecp/invoices`;
 
@@ -233,19 +243,6 @@ export const updateContactInfo = makeApiNonGETEndpoint<
   ContactInfo, // Returns updated Contact info
   unknown // Undefined failure type
 >(getContactInfoUrl, 'PUT');
-
-export const updateSubscriptionUrl: UrlFactory = (base = API_BASE) =>
-  `${base}/ecp/subscription`;
-
-/**
- * Create/update a subscription to a price plan for a given customer.
- */
-export const updateSubscription = makeApiNonGETEndpoint<
-  ActiveSubscriptionInputArgs, // Body type
-  [], // No URL path args
-  ActivePricePlan, // Return an active subscription
-  unknown // Undefined failure type
->(updateSubscriptionUrl, 'POST');
 
 export const createStripeSetupIntentUrl: UrlFactory = (base = API_BASE) =>
   `${base}/ecp/setup_intent`;
