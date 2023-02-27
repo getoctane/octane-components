@@ -3,7 +3,7 @@ import { TokenContext } from './useCustomerToken';
 import { useAsync } from './useAsync';
 import type { UseAsyncReturnType } from './useAsync';
 import { components } from '../apiTypes';
-import fetchSelfServeCustomization from 'actions/getSelfServeCustomization';
+import fetchSelfServeCustomization from '../actions/getSelfServeCustomization';
 
 type SelfServeCustomization = components['schemas']['SelfServeCustomization'];
 export type UseSelfServeCustomizationReturnType =
