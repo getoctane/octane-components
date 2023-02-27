@@ -19,6 +19,7 @@ import getCustomerUsage from './actions/getUsage';
 import getPaymentMethodInfo from './actions/getPaymentMethodInfo';
 import getLinkToCustomerPage from './actions/getCustomerLink';
 import getSelfServeSettings from './actions/getSelfServeSettings';
+import getSelfServeCustomization from './actions/getSelfServeCustomization';
 
 // Hooks
 export { useActiveSubscription } from './hooks/useActiveSubscription';
@@ -35,6 +36,7 @@ export { useCustomerUsage } from './hooks/useCustomerUsage';
 export { usePaymentMethodInfo } from './hooks/usePaymentMethodInfo';
 export { useCustomerLink } from './hooks/useCustomerLink';
 export { useSelfServeSettings } from './hooks/useSelfServeSettings';
+export { useSelfServeCustomization } from './hooks/useSelfServeCustomization';
 
 export const Actions = {
   subscribeCustomer,
@@ -50,6 +52,7 @@ export const Actions = {
   getPaymentMethodInfo,
   getLinkToCustomerPage,
   getSelfServeSettings,
+  getSelfServeCustomization,
 };
 
 // Top-level API components. These only need a customer token and should
