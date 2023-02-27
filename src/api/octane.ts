@@ -16,6 +16,7 @@ type CustomerUsage = Schemas['CustomerPortalUsage'];
 type CustomerPortalPaymentInfo = Schemas['CustomerPortalPaymentMethod'];
 type CustomerPortalUrl = Schemas['CustomerPortalUrl'];
 type SelfServeSettings = Schemas['SelfServeSettings'];
+type SelfServeCustomization = Schemas['SelfServeCustomization'];
 type ActiveSubscriptionInputArgs =
   Schemas['CustomerPortalActiveSubscriptionInputArgs'];
 
@@ -274,6 +275,8 @@ export const getPaymentMethodStatus = makeApiGETEndpoint<
   unknown // Undefined failure type
 >(getPaymentMethodStatusUrl);
 
+export const VALID_PAYMENT_METHOD = 'VALID_PAYMENT_METHOD';
+
 export const getPaymentMethodInfoUrl: UrlFactory = (base = API_BASE) =>
   `${base}/ecp/payment_method`;
 
@@ -304,4 +307,12 @@ export const getSelfServeSettings = makeApiGETEndpoint<
   unknown // Undefined failure type
 >(getSelfServeSettingsUrl);
 
-export const VALID_PAYMENT_METHOD = 'VALID_PAYMENT_METHOD';
+export const getSelfServeCustomizationUrl: UrlFactory = (base = API_BASE) =>
+  `${base}/ecp/self_serve_customization`;
+
+export const getSelfServeCustomization = makeApiGETEndpoint<
+  never, // No query params
+  [], // No URL path args
+  SelfServeCustomization, // Returns the vendor's self-serve settings
+  unknown // Undefined failure type
+>(getSelfServeCustomizationUrl);
