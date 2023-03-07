@@ -461,8 +461,8 @@ export interface paths {
           customer_name: string;
         };
         query: {
-          start_time?: string;
           end_time?: string;
+          start_time?: string;
         };
       };
       responses: {
@@ -487,9 +487,9 @@ export interface paths {
     get: {
       parameters: {
         path: {
-          invoice_id: number;
-          token: string;
           customer_name: string;
+          token: string;
+          invoice_id: number;
         };
       };
       responses: {
@@ -498,9 +498,9 @@ export interface paths {
     };
     parameters: {
       path: {
-        invoice_id: number;
-        token: string;
         customer_name: string;
+        token: string;
+        invoice_id: number;
       };
     };
   };
@@ -509,9 +509,9 @@ export interface paths {
     get: {
       parameters: {
         path: {
+          customer_name: string;
           token: string;
           as_of_str: string;
-          customer_name: string;
         };
       };
       responses: {
@@ -520,9 +520,9 @@ export interface paths {
     };
     parameters: {
       path: {
+        customer_name: string;
         token: string;
         as_of_str: string;
-        customer_name: string;
       };
     };
   };
@@ -531,8 +531,8 @@ export interface paths {
     get: {
       parameters: {
         path: {
-          token: string;
           customer_name: string;
+          token: string;
         };
       };
       responses: {
@@ -541,8 +541,8 @@ export interface paths {
     };
     parameters: {
       path: {
-        token: string;
         customer_name: string;
+        token: string;
       };
     };
   };
@@ -580,9 +580,9 @@ export interface paths {
         query: {
           /** Ending timestamp to consider usage formatted as ISO-8601. */
           end_time?: string;
+          meter_name?: string;
           /** Starting timestamp to consider usage formatted as ISO-8601. */
           start_time?: string;
-          meter_name?: string;
         };
       };
       responses: {
@@ -607,8 +607,8 @@ export interface paths {
     get: {
       parameters: {
         path: {
-          feature_name: string;
           customer_name: string;
+          feature_name: string;
         };
       };
       responses: {
@@ -623,8 +623,8 @@ export interface paths {
     };
     parameters: {
       path: {
-        feature_name: string;
         customer_name: string;
+        feature_name: string;
       };
     };
   };
@@ -732,7 +732,93 @@ export interface paths {
       };
     };
   };
+  '/customers/{customer_name}/invoices': {
+    /** Get a list of invoices and their line items for a customer. */
+    get: {
+      parameters: {
+        path: {
+          customer_name: string;
+        };
+        query: {
+          /** The sort column offset to start at when paging forwards */
+          forward_sort_offset?: string;
+          customer_name?: string;
+          /** The unique offset to start at when paging forwards */
+          forward_secondary_sort_offset?: string;
+          sort_column?: string;
+          status?: string;
+          /** The number of items to fetch. Defaults to 10. */
+          limit?: number;
+          sort_direction?: string;
+          start_time?: string;
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          content: {
+            'application/json': components['schemas']['Invoice'][];
+          };
+        };
+        422: components['responses']['UNPROCESSABLE_ENTITY'];
+        default: components['responses']['DEFAULT_ERROR'];
+      };
+    };
+    parameters: {
+      path: {
+        customer_name: string;
+      };
+    };
+  };
+  '/customers/{customer_name}/integration/tax/avalara/settings': {
+    /** Returns the customer Avalara settings. */
+    get: {
+      parameters: {
+        path: {
+          customer_name: string;
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          content: {
+            'application/json': components['schemas']['CustomerAvalaraSettings'];
+          };
+        };
+        default: components['responses']['DEFAULT_ERROR'];
+      };
+    };
+    /** Updates the Avalara settings for a specific customer. */
+    put: {
+      parameters: {
+        path: {
+          customer_name: string;
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          content: {
+            'application/json': components['schemas']['CustomerAvalaraSettings'];
+          };
+        };
+        422: components['responses']['UNPROCESSABLE_ENTITY'];
+        default: components['responses']['DEFAULT_ERROR'];
+      };
+      requestBody: {
+        content: {
+          'application/json': components['schemas']['UpdateCustomerAvalaraSettingsArgs'];
+        };
+      };
+    };
+    parameters: {
+      path: {
+        customer_name: string;
+      };
+    };
+  };
   '/customers/{customer_name}/integration/tax/avalara/address/valid': {
+    /** Validates to ensure that customer address is taxable via Avalara. */
     get: {
       parameters: {
         path: {
@@ -746,44 +832,6 @@ export interface paths {
             'application/json': components['schemas']['ValidateAddressResp'];
           };
         };
-        default: components['responses']['DEFAULT_ERROR'];
-      };
-    };
-    parameters: {
-      path: {
-        customer_name: string;
-      };
-    };
-  };
-  '/customers/{customer_name}/invoices': {
-    /** Get a list of invoices and their line items for a customer. */
-    get: {
-      parameters: {
-        path: {
-          customer_name: string;
-        };
-        query: {
-          customer_name?: string;
-          start_time?: string;
-          sort_direction?: string;
-          /** The sort column offset to start at when paging forwards */
-          forward_sort_offset?: string;
-          status?: string;
-          sort_column?: string;
-          /** The unique offset to start at when paging forwards */
-          forward_secondary_sort_offset?: string;
-          /** The number of items to fetch. Defaults to 10. */
-          limit?: number;
-        };
-      };
-      responses: {
-        /** OK */
-        200: {
-          content: {
-            'application/json': components['schemas']['Invoice'][];
-          };
-        };
-        422: components['responses']['UNPROCESSABLE_ENTITY'];
         default: components['responses']['DEFAULT_ERROR'];
       };
     };
@@ -1045,6 +1093,43 @@ export interface paths {
       };
     };
   };
+  '/invoices/{invoice_uuid}': {
+    /** Get a specific invoice via it's UUID. */
+    get: {
+      parameters: {
+        path: {
+          invoice_uuid: string;
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          content: {
+            'application/json': components['schemas']['Invoice'];
+          };
+        };
+        default: components['responses']['DEFAULT_ERROR'];
+      };
+    };
+    /** Delete a specific invoice via it's UUID. Invoices can only be deleted if they have not been issued. */
+    delete: {
+      parameters: {
+        path: {
+          invoice_uuid: string;
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+        default: components['responses']['DEFAULT_ERROR'];
+      };
+    };
+    parameters: {
+      path: {
+        invoice_uuid: string;
+      };
+    };
+  };
   '/invoices/{invoice_uuid}/status/': {
     /**
      * Manually change the status of an invoice in Octane. For example,
@@ -1072,17 +1157,17 @@ export interface paths {
     get: {
       parameters: {
         query: {
-          customer_name?: string;
-          start_time?: string;
-          sort_direction?: string;
           /** The sort column offset to start at when paging forwards */
           forward_sort_offset?: string;
-          status?: string;
-          sort_column?: string;
+          customer_name?: string;
           /** The unique offset to start at when paging forwards */
           forward_secondary_sort_offset?: string;
+          sort_column?: string;
+          status?: string;
           /** The number of items to fetch. Defaults to 10. */
           limit?: number;
+          sort_direction?: string;
+          start_time?: string;
         };
       };
       responses: {
@@ -1090,36 +1175,6 @@ export interface paths {
         200: {
           content: {
             'application/json': components['schemas']['PastInvoices'];
-          };
-        };
-        422: components['responses']['UNPROCESSABLE_ENTITY'];
-        default: components['responses']['DEFAULT_ERROR'];
-      };
-    };
-  };
-  '/invoices/upcoming': {
-    /** Fetch a list of the upcoming invoices for your account. */
-    get: {
-      parameters: {
-        query: {
-          customer_name?: string;
-          start_time?: string;
-          sort_direction?: string;
-          /** The sort column offset to start at when paging forwards */
-          forward_sort_offset?: string;
-          status?: string;
-          sort_column?: string;
-          /** The unique offset to start at when paging forwards */
-          forward_secondary_sort_offset?: string;
-          /** The number of items to fetch. Defaults to 10. */
-          limit?: number;
-        };
-      };
-      responses: {
-        /** OK */
-        200: {
-          content: {
-            'application/json': components['schemas']['UpcomingInvoices'];
           };
         };
         422: components['responses']['UNPROCESSABLE_ENTITY'];
@@ -1142,6 +1197,39 @@ export interface paths {
     parameters: {
       path: {
         invoice_uuid_token: string;
+      };
+    };
+  };
+  '/invoices/{invoice_uuid}/retries': {
+    /**
+     * Moves the invoice into the next logical action. For example, an invoice that is generated gets moved to issued, and
+     * an invoice that is in payment error tries payment again. For more information see our docs https://docs.getoctane.io/docs/manual-invoicing-triggers.
+     */
+    post: {
+      parameters: {
+        path: {
+          invoice_uuid: string;
+        };
+      };
+      responses: {
+        /** Accepted */
+        202: {
+          content: {
+            'application/json': components['schemas']['Retry'];
+          };
+        };
+        422: components['responses']['UNPROCESSABLE_ENTITY'];
+        default: components['responses']['DEFAULT_ERROR'];
+      };
+      requestBody: {
+        content: {
+          'application/json': components['schemas']['CreateRetryArgs'];
+        };
+      };
+    };
+    parameters: {
+      path: {
+        invoice_uuid: string;
       };
     };
   };
@@ -1208,16 +1296,16 @@ export interface paths {
     get: {
       parameters: {
         query: {
-          tags?: string[];
-          sort_direction?: string;
           /** The sort column offset to start at when paging forwards */
           forward_sort_offset?: string;
-          sort_column?: string;
           names?: string[];
           /** The unique offset to start at when paging forwards */
           forward_secondary_sort_offset?: string;
+          sort_column?: string;
           /** The number of items to fetch. Defaults to 10. */
           limit?: number;
+          sort_direction?: string;
+          tags?: string[];
         };
       };
       responses: {
@@ -1857,6 +1945,20 @@ export interface paths {
       };
     };
   };
+  '/ecp/meters': {
+    /** Get the meters and corresponding primary label keys and values from the customer's active subscription. */
+    get: {
+      responses: {
+        /** OK */
+        200: {
+          content: {
+            'application/json': components['schemas']['CustomerPortalMeter'][];
+          };
+        };
+        default: components['responses']['DEFAULT_ERROR'];
+      };
+    };
+  };
   '/ecp/usage': {
     /** Get the customer's daily usage by meter for current and previous billing cycles. This endpoint expects the customer-scoped token for authentication. */
     get: {
@@ -1868,6 +1970,26 @@ export interface paths {
           };
         };
         default: components['responses']['DEFAULT_ERROR'];
+      };
+    };
+  };
+  '/ecp/filtered_usage': {
+    /** Get the customer's daily usage filtered by the inputted meter and labels. This endpoint expects the customer-scoped token for authentication. */
+    get: {
+      responses: {
+        /** OK */
+        200: {
+          content: {
+            'application/json': components['schemas']['CustomerPortalUsage'];
+          };
+        };
+        422: components['responses']['UNPROCESSABLE_ENTITY'];
+        default: components['responses']['DEFAULT_ERROR'];
+      };
+      requestBody: {
+        content: {
+          'application/json': components['schemas']['CustomerPortalMeterLabelFilter'];
+        };
       };
     };
   };
@@ -2079,8 +2201,8 @@ export interface paths {
     get: {
       parameters: {
         path: {
-          as_of_str: string;
           customer_name: string;
+          as_of_str: string;
         };
       };
       responses: {
@@ -2095,8 +2217,8 @@ export interface paths {
     };
     parameters: {
       path: {
-        as_of_str: string;
         customer_name: string;
+        as_of_str: string;
       };
     };
   };
@@ -2121,39 +2243,6 @@ export interface paths {
     parameters: {
       path: {
         customer_name: string;
-      };
-    };
-  };
-  '/invoices/{invoice_uuid}/retries': {
-    /**
-     * Moves the invoice into the next logical action. For example, an invoice that is generated gets moved to issued, and
-     * an invoice that is in payment error tries payment again. For more information see our docs https://docs.getoctane.io/docs/manual-invoicing-triggers.
-     */
-    post: {
-      parameters: {
-        path: {
-          invoice_uuid: string;
-        };
-      };
-      responses: {
-        /** Accepted */
-        202: {
-          content: {
-            'application/json': components['schemas']['Retry'];
-          };
-        };
-        422: components['responses']['UNPROCESSABLE_ENTITY'];
-        default: components['responses']['DEFAULT_ERROR'];
-      };
-      requestBody: {
-        content: {
-          'application/json': components['schemas']['CreateRetryArgs'];
-        };
-      };
-    };
-    parameters: {
-      path: {
-        invoice_uuid: string;
       };
     };
   };
@@ -2368,13 +2457,27 @@ export interface paths {
     };
   };
   '/integration/tax/avalara/company': {
-    /** Lists the companies found in your Avalara company. */
+    /** Lists the companies found in your Avalara account. */
     get: {
       responses: {
         /** OK */
         200: {
           content: {
             'application/json': components['schemas']['Company'][];
+          };
+        };
+        default: components['responses']['DEFAULT_ERROR'];
+      };
+    };
+  };
+  '/integration/tax/avalara/entity_use_code': {
+    /** Lists the entity codes available in avalara. */
+    get: {
+      responses: {
+        /** OK */
+        200: {
+          content: {
+            'application/json': components['schemas']['EntityUseCode'][];
           };
         };
         default: components['responses']['DEFAULT_ERROR'];
@@ -2400,21 +2503,21 @@ export interface components {
       primary_labels?: unknown[];
     };
     MeterInputArgs: {
-      meter_type?: 'COUNTER' | 'GAUGE';
-      name?: string;
-      unit_name?: string;
-      display_name?: string;
-      vendor_id?: number;
       primary_labels?: string[];
-      expected_labels?: string[];
+      vendor_id?: number;
       is_incremental?: boolean;
+      name?: string;
       description?: string;
+      meter_type?: 'COUNTER' | 'GAUGE';
+      display_name?: string;
+      unit_name?: string;
+      expected_labels?: string[];
     };
     Error: {
-      /** Error code */
-      code?: number;
       /** Error message */
       message?: string;
+      /** Error code */
+      code?: number;
       /** Error name */
       status?: string;
       /** Errors */
@@ -2425,16 +2528,16 @@ export interface components {
       display_name?: string;
     };
     Measurement: {
-      /** All times are parsed as `ISO-8601` formatted, UTC-based timestamps */
-      time?: string;
-      /** Applies to incremental meters and resets the total current value to this new value. */
-      reset_total?: boolean;
       /** The name of the customer to associate the measurement with. */
       customer_name?: string;
-      /** A set of key:value label pairs to supplement a measurement. Each meter defines its own set of primary and/or expected labels. */
-      labels?: { [key: string]: string };
       /** The unique name of the meter associated with this measurement */
       meter_name: string;
+      /** A set of key:value label pairs to supplement a measurement. Each meter defines its own set of primary and/or expected labels. */
+      labels?: { [key: string]: string };
+      /** Applies to incremental meters and resets the total current value to this new value. */
+      reset_total?: boolean;
+      /** All times are parsed as `ISO-8601` formatted, UTC-based timestamps */
+      time?: string;
       /** The raw value of the measurement */
       value: number;
     };
@@ -2466,49 +2569,49 @@ export interface components {
       measurement_mappings?: unknown[];
       tags?: components['schemas']['CustomerTag'][];
     };
+    ContactInfoInputArgs: {
+      legal_name?: string | null;
+      vat_id?: string | null;
+      url?: string | null;
+      country?: string | null;
+      zipcode?: string | null;
+      logo_url?: string | null;
+      /** List of secondary contact emails (all email communication will also be sent to these emails). */
+      secondary_emails?: string[] | null;
+      phone?: string | null;
+      state?: string | null;
+      address_line_1?: string | null;
+      city?: string | null;
+      address_line_2?: string | null;
+      email?: string | null;
+    };
     CustomerMeasurementMappingInputArgs: {
       /** A regex used to match the value of the associated label key. */
       value_regex: string;
       /** The label key used to map measurements to customers. */
       label: string;
     };
-    ContactInfoInputArgs: {
-      state?: string | null;
-      address_line_2?: string | null;
-      country?: string | null;
-      city?: string | null;
-      legal_name?: string | null;
-      /** List of secondary contact emails (all email communication will also be sent to these emails). */
-      secondary_emails?: string[] | null;
-      url?: string | null;
-      vat_id?: string | null;
-      email?: string | null;
-      zipcode?: string | null;
-      address_line_1?: string | null;
-      logo_url?: string | null;
-      phone?: string | null;
-    };
     CreateCustomerArgs: {
-      name?: string;
-      measurement_mappings?: components['schemas']['CustomerMeasurementMappingInputArgs'][];
-      display_name?: string;
       tags?: string[] | null;
       vendor_id?: number;
-      contact_info?: components['schemas']['ContactInfoInputArgs'];
-      price_plan_tag?: string;
-      autogenerate_accounting_customer?: boolean;
-      autogenerate_payment_gateway_customer?: boolean;
-      created_at?: string;
       price_plan_name?: string;
+      contact_info?: components['schemas']['ContactInfoInputArgs'];
+      name?: string;
+      created_at?: string;
+      price_plan_tag?: string;
+      display_name?: string;
+      autogenerate_payment_gateway_customer?: boolean;
+      autogenerate_accounting_customer?: boolean;
+      measurement_mappings?: components['schemas']['CustomerMeasurementMappingInputArgs'][];
     };
     UpdateCustomerArgs: {
-      name?: string;
-      measurement_mappings?: components['schemas']['CustomerMeasurementMappingInputArgs'][];
-      display_name?: string;
       tags?: string[] | null;
       vendor_id?: number;
       contact_info?: components['schemas']['ContactInfoInputArgs'];
+      name?: string;
       created_at?: string;
+      display_name?: string;
+      measurement_mappings?: components['schemas']['CustomerMeasurementMappingInputArgs'][];
     };
     CustomerMeasurementMapping: {
       /** The label key used to map measurements to customers. */
@@ -2598,69 +2701,69 @@ export interface components {
       alternate_sendgrid_template_id?: string | null;
     };
     CustomerBillingSettingsInputArgs: {
-      /** Flag that controls whether or not to auto-charge the customer based on the invoice. */
-      charges_enabled?: boolean | null;
-      /** Flag determining whether ACH/Wire instructions should be included on invoices. */
-      include_ach_instructions?: boolean | null;
-      /** Account number for ACH/Wire transfer instructions */
-      ach_account_number?: string | null;
-      /** Optional description attached to the invoice */
-      invoice_memo?: string | null;
-      /** The percentage tax rate to apply to invoices. */
-      tax_rate?: number | null;
-      /** Time length after which to attempt invoice/payment retry. */
-      retry_frequency_length?: number | null;
-      /** Default value for whether to align billing cycles to calendar on subscriptions */
-      align_billing_cycles_to_calendar?: boolean | null;
-      /** Time length of the grace period between the end of invoice generation and the actual charge. *NOTE*: The specified length is unitless. Unit is designated with the `payment_grace_period_unit` field. */
-      payment_grace_period_length?: number | null;
-      /** Bank name for ACH/Wire transfer instructions */
-      ach_bank_name?: string | null;
-      /** Second line of bank address for ACH/Wire transfer instructions */
-      ach_bank_address_2?: string | null;
-      /** Sets the due date on invoices to the number of days after the invoice is sent */
-      days_until_due?: number | null;
-      /** ABA/Routing number for ACH/Wire transfer instructions */
-      ach_routing_number?: string | null;
-      /** Flag that controls whether or not to invoice/charge gauge meters upfront according to their value at start of cycle. Only applies if invoice_fixed_components_at_start is enabled. */
-      invoice_metered_components_at_start?: boolean | null;
-      /** Time length unit of the grace period between the end of invoice generation and actual charge. One of `minute`, `hour`, `day`. */
-      payment_grace_period_unit?: string | null;
-      /** Flag that controls whether to invoice through Octane or through payment provider */
-      invoice_via_octane?: boolean | null;
-      /** Time length of the grace period between the end of a billing cycle and invoice generation in days. */
-      invoice_grace_period_length?: number | null;
       /** Time length unit after which to attempt invoice/payment retry. */
       retry_frequency_unit?: string | null;
-      /** Account name for ACH/Wire transfer instructions */
-      ach_account_name?: string | null;
-      /** True if customer updates should be synced to Stripe. */
-      sync_customer_data_to_payment_gateway?: boolean | null;
-      /** Flag that controls whether or not invoices should be sent to customers. */
-      should_send_invoice_to_customers?: boolean | null;
-      /** First line of bank address for ACH/Wire transfer instructions */
-      ach_bank_address_1?: string | null;
-      /** Time length unit of the grace period between the end of a billing cycle and invoice generation. Must be `day`. */
-      invoice_grace_period_unit?: 'day' | null;
-      /** Optional url of a custom image to include on invoices. */
-      invoice_logo_url?: string | null;
       customer_invoice_detail_level?: string;
-      /** Flag that controls whether to do automated taxes via payment provider */
-      tax_via_payment_provider?: boolean | null;
-      /** Flag that controls whether or not to invoice/charge a true up for a billing cycle on the following invoice. Only applies if invoice_fixed_components_at_start is enabled. */
-      invoice_overages?: boolean | null;
-      /** Flag that controls whether or not to invoice/charge the base rate, add ons and other fixed price plan components at the beginning of the billing cycle. */
-      invoice_fixed_components_at_start?: boolean | null;
+      /** Optional description attached to the invoice */
+      invoice_memo?: string | null;
       /** If using stripe, this field can be used to configure whether invoices should be auto advanced for collection */
       stripe_auto_advance?: boolean | null;
+      /** Bank name for ACH/Wire transfer instructions */
+      ach_bank_name?: string | null;
+      /** Time length unit of the grace period between the end of a billing cycle and invoice generation. Must be `day`. */
+      invoice_grace_period_unit?: 'day' | null;
+      /** The percentage tax rate to apply to invoices. */
+      tax_rate?: number | null;
+      /** Second line of bank address for ACH/Wire transfer instructions */
+      ach_bank_address_2?: string | null;
+      /** Optional url of a custom image to include on invoices. */
+      invoice_logo_url?: string | null;
+      /** Time length after which to attempt invoice/payment retry. */
+      retry_frequency_length?: number | null;
+      /** Time length of the grace period between the end of invoice generation and the actual charge. *NOTE*: The specified length is unitless. Unit is designated with the `payment_grace_period_unit` field. */
+      payment_grace_period_length?: number | null;
+      /** Sets the due date on invoices to the number of days after the invoice is sent */
+      days_until_due?: number | null;
+      /** Flag that controls whether or not invoices should be sent to customers. */
+      should_send_invoice_to_customers?: boolean | null;
+      /** Default value for whether to align billing cycles to calendar on subscriptions */
+      align_billing_cycles_to_calendar?: boolean | null;
+      /** Flag that controls the number of retry attempts for invoicing/payments. */
+      retry_attempts?: number | null;
+      /** True if customer updates should be synced to Stripe. */
+      sync_customer_data_to_payment_gateway?: boolean | null;
+      /** Account name for ACH/Wire transfer instructions */
+      ach_account_name?: string | null;
+      /** Flag that controls whether or not to invoice/charge gauge meters upfront according to their value at start of cycle. Only applies if invoice_fixed_components_at_start is enabled. */
+      invoice_metered_components_at_start?: boolean | null;
+      /** Flag that controls whether to invoice through Octane or through payment provider */
+      invoice_via_octane?: boolean | null;
       /** If using Stripe, this field can be used to configure whether invoices should be finalized immediately when they are created. */
       stripe_immediate_finalization?: boolean | null;
       /** Flag that controls whether invoices are auto-approved or require manual approval */
       auto_approve_invoices?: boolean | null;
-      /** Flag that controls the number of retry attempts for invoicing/payments. */
-      retry_attempts?: number | null;
+      /** Flag that controls whether or not to auto-charge the customer based on the invoice. */
+      charges_enabled?: boolean | null;
+      /** Flag that controls whether or not to invoice/charge the base rate, add ons and other fixed price plan components at the beginning of the billing cycle. */
+      invoice_fixed_components_at_start?: boolean | null;
+      /** Time length unit of the grace period between the end of invoice generation and actual charge. One of `minute`, `hour`, `day`. */
+      payment_grace_period_unit?: string | null;
+      /** ABA/Routing number for ACH/Wire transfer instructions */
+      ach_routing_number?: string | null;
+      /** Flag determining whether ACH/Wire instructions should be included on invoices. */
+      include_ach_instructions?: boolean | null;
       /** Swift code for ACH/Wire transfer instructions */
       ach_swift_code?: string | null;
+      /** First line of bank address for ACH/Wire transfer instructions */
+      ach_bank_address_1?: string | null;
+      /** Time length of the grace period between the end of a billing cycle and invoice generation in days. */
+      invoice_grace_period_length?: number | null;
+      /** Flag that controls whether or not to invoice/charge a true up for a billing cycle on the following invoice. Only applies if invoice_fixed_components_at_start is enabled. */
+      invoice_overages?: boolean | null;
+      /** Flag that controls whether to do automated taxes via payment provider */
+      tax_via_payment_provider?: boolean | null;
+      /** Account number for ACH/Wire transfer instructions */
+      ach_account_number?: string | null;
     };
     RevenueResponse: {
       revenue?: number;
@@ -2677,95 +2780,111 @@ export interface components {
     };
     CustomerFeature: {
       label_limits?: components['schemas']['CustomerLabelLimit'][];
-      feature_name?: string;
       enabled?: boolean;
       quantity?: number;
       limit?: number;
+      feature_name?: string;
     };
     LineItems: {
+      metadata?: { [key: string]: string };
+      quantity_unit?: string;
       price_int?: number;
       name?: string;
-      end_time?: string;
-      metadata?: { [key: string]: string };
       price?: string;
-      quantity_unit?: string;
-      start_time?: string;
-      id?: string;
-      quantity?: number;
       description?: string;
+      end_time?: string;
+      quantity?: number;
+      id?: string;
+      start_time?: string;
     };
     RevenueBreakdown: {
-      line_items?: components['schemas']['LineItems'][];
       total_revenue?: number;
+      line_items?: components['schemas']['LineItems'][];
     };
     AccountingCustomer: {
       /** ID of the customer in the target accounting platform */
       accounting_customer_id?: string;
     };
     CustomerMetadata: {
-      value?: string | null;
       property?: string;
+      value?: string | null;
+    };
+    Invoice: {
+      /** Latest end time of line items covered by the invoice */
+      max_item_end_time?: string;
+      /** The number of retries done to process the payment */
+      payment_retry_attempt?: number;
+      pdf_url?: string;
+      /** The number of retries done to send the invoice */
+      invoice_retry_attempt?: number;
+      /** False if not approved */
+      is_approved?: boolean;
+      /** The date the invoice will be issued to the end customer or forwarded to the payment processor. */
+      issue_date?: string;
+      /** Any discount credits applied to the invoice */
+      discount_credit?: number;
+      /** Non-empty string if there was an error while sending out invoice */
+      invoicing_error?: string;
+      /** False if not paid yet */
+      is_paid?: boolean;
+      /** Non-empty string if there was an error while processing payment */
+      payment_error?: string;
+      /** False if invoice has not been sent to the customer */
+      is_invoiced?: boolean;
+      /** [DEPRECATED] End time of the cycle in which the invoice was generated */
+      end_time?: string;
+      due_date?: string;
+      /** [DEPRECATED] Start time of the cycle in which the invoice was generated */
+      start_time?: string;
+      /** Amount due before any credits are applied */
+      sub_total?: number;
+      id?: string;
+      status?: string;
+      latest_invoice_attempt_at?: string;
+      /** Total amount due */
+      amount_due?: number;
+      /** Earliest start time of line items covered by the invoice */
+      min_item_start_time?: string;
+      line_items?: components['schemas']['LineItems'][];
+      latest_payment_attempt_at?: string;
+      /** Tax amount applied to subtotal */
+      tax_amount?: number;
+    };
+    CustomerAvalaraSettings: {
+      /** Tax exemption number specific to this customer */
+      exemption_number?: string;
+      /** Entity code describing this customer. */
+      entity_use_code?: string;
+      /** True if Avalara integration should be enabled for this customer, False otherwise. */
+      enable_integration?: boolean;
+    };
+    UpdateCustomerAvalaraSettingsArgs: {
+      /** Tax exemption number specific to this customer */
+      exemption_number?: string;
+      /** Entity code describing this customer. */
+      entity_use_code?: string;
+      /** True if Avalara integration should be enabled for this customer, False otherwise. */
+      enable_integration?: boolean;
     };
     ValidateAddressResp: {
       /** Set if 'success' is True. Geospatial latitude measurement, in Decimal Degrees (string). */
       latitude?: string;
-      /** Set if 'sucess' is True. Geospatial latitude measurement, in Decimal Degrees (string). */
-      longitude?: string;
       /** Set if 'success' is True. The resolution quality of the geospatial coordinates. */
       resolution_quality?: string;
       /** True if validation was successful, False address is invalid. */
       success?: boolean;
+      /** Set if 'sucess' is True. Geospatial latitude measurement, in Decimal Degrees (string). */
+      longitude?: string;
       /** Set if 'success' is False. Contains the details of why the address is invalid. */
       invalid_address_error?: string;
     };
-    Invoice: {
-      /** False if invoice has not been sent to the customer */
-      is_invoiced?: boolean;
-      pdf_url?: string;
-      /** [DEPRECATED] Start time of the cycle in which the invoice was generated */
-      start_time?: string;
-      id?: string;
-      /** Amount due before any credits are applied */
-      sub_total?: number;
-      /** False if not approved */
-      is_approved?: boolean;
-      latest_payment_attempt_at?: string;
-      line_items?: components['schemas']['LineItems'][];
-      /** Latest end time of line items covered by the invoice */
-      max_item_end_time?: string;
-      /** Tax amount applied to subtotal */
-      tax_amount?: number;
-      /** Non-empty string if there was an error while processing payment */
-      payment_error?: string;
-      /** The number of retries done to process the payment */
-      payment_retry_attempt?: number;
-      /** Non-empty string if there was an error while sending out invoice */
-      invoicing_error?: string;
-      /** The date the invoice will be issued to the end customer or forwarded to the payment processor. */
-      issue_date?: string;
-      due_date?: string;
-      /** Total amount due */
-      amount_due?: number;
-      /** The number of retries done to send the invoice */
-      invoice_retry_attempt?: number;
-      status?: string;
-      /** Any discount credits applied to the invoice */
-      discount_credit?: number;
-      /** [DEPRECATED] End time of the cycle in which the invoice was generated */
-      end_time?: string;
-      /** Earliest start time of line items covered by the invoice */
-      min_item_start_time?: string;
-      /** False if not paid yet */
-      is_paid?: boolean;
-      latest_invoice_attempt_at?: string;
-    };
     PriceTier: {
-      /** The price (in lowest currency denomination by which to charge, given that the usage is within the cap range. */
-      price: number;
-      /** Cap of the tier, meaning that any subsequent usage will be bucketed into the following tier. If cap is undefined, it is effectively treated as Infinity. */
-      cap?: number;
       /** The line item description to use if usage falls in this tier. */
       description?: string;
+      /** Cap of the tier, meaning that any subsequent usage will be bucketed into the following tier. If cap is undefined, it is effectively treated as Infinity. */
+      cap?: number;
+      /** The price (in lowest currency denomination by which to charge, given that the usage is within the cap range. */
+      price: number;
     };
     PriceScheme: {
       display_name?: string | null;
@@ -2901,92 +3020,92 @@ export interface components {
       expired_at?: string | null;
     };
     TrialInputArgs: {
+      time_unit_name?: string;
       credit?: number;
       time_length?: number;
-      time_unit_name?: string;
     };
     DiscountInputArgs: {
-      discount_type?: 'FLAT' | 'PERCENT';
-      /** The scope that this discount covers. One of 'INVOICE_TOTAL', 'ADD_ON', 'METERED_COMPONENT'. */
-      scope?: 'INVOICE_TOTAL' | 'ADD_ON' | 'METERED_COMPONENT';
       /** For ADD_ON scoped discounts: the name of the add on that the discount covers. */
       add_on_name?: string;
-      /** Length, in billing cycles, that this discount will be active. */
-      billing_cycle_duration?: number;
       /** For METERED_COMPONENT scoped discounts: the UUID of the metered component that the discount covers. */
       metered_component_uuid?: string;
       /** For METERED_COMPONENT scoped discounts: Dictionary of labels (key: value) that the discount covers. The entire set of labels must be provided. */
       labels?: { [key: string]: string };
+      /** The scope that this discount covers. One of 'INVOICE_TOTAL', 'ADD_ON', 'METERED_COMPONENT'. */
+      scope?: 'INVOICE_TOTAL' | 'ADD_ON' | 'METERED_COMPONENT';
+      discount_type?: 'FLAT' | 'PERCENT';
+      /** Length, in billing cycles, that this discount will be active. */
+      billing_cycle_duration?: number;
       amount?: number;
     };
+    SubscriptionAddOnInput: {
+      name: string;
+      /** Override for the add-on price on this subscription. */
+      price?: number;
+      quantity?: number;
+    };
     FeatureInputArgs: {
-      description?: string;
       name?: string;
       display_name?: string;
+      description?: string;
     };
     LimitInputArgs: {
       feature?: components['schemas']['FeatureInputArgs'];
       limit?: number;
     };
-    SubscriptionAddOnInput: {
-      /** Override for the add-on price on this subscription. */
-      price?: number;
-      quantity?: number;
-      name: string;
-    };
     CreateSubscriptionArgs: {
-      price_plan_name?: string;
-      effective_at?: string;
-      price_plan_tag?: string;
-      vendor_id?: number;
+      customer_id?: number;
       coupon_override_id?: number;
       trial_override?: components['schemas']['TrialInputArgs'];
-      discounts?: components['schemas']['DiscountInputArgs'][];
       /** DEPRECATED - use discounts field */
       discount_override?: components['schemas']['DiscountInputArgs'];
+      vendor_id?: number;
+      add_ons?: components['schemas']['SubscriptionAddOnInput'][];
       coupon_override_name?: string;
       features_override?: components['schemas']['FeatureInputArgs'][];
-      limits_override?: components['schemas']['LimitInputArgs'][];
       price_plan_id?: number;
+      price_plan_tag?: string;
+      limits_override?: components['schemas']['LimitInputArgs'][];
+      effective_at?: string;
+      discounts?: components['schemas']['DiscountInputArgs'][];
+      price_plan_name?: string;
       align_to_calendar?: boolean;
-      customer_id?: number;
-      add_ons?: components['schemas']['SubscriptionAddOnInput'][];
     };
     UpdateSubscriptionArgs: {
-      price_plan_name?: string;
-      effective_at?: string;
-      price_plan_tag?: string;
-      vendor_id?: number;
-      /** Boolean that indicates whether to update the subscription at the start of the billing cycle. If 'true' and either of `effective_at` or `at_cycle_end` are set, will return an error. */
-      at_cycle_start?: boolean;
+      customer_id?: number;
       coupon_override_id?: number;
       trial_override?: components['schemas']['TrialInputArgs'] | null;
-      discounts?: components['schemas']['DiscountInputArgs'][];
+      /** Boolean that indicates whether to update the subscription at the start of the billing cycle. If 'true' and either of `effective_at` or `at_cycle_end` are set, will return an error. */
+      at_cycle_start?: boolean;
       /** DEPRECATED - use discounts field */
       discount_override?: components['schemas']['DiscountInputArgs'] | null;
+      vendor_id?: number;
+      add_ons?: components['schemas']['SubscriptionAddOnInput'][] | null;
       coupon_override_name?: string;
       features_override?: components['schemas']['FeatureInputArgs'][] | null;
-      limits_override?: components['schemas']['LimitInputArgs'][] | null;
       price_plan_id?: number;
-      align_to_calendar?: boolean;
-      customer_id?: number;
-      add_ons?: components['schemas']['SubscriptionAddOnInput'][] | null;
       /** Boolean that indicates whether to update the subscription at the end of the billing cycle. If 'true' and either of `effective_at` or `at_cycle_start` are set, will return an error. */
       at_cycle_end?: boolean;
+      price_plan_tag?: string;
+      limits_override?: components['schemas']['LimitInputArgs'][] | null;
+      effective_at?: string;
+      discounts?: components['schemas']['DiscountInputArgs'][];
+      price_plan_name?: string;
+      align_to_calendar?: boolean;
     };
     DeleteSubscriptionArgs: {
-      vendor_id?: number;
       customer_id?: number;
-      expire_at?: string;
       /** Boolean that indicates whether to expire the subscription at the end of thebilling cycle. If 'true' and `expire_at` is set, will return an error. */
       at_cycle_end?: boolean;
+      vendor_id?: number;
+      expire_at?: string;
     };
     UpdateSubscriptionInPlaceArgs: {
-      discounts?: components['schemas']['DiscountInputArgs'][];
       add_ons?: components['schemas']['SubscriptionAddOnInput'][] | null;
-      coupon_override_name?: string;
+      discounts?: components['schemas']['DiscountInputArgs'][];
       /** DEPRECATED - use discounts field */
       discount_override?: components['schemas']['DiscountInputArgs'] | null;
+      coupon_override_name?: string;
     };
     BillingCycleDate: {
       cycle_end: string;
@@ -3018,14 +3137,14 @@ export interface components {
       discounted_fixed_price?: number;
     };
     SubscriptionAddOnItem: {
-      effective_at?: string;
       feature_name?: string;
-      /** Boolean that indicates whether to update the subscription add on at the start of the billing cycle. If 'true' and either of `effective_at` or `at_cycle_end` are set, will return an error. */
-      at_cycle_start?: boolean;
+      effective_at?: string;
       /** Quantity represents how many of this add on you want to attach to the subscription. Can be positive forincreasing the number of this add on or negative for decreasing. */
       quantity?: number;
       /** Boolean that indicates whether to update the subscription add on at the end of the billing cycle. If 'true' and either of `effective_at` or `at_cycle_start` are set, will return an error. */
       at_cycle_end?: boolean;
+      /** Boolean that indicates whether to update the subscription add on at the start of the billing cycle. If 'true' and either of `effective_at` or `at_cycle_end` are set, will return an error. */
+      at_cycle_start?: boolean;
     };
     DeleteDiscountInputArgs: {
       /** External UUID representing the discount to be deleted. */
@@ -3033,39 +3152,27 @@ export interface components {
     };
     PastInvoice: {
       customer_name?: string;
-      issue_date?: string;
+      status_description?: string;
       status?: string;
       export_url?: string;
-      due_date?: string;
-      status_description?: string;
       amount_due?: number;
+      due_date?: string;
+      issue_date?: string;
     };
     PastInvoices: {
+      /** The sort column offset to start at when paging forwards */
+      forward_sort_offset?: string;
+      /** The unique offset to start at when paging forwards */
+      forward_secondary_sort_offset?: string;
+      sort_column?: string;
       invoices?: components['schemas']['PastInvoice'][];
-      sort_direction?: string;
-      /** The sort column offset to start at when paging forwards */
-      forward_sort_offset?: string;
-      sort_column?: string;
-      /** The unique offset to start at when paging forwards */
-      forward_secondary_sort_offset?: string;
       /** The number of items to fetch. Defaults to 10. */
       limit?: number;
-    };
-    UpcomingInvoice: {
-      generate_date?: string;
-      export_url?: string;
-      customer_name?: string;
-    };
-    UpcomingInvoices: {
-      invoices?: components['schemas']['UpcomingInvoice'][];
       sort_direction?: string;
-      /** The sort column offset to start at when paging forwards */
-      forward_sort_offset?: string;
-      sort_column?: string;
-      /** The unique offset to start at when paging forwards */
-      forward_secondary_sort_offset?: string;
-      /** The number of items to fetch. Defaults to 10. */
-      limit?: number;
+    };
+    CreateRetryArgs: { [key: string]: unknown };
+    Retry: {
+      success?: boolean;
     };
     MeteredComponentLabelLimitInputArgs: {
       /** Dictionary of labels (key: value) to which the limit applies. A value of 'any' will apply the limit to any single value of the field. */
@@ -3074,244 +3181,244 @@ export interface components {
       limit: number;
     };
     PriceInputArgs: {
+      description?: string;
       price?: number;
       cap?: number;
-      description?: string;
     };
     PriceSchemeInputArgs: {
-      /** The name of the unit used for this metered component (e.g., gigabyte) */
-      unit_name?: string;
-      /** Array of price tiers, each of which consists of `price` and `cap` key:value pairs */
-      prices?: components['schemas']['PriceInputArgs'][];
-      /** Size of the unit batch to use for the prices. Can only be set if scheme_type='FLAT' or 'TIERED'. E.g. To charge $10 per 100 API Requests, set batch_size to 100. */
-      batch_size?: number;
-      /** One of 'FLAT', 'TIERED', or 'STAIRSTEP' */
-      scheme_type: string;
       /** Array of (key, value) meter labels to price on & the price tiers that should be used against those labels */
       price_list?: { [key: string]: unknown }[];
+      /** Array of price tiers, each of which consists of `price` and `cap` key:value pairs */
+      prices?: components['schemas']['PriceInputArgs'][];
+      /** One of 'FLAT', 'TIERED', or 'STAIRSTEP' */
+      scheme_type: string;
       /** The time unit for the metered component (e.g., month or hour) */
       time_unit_name?: string;
+      /** Size of the unit batch to use for the prices. Can only be set if scheme_type='FLAT' or 'TIERED'. E.g. To charge $10 per 100 API Requests, set batch_size to 100. */
+      batch_size?: number;
+      /** The name of the unit used for this metered component (e.g., gigabyte) */
+      unit_name?: string;
     };
     MeteredComponentInputArgs: {
-      /** Name to be used on invoice. */
-      display_name?: string;
-      label_limits?: components['schemas']['MeteredComponentLabelLimitInputArgs'][];
-      meter_id?: number;
-      id?: number;
-      price_scheme?: components['schemas']['PriceSchemeInputArgs'];
       /** Codename of the meter. */
       meter_name?: string;
+      label_limits?: components['schemas']['MeteredComponentLabelLimitInputArgs'][];
+      /** Name to be used on invoice. */
+      display_name?: string;
+      price_scheme?: components['schemas']['PriceSchemeInputArgs'];
       /** Numeric limit to set on customer usage for the meter. */
       limit?: number;
+      id?: number;
+      meter_id?: number;
     };
     AddOnInputArgs: {
-      quantity_enabled?: boolean;
-      price?: number;
-      /** Whether this add on can only be used & charged once. */
-      single_use?: boolean;
       feature?: components['schemas']['FeatureInputArgs'];
       /** This field indicates whether or not we should cut an invoice immediately upon attaching this add on to a price plan. */
       immediately_charge?: boolean;
+      /** Whether this add on can only be used & charged once. */
+      single_use?: boolean;
+      price?: number;
+      quantity_enabled?: boolean;
       limit?: number;
     };
     CreatePricePlanArgs: {
-      name?: string;
-      display_name?: string;
-      metered_components?: components['schemas']['MeteredComponentInputArgs'][];
-      vendor_id?: number;
       /** Custom invoice description for the base price line item. */
       base_price_description?: string | null;
-      limits?: components['schemas']['LimitInputArgs'][];
-      tags?: string[];
-      /** Minimum amount (in cents) to charge every price plan period. */
-      minimum_charge?: number | null;
-      features?: components['schemas']['FeatureInputArgs'][];
-      base_price?: number;
-      trial?: components['schemas']['TrialInputArgs'];
-      add_ons?: components['schemas']['AddOnInputArgs'][];
-      period?: string;
       /** The frequency (as a an integer multiple of the period) at which to charge the base price. */
       base_price_frequency?: number;
+      metered_components?: components['schemas']['MeteredComponentInputArgs'][];
+      base_price?: number;
+      /** Minimum amount (in cents) to charge every price plan period. */
+      minimum_charge?: number | null;
+      limits?: components['schemas']['LimitInputArgs'][];
+      vendor_id?: number;
+      features?: components['schemas']['FeatureInputArgs'][];
+      add_ons?: components['schemas']['AddOnInputArgs'][];
+      name?: string;
       description?: string;
+      period?: string;
+      display_name?: string;
+      trial?: components['schemas']['TrialInputArgs'];
+      tags?: string[];
     };
     ListPricePlans: {
-      price_plans?: components['schemas']['PricePlan'][];
-      sort_direction?: string;
       /** The sort column offset to start at when paging forwards */
       forward_sort_offset?: string;
-      sort_column?: string;
       /** The unique offset to start at when paging forwards */
       forward_secondary_sort_offset?: string;
+      sort_column?: string;
+      price_plans?: components['schemas']['PricePlan'][];
       /** The number of items to fetch. Defaults to 10. */
       limit?: number;
+      sort_direction?: string;
     };
     UpdatePricePlanArgs: {
-      name?: string;
-      display_name?: string;
-      metered_components?: components['schemas']['MeteredComponentInputArgs'][];
-      vendor_id?: number;
       /** Custom invoice description for the base price line item. */
       base_price_description?: string | null;
-      limits?: components['schemas']['LimitInputArgs'][];
-      tags?: string[];
-      /** Minimum amount (in cents) to charge every price plan period. */
-      minimum_charge?: number | null;
-      features?: components['schemas']['FeatureInputArgs'][];
-      base_price?: number;
-      trial?: components['schemas']['TrialInputArgs'];
-      add_ons?: components['schemas']['AddOnInputArgs'][];
-      period?: string;
       /** The frequency (as a an integer multiple of the period) at which to charge the base price. */
       base_price_frequency?: number;
+      metered_components?: components['schemas']['MeteredComponentInputArgs'][];
+      base_price?: number;
+      /** Minimum amount (in cents) to charge every price plan period. */
+      minimum_charge?: number | null;
+      limits?: components['schemas']['LimitInputArgs'][];
+      vendor_id?: number;
+      features?: components['schemas']['FeatureInputArgs'][];
+      add_ons?: components['schemas']['AddOnInputArgs'][];
+      name?: string;
       description?: string;
+      period?: string;
+      display_name?: string;
+      trial?: components['schemas']['TrialInputArgs'];
+      tags?: string[];
     };
     UpdatePricePlanInPlaceArgs: {
-      display_name?: string;
+      /** Custom invoice description for the base price line item. */
+      base_price_description?: string | null;
       metered_components?: components['schemas']['MeteredComponentInputArgs'][];
       limits?: components['schemas']['LimitInputArgs'][];
       features?: components['schemas']['FeatureInputArgs'][];
       add_ons?: components['schemas']['AddOnInputArgs'][];
       description?: string;
-      /** Custom invoice description for the base price line item. */
-      base_price_description?: string | null;
+      display_name?: string;
     };
     SelfServePricePlansInputArgs: {
       price_plan_uuids?: string[];
     };
     PaymentGatewayCredentialInputArgs: {
       payment_gateway?: string;
-      account_id?: string;
       auth_token?: string;
+      account_id?: string;
     };
     CreateBillingSettingsInputArgs: {
-      /** Flag that controls whether or not to auto-charge the customer based on the invoice. */
-      charges_enabled?: boolean;
-      /** Flag determining whether ACH/Wire instructions should be included on invoices. */
-      include_ach_instructions?: boolean | null;
-      /** Account number for ACH/Wire transfer instructions */
-      ach_account_number?: string | null;
-      /** Optional description attached to the invoice */
-      invoice_memo?: string | null;
-      /** The percentage tax rate to apply to invoices. */
-      tax_rate?: number | null;
-      /** Time length after which to attempt invoice/payment retry. */
-      retry_frequency_length?: number;
-      /** Default value for whether to align billing cycles to calendar on subscriptions */
-      align_billing_cycles_to_calendar?: boolean;
-      /** Time length of the grace period between the end of invoice generation and the actual charge. *NOTE*: The specified length is unitless. Unit is designated with the `payment_grace_period_unit` field. */
-      payment_grace_period_length?: number;
-      /** Bank name for ACH/Wire transfer instructions */
-      ach_bank_name?: string | null;
-      /** Second line of bank address for ACH/Wire transfer instructions */
-      ach_bank_address_2?: string | null;
-      /** Sets the due date on invoices to the number of days after the invoice is sent */
-      days_until_due?: number | null;
-      /** ABA/Routing number for ACH/Wire transfer instructions */
-      ach_routing_number?: string | null;
-      /** Flag that controls whether or not to invoice/charge gauge meters upfront according to their value at start of cycle. Only applies if invoice_fixed_components_at_start is enabled. */
-      invoice_metered_components_at_start?: boolean;
-      /** Time length unit of the grace period between the end of invoice generation and actual charge. One of `minute`, `hour`, `day`. */
-      payment_grace_period_unit?: string;
-      /** Flag that controls whether to invoice through Octane or through payment provider */
-      invoice_via_octane?: boolean;
-      /** Time length of the grace period between the end of a billing cycle and invoice generation in days. */
-      invoice_grace_period_length?: number;
       /** Time length unit after which to attempt invoice/payment retry. */
       retry_frequency_unit?: string;
-      /** Account name for ACH/Wire transfer instructions */
-      ach_account_name?: string | null;
-      /** True if customer updates should be synced to Stripe. */
-      sync_customer_data_to_payment_gateway?: boolean | null;
-      /** Flag that controls whether or not invoices should be sent to customers. */
-      should_send_invoice_to_customers?: boolean;
-      /** First line of bank address for ACH/Wire transfer instructions */
-      ach_bank_address_1?: string | null;
-      /** Time length unit of the grace period between the end of a billing cycle and invoice generation. Must be `day`. */
-      invoice_grace_period_unit?: 'day';
-      /** Optional url of a custom image to include on invoices. */
-      invoice_logo_url?: string | null;
       customer_invoice_detail_level?: string;
-      /** Flag that controls whether to do automated taxes via payment provider */
-      tax_via_payment_provider?: boolean;
-      /** Flag that controls whether or not to invoice/charge a true up for a billing cycle on the following invoice. Only applies if invoice_fixed_components_at_start is enabled. */
-      invoice_overages?: boolean;
-      /** Flag that controls whether or not to invoice/charge the base rate, add ons and other fixed price plan components at the beginning of the billing cycle. */
-      invoice_fixed_components_at_start?: boolean;
+      /** Optional description attached to the invoice */
+      invoice_memo?: string | null;
       /** If using stripe, this field can be used to configure whether invoices should be auto advanced for collection */
       stripe_auto_advance?: boolean;
+      /** Bank name for ACH/Wire transfer instructions */
+      ach_bank_name?: string | null;
+      /** Time length unit of the grace period between the end of a billing cycle and invoice generation. Must be `day`. */
+      invoice_grace_period_unit?: 'day';
+      /** The percentage tax rate to apply to invoices. */
+      tax_rate?: number | null;
+      /** Second line of bank address for ACH/Wire transfer instructions */
+      ach_bank_address_2?: string | null;
+      /** Optional url of a custom image to include on invoices. */
+      invoice_logo_url?: string | null;
+      /** Time length after which to attempt invoice/payment retry. */
+      retry_frequency_length?: number;
+      /** Time length of the grace period between the end of invoice generation and the actual charge. *NOTE*: The specified length is unitless. Unit is designated with the `payment_grace_period_unit` field. */
+      payment_grace_period_length?: number;
+      /** Sets the due date on invoices to the number of days after the invoice is sent */
+      days_until_due?: number | null;
+      /** Flag that controls whether or not invoices should be sent to customers. */
+      should_send_invoice_to_customers?: boolean;
+      /** Default value for whether to align billing cycles to calendar on subscriptions */
+      align_billing_cycles_to_calendar?: boolean;
+      /** Flag that controls the number of retry attempts for invoicing/payments. */
+      retry_attempts?: number;
+      /** True if customer updates should be synced to Stripe. */
+      sync_customer_data_to_payment_gateway?: boolean | null;
+      /** Account name for ACH/Wire transfer instructions */
+      ach_account_name?: string | null;
+      /** Flag that controls whether or not to invoice/charge gauge meters upfront according to their value at start of cycle. Only applies if invoice_fixed_components_at_start is enabled. */
+      invoice_metered_components_at_start?: boolean;
+      /** Flag that controls whether to invoice through Octane or through payment provider */
+      invoice_via_octane?: boolean;
       /** If using Stripe, this field can be used to configure whether invoices should be finalized immediately when they are created. */
       stripe_immediate_finalization?: boolean | null;
       /** Flag that controls whether invoices are auto-approved or require manual approval */
       auto_approve_invoices?: boolean;
-      /** Flag that controls the number of retry attempts for invoicing/payments. */
-      retry_attempts?: number;
+      /** Flag that controls whether or not to auto-charge the customer based on the invoice. */
+      charges_enabled?: boolean;
+      /** Flag that controls whether or not to invoice/charge the base rate, add ons and other fixed price plan components at the beginning of the billing cycle. */
+      invoice_fixed_components_at_start?: boolean;
+      /** Time length unit of the grace period between the end of invoice generation and actual charge. One of `minute`, `hour`, `day`. */
+      payment_grace_period_unit?: string;
+      /** ABA/Routing number for ACH/Wire transfer instructions */
+      ach_routing_number?: string | null;
+      /** Flag determining whether ACH/Wire instructions should be included on invoices. */
+      include_ach_instructions?: boolean | null;
       /** Swift code for ACH/Wire transfer instructions */
       ach_swift_code?: string | null;
+      /** First line of bank address for ACH/Wire transfer instructions */
+      ach_bank_address_1?: string | null;
+      /** Time length of the grace period between the end of a billing cycle and invoice generation in days. */
+      invoice_grace_period_length?: number;
+      /** Flag that controls whether or not to invoice/charge a true up for a billing cycle on the following invoice. Only applies if invoice_fixed_components_at_start is enabled. */
+      invoice_overages?: boolean;
+      /** Flag that controls whether to do automated taxes via payment provider */
+      tax_via_payment_provider?: boolean;
+      /** Account number for ACH/Wire transfer instructions */
+      ach_account_number?: string | null;
     };
     UpdateBillingSettingsInputArgs: {
-      /** Flag that controls whether or not to auto-charge the customer based on the invoice. */
-      charges_enabled?: boolean;
-      /** Flag determining whether ACH/Wire instructions should be included on invoices. */
-      include_ach_instructions?: boolean | null;
-      /** Account number for ACH/Wire transfer instructions */
-      ach_account_number?: string | null;
-      /** Optional description attached to the invoice */
-      invoice_memo?: string | null;
-      /** The percentage tax rate to apply to invoices. */
-      tax_rate?: number | null;
-      /** Time length after which to attempt invoice/payment retry. */
-      retry_frequency_length?: number;
-      /** Default value for whether to align billing cycles to calendar on subscriptions */
-      align_billing_cycles_to_calendar?: boolean;
-      /** Time length of the grace period between the end of invoice generation and the actual charge. *NOTE*: The specified length is unitless. Unit is designated with the `payment_grace_period_unit` field. */
-      payment_grace_period_length?: number;
-      /** Bank name for ACH/Wire transfer instructions */
-      ach_bank_name?: string | null;
-      /** Second line of bank address for ACH/Wire transfer instructions */
-      ach_bank_address_2?: string | null;
-      /** Sets the due date on invoices to the number of days after the invoice is sent */
-      days_until_due?: number | null;
-      /** ABA/Routing number for ACH/Wire transfer instructions */
-      ach_routing_number?: string | null;
-      /** Flag that controls whether or not to invoice/charge gauge meters upfront according to their value at start of cycle. Only applies if invoice_fixed_components_at_start is enabled. */
-      invoice_metered_components_at_start?: boolean;
-      /** Time length unit of the grace period between the end of invoice generation and actual charge. One of `minute`, `hour`, `day`. */
-      payment_grace_period_unit?: string;
-      /** Flag that controls whether to invoice through Octane or through payment provider */
-      invoice_via_octane?: boolean;
-      /** Time length of the grace period between the end of a billing cycle and invoice generation in days. */
-      invoice_grace_period_length?: number;
       /** Time length unit after which to attempt invoice/payment retry. */
       retry_frequency_unit?: string;
-      /** Account name for ACH/Wire transfer instructions */
-      ach_account_name?: string | null;
-      /** True if customer updates should be synced to Stripe. */
-      sync_customer_data_to_payment_gateway?: boolean | null;
-      /** Flag that controls whether or not invoices should be sent to customers. */
-      should_send_invoice_to_customers?: boolean;
-      /** First line of bank address for ACH/Wire transfer instructions */
-      ach_bank_address_1?: string | null;
-      /** Time length unit of the grace period between the end of a billing cycle and invoice generation. Must be `day`. */
-      invoice_grace_period_unit?: 'day';
-      /** Optional url of a custom image to include on invoices. */
-      invoice_logo_url?: string | null;
       customer_invoice_detail_level?: string;
-      /** Flag that controls whether to do automated taxes via payment provider */
-      tax_via_payment_provider?: boolean;
-      /** Flag that controls whether or not to invoice/charge a true up for a billing cycle on the following invoice. Only applies if invoice_fixed_components_at_start is enabled. */
-      invoice_overages?: boolean;
-      /** Flag that controls whether or not to invoice/charge the base rate, add ons and other fixed price plan components at the beginning of the billing cycle. */
-      invoice_fixed_components_at_start?: boolean;
+      /** Optional description attached to the invoice */
+      invoice_memo?: string | null;
       /** If using stripe, this field can be used to configure whether invoices should be auto advanced for collection */
       stripe_auto_advance?: boolean;
+      /** Bank name for ACH/Wire transfer instructions */
+      ach_bank_name?: string | null;
+      /** Time length unit of the grace period between the end of a billing cycle and invoice generation. Must be `day`. */
+      invoice_grace_period_unit?: 'day';
+      /** The percentage tax rate to apply to invoices. */
+      tax_rate?: number | null;
+      /** Second line of bank address for ACH/Wire transfer instructions */
+      ach_bank_address_2?: string | null;
+      /** Optional url of a custom image to include on invoices. */
+      invoice_logo_url?: string | null;
+      /** Time length after which to attempt invoice/payment retry. */
+      retry_frequency_length?: number;
+      /** Time length of the grace period between the end of invoice generation and the actual charge. *NOTE*: The specified length is unitless. Unit is designated with the `payment_grace_period_unit` field. */
+      payment_grace_period_length?: number;
+      /** Sets the due date on invoices to the number of days after the invoice is sent */
+      days_until_due?: number | null;
+      /** Flag that controls whether or not invoices should be sent to customers. */
+      should_send_invoice_to_customers?: boolean;
+      /** Default value for whether to align billing cycles to calendar on subscriptions */
+      align_billing_cycles_to_calendar?: boolean;
+      /** Flag that controls the number of retry attempts for invoicing/payments. */
+      retry_attempts?: number;
+      /** True if customer updates should be synced to Stripe. */
+      sync_customer_data_to_payment_gateway?: boolean | null;
+      /** Account name for ACH/Wire transfer instructions */
+      ach_account_name?: string | null;
+      /** Flag that controls whether or not to invoice/charge gauge meters upfront according to their value at start of cycle. Only applies if invoice_fixed_components_at_start is enabled. */
+      invoice_metered_components_at_start?: boolean;
+      /** Flag that controls whether to invoice through Octane or through payment provider */
+      invoice_via_octane?: boolean;
       /** If using Stripe, this field can be used to configure whether invoices should be finalized immediately when they are created. */
       stripe_immediate_finalization?: boolean | null;
       /** Flag that controls whether invoices are auto-approved or require manual approval */
       auto_approve_invoices?: boolean;
-      /** Flag that controls the number of retry attempts for invoicing/payments. */
-      retry_attempts?: number;
+      /** Flag that controls whether or not to auto-charge the customer based on the invoice. */
+      charges_enabled?: boolean;
+      /** Flag that controls whether or not to invoice/charge the base rate, add ons and other fixed price plan components at the beginning of the billing cycle. */
+      invoice_fixed_components_at_start?: boolean;
+      /** Time length unit of the grace period between the end of invoice generation and actual charge. One of `minute`, `hour`, `day`. */
+      payment_grace_period_unit?: string;
+      /** ABA/Routing number for ACH/Wire transfer instructions */
+      ach_routing_number?: string | null;
+      /** Flag determining whether ACH/Wire instructions should be included on invoices. */
+      include_ach_instructions?: boolean | null;
       /** Swift code for ACH/Wire transfer instructions */
       ach_swift_code?: string | null;
+      /** First line of bank address for ACH/Wire transfer instructions */
+      ach_bank_address_1?: string | null;
+      /** Time length of the grace period between the end of a billing cycle and invoice generation in days. */
+      invoice_grace_period_length?: number;
+      /** Flag that controls whether or not to invoice/charge a true up for a billing cycle on the following invoice. Only applies if invoice_fixed_components_at_start is enabled. */
+      invoice_overages?: boolean;
+      /** Flag that controls whether to do automated taxes via payment provider */
+      tax_via_payment_provider?: boolean;
+      /** Account number for ACH/Wire transfer instructions */
+      ach_account_number?: string | null;
     };
     Customer1: {
       /** Unique name identifier of a customer */
@@ -3359,19 +3466,19 @@ export interface components {
       discount_amount: number;
     };
     ApplyCouponInputArgs: {
-      name?: string;
       customer_name?: string;
-      vendor_id?: number;
       code?: string;
       customer_id?: number;
+      vendor_id?: number;
+      name?: string;
     };
     CreateRefundArgs: {
-      /** Invoice that the refund should be against */
-      invoice_id?: number;
-      /** Invoice that the refund should be against */
-      invoice_uuid?: string;
       /** Amount to be refunded */
       amount?: number;
+      /** Invoice that the refund should be against */
+      invoice_uuid?: string;
+      /** Invoice that the refund should be against */
+      invoice_id?: number;
     };
     Refund: {
       success?: boolean;
@@ -3384,8 +3491,8 @@ export interface components {
     };
     UpdateCustomerPortalSettingsInputArgs: {
       vendor_id?: number;
-      price_plan_names_filter?: string;
       price_plan_tags_filter?: string;
+      price_plan_names_filter?: string;
     };
     CustomerPortalTokenInputArgs: {
       customer_name?: string;
@@ -3397,71 +3504,71 @@ export interface components {
       url?: string;
     };
     CustomerPortalVendor: {
+      /** Vendor's current payment gateway. */
+      payment_gateway?: string;
+      /** Full contact info for the Vendor */
+      contact_info?: components['schemas']['ContactInfo'];
       /** Unique name identifier of a Vendor */
       name?: string;
       /** Currency preference of the Vendor. */
       currency?: string;
       /** Display name for the Vendor */
       display_name?: string;
-      /** Full contact info for the Vendor */
-      contact_info?: components['schemas']['ContactInfo'];
-      /** Vendor's current payment gateway. */
-      payment_gateway?: string;
     };
     CustomerPortalInvoiceStatus: {
-      /** The current processing state for this invoice. */
-      status?: string;
-      /** The current upcoming action associated with this invoice status, if any. */
-      action?: string;
-      update_source?: string;
+      error?: string;
       /** The timestamp that the action will be performed at. */
       pending_action_time?: string;
+      /** The current processing state for this invoice. */
+      status?: string;
+      update_source?: string;
       /** Creation time of this invoice status. */
       created_at?: string;
       /** Time the invoice status was last updated. */
       updated_at?: string;
-      error?: string;
+      /** The current upcoming action associated with this invoice status, if any. */
+      action?: string;
     };
     CustomerPortalInvoice: {
-      line_items?: components['schemas']['LineItems'][];
-      /** Total amount due */
-      amount_due?: number;
-      /** [DEPRECATED] End time of the cycle in which the invoice was generated */
-      end_time?: string;
       /** Latest end time of line items covered by the invoice */
       max_item_end_time?: string;
-      /** Tax amount applied to subtotal */
-      tax_amount?: number;
-      /** Url pointing to the pdf of this invoice. */
-      pdf_url?: string;
-      /** [DEPRECATED] Start time of the cycle in which the invoice was generated */
-      start_time?: string;
-      id?: string;
-      /** Amount due before any credits are applied */
-      sub_total?: number;
-      /** Information related to the current status of this invoice. */
-      status?: components['schemas']['CustomerPortalInvoiceStatus'];
-      /** Earliest start time of line items covered by the invoice */
-      min_item_start_time?: string;
-      due_date?: string;
       /** Any discount credits applied to the invoice */
       discount_credit?: number;
-      /** False if not paid yet */
-      is_paid?: boolean;
+      line_items?: components['schemas']['LineItems'][];
+      /** Information related to the current status of this invoice. */
+      status?: components['schemas']['CustomerPortalInvoiceStatus'];
+      due_date?: string;
       /** The date the invoice will be issued to the end customer or forwarded to the payment processor. */
       issue_date?: string;
+      /** [DEPRECATED] End time of the cycle in which the invoice was generated */
+      end_time?: string;
+      /** False if not paid yet */
+      is_paid?: boolean;
+      /** Earliest start time of line items covered by the invoice */
+      min_item_start_time?: string;
+      /** Total amount due */
+      amount_due?: number;
+      /** Url pointing to the pdf of this invoice. */
+      pdf_url?: string;
+      id?: string;
+      /** [DEPRECATED] Start time of the cycle in which the invoice was generated */
+      start_time?: string;
+      /** Tax amount applied to subtotal */
+      tax_amount?: number;
+      /** Amount due before any credits are applied */
+      sub_total?: number;
     };
     CustomerPortalActiveSubscription: {
-      /** The total fixed price the customer will be charged for this billing cycle. Includes the base price and any add ons. */
-      total_fixed_price?: number;
-      /** Customer's current active subscription. Includes the price plan and overrides they are subscribed to. */
-      subscription?: components['schemas']['Subscription'];
-      /** The total fixed price with all discounts applied. */
-      discounted_fixed_price?: number;
-      /** Customer's current active biling cycle. */
-      billing_cycle: components['schemas']['BillingCycleDate'];
       /** The date that the customer will be invoiced for their current billing cycle. */
       invoicing_date?: string;
+      /** Customer's current active biling cycle. */
+      billing_cycle: components['schemas']['BillingCycleDate'];
+      /** The total fixed price with all discounts applied. */
+      discounted_fixed_price?: number;
+      /** Customer's current active subscription. Includes the price plan and overrides they are subscribed to. */
+      subscription?: components['schemas']['Subscription'];
+      /** The total fixed price the customer will be charged for this billing cycle. Includes the base price and any add ons. */
+      total_fixed_price?: number;
     };
     CustomerPortalActiveSubscriptionInputArgs: {
       price_plan_uuid?: string;
@@ -3474,62 +3581,90 @@ export interface components {
       price_plan_name?: string;
     };
     CustomerPortalStripeCredential: {
-      client_secret?: string;
       publishable_key?: string;
+      client_secret?: string;
       account_id?: string;
     };
-    DailyUsage: {
-      /** Total usage during this window. */
-      usage?: number;
-      /** Start of the 24 hour time window in UTC. */
-      time?: string;
+    CustomerPortalMeterLabels: {
+      /** Primary label values associated with the key */
+      values?: string[];
+      key?: string;
     };
-    CycleUsage: {
-      /** The end of the billing cycle in UTC. */
-      cycle_end?: string;
-      /** The start of the billing cycle in UTC. */
-      cycle_start?: string;
-      usage_by_time?: components['schemas']['DailyUsage'][];
-      /** Total usage in the cycle. */
-      total_usage?: number;
-    };
-    CustomerPortalUsage: {
+    CustomerPortalMeter: {
+      /** Name of the meter. */
+      meter_name?: string;
+      /** Primary labels with keys and values */
+      labels?: components['schemas']['CustomerPortalMeterLabels'][];
       /** Display name of the meter. */
       meter_display_name?: string;
       /** Type of the meter. E.g. COUNTER or GAUGE. */
       meter_type?: string;
       /** Name of the unit the meter uses. */
       unit_name?: string;
-      /** Daily usage across the previous billing cycle. */
-      previous_cycle_usage?: components['schemas']['CycleUsage'];
+    };
+    DailyUsage: {
+      /** Start of the 24 hour time window in UTC. */
+      time?: string;
+      /** Total usage during this window. */
+      usage?: number;
+    };
+    CycleUsage: {
+      /** Total usage in the cycle. */
+      total_usage?: number;
+      /** The start of the billing cycle in UTC. */
+      cycle_start?: string;
+      usage_by_time?: components['schemas']['DailyUsage'][];
+      /** The end of the billing cycle in UTC. */
+      cycle_end?: string;
+    };
+    CustomerPortalUsage: {
       /** Name of the meter. */
       meter_name?: string;
       /** Daily usage across the current billing cycle. */
       current_cycle_usage?: components['schemas']['CycleUsage'];
+      /** Display name of the meter. */
+      meter_display_name?: string;
+      /** Type of the meter. E.g. COUNTER or GAUGE. */
+      meter_type?: string;
+      /** Daily usage across the previous billing cycle. */
+      previous_cycle_usage?: components['schemas']['CycleUsage'];
+      /** Name of the unit the meter uses. */
+      unit_name?: string;
+    };
+    CustomerPortalLabelFilter: {
+      /** Primary label value associated with the key */
+      value?: string;
+      key?: string;
+    };
+    CustomerPortalMeterLabelFilter: {
+      /** Name of the meter. */
+      meter_name: string;
+      /** Primary labels with keys and values */
+      label_filters: components['schemas']['CustomerPortalLabelFilter'][];
     };
     CardInfo: {
       /** Country of the card */
       country?: string;
-      /** Last 4 digits of the card. */
-      last4?: string;
       /** Month the card expires */
       exp_month?: number;
       /** Year the card expires */
       exp_year?: number;
       /** Brand of card. E.g. Amex, Visa, etc. */
       brand?: string;
+      /** Last 4 digits of the card. */
+      last4?: string;
     };
     BankAccountInfo: {
       /** Name of the bank */
       bank_name?: string;
       /** Country the bank account is in. */
       country?: string;
-      /** Last 4 digits of the bank account number. */
-      last4?: string;
       /** Routing number for the bank accopunt */
       routing_number?: number;
       /** Bank account type. E.g. Savings/Checking */
       account_type?: string;
+      /** Last 4 digits of the bank account number. */
+      last4?: string;
     };
     CustomerPortalPaymentMethod: {
       /** Type of payment method for the customer. */
@@ -3558,35 +3693,35 @@ export interface components {
       settings: { [key: string]: string };
     };
     CreditLedger: {
-      /** Credit balance as of this change */
-      balance?: number;
-      /** The time at which this credit balance change occurred. */
-      timestamp?: string;
       /** The change in numer of credits */
       amount?: number;
       pending?: boolean;
+      /** The time at which this credit balance change occurred. */
+      timestamp?: string;
+      /** Credit balance as of this change */
+      balance?: number;
     };
     CustomerPortalCreditPurchase: {
       /** Number of credits to purchase. */
       amount: number;
     };
     CreditGrant: {
-      /** The date at which this grant is effective */
-      effective_at?: string;
       /** Name of the customer who received the grant */
       customer_name?: string;
+      /** The source of the grant. */
+      source?: string;
+      /** Optional description. This is only viewable internally */
+      description?: string;
       /** Total price paid for the credits, in cents */
       price?: number;
       /** The date at which this grant expires */
       expires_at?: string;
-      /** The source of the grant. */
-      source?: string;
       /** A unique identifier for this grant */
       uuid?: string;
+      /** The date at which this grant is effective */
+      effective_at?: string;
       /** Number of credits granted */
       amount?: number;
-      /** Optional description. This is only viewable internally */
-      description?: string;
     };
     Webhook: {
       /** The url to send the webhooks to. */
@@ -3597,49 +3732,45 @@ export interface components {
       enable_signature: boolean;
     };
     CreateWebhookArgs: {
-      url?: string;
       enable_signature?: boolean;
+      url?: string;
     };
     ListCreditGrantsArgs: {
+      /** The sort column offset to start at when paging forwards */
+      forward_sort_offset?: string;
       /** Customer to filter the results to */
       customer_name?: string;
-      sort_direction?: string;
-      /** The sort column offset to start at when paging forwards */
-      forward_sort_offset?: string;
-      sort_column?: string;
       /** The unique offset to start at when paging forwards */
       forward_secondary_sort_offset?: string;
+      sort_column?: string;
       /** The number of items to fetch. Defaults to 10. */
       limit?: number;
+      sort_direction?: string;
     };
     ListCreditGrants: {
-      credit_grants?: components['schemas']['CreditGrant'][];
-      sort_direction?: string;
       /** The sort column offset to start at when paging forwards */
       forward_sort_offset?: string;
-      sort_column?: string;
       /** The unique offset to start at when paging forwards */
       forward_secondary_sort_offset?: string;
+      sort_column?: string;
+      credit_grants?: components['schemas']['CreditGrant'][];
       /** The number of items to fetch. Defaults to 10. */
       limit?: number;
+      sort_direction?: string;
     };
     CreateCreditGrantArgs: {
-      /** The date at which the grant is effective */
-      effective_at?: string;
       /** Name of the customer receving the grant */
       customer_name: string;
+      /** Optional description. This is only viewable internally */
+      description?: string;
       /** Total price paid for the credits in cents. Defaults to $1 (100 cents) per credit if not specified */
       price?: number;
       /** The date at which this grant expires */
       expires_at?: string;
+      /** The date at which the grant is effective */
+      effective_at?: string;
       /** Number of credits to grant */
       amount: number;
-      /** Optional description. This is only viewable internally */
-      description?: string;
-    };
-    CreateRetryArgs: { [key: string]: unknown };
-    Retry: {
-      success?: boolean;
     };
     RollApiKeyArgs: {
       /** The date at which this API key will expire. Will default to 7 days. */
@@ -3653,116 +3784,126 @@ export interface components {
       success?: boolean;
     };
     UpdateSelfServeSettingsArgs: {
-      /** Time length of the default expiration for credits bought in the customer portal. */
-      credits_expiration_length?: number;
-      /** Time length unit for the default expiration for credits bought in the customer portal. */
-      credits_expiration_unit?: string;
       /** True if the customer can purchase credits via self serve. Defaults to False. */
       purchase_credits?: boolean;
-      /** True if the vendor has enabled customization for their customer portal. */
-      enabled?: boolean;
-      /** True if the vendor has enabled customization for their customer portal. */
-      customization?: boolean;
-      /** Price per credit, in cents, that the customer is charged for buying credits through the customer portal */
-      price_per_credit_cents?: number;
       /** True if the customer can switch their current price plan via self serve. Defaults to False. */
       switch_price_plans?: boolean;
+      /** Time length unit for the default expiration for credits bought in the customer portal. */
+      credits_expiration_unit?: string;
+      /** True if the vendor has enabled customization for their customer portal. */
+      enabled?: boolean;
+      /** Price per credit, in cents, that the customer is charged for buying credits through the customer portal */
+      price_per_credit_cents?: number;
+      /** Time length of the default expiration for credits bought in the customer portal. */
+      credits_expiration_length?: number;
+      /** True if the vendor has enabled customization for their customer portal. */
+      customization?: boolean;
     };
     VendorAvalaraSettings: {
       /** The item description to use to represent all the lines on the Octane invoice. */
       item_description?: string;
-      /** True if enabling logging for Avalara calls, false otherwise. */
-      enable_logging?: boolean;
-      /** Enable/Disable the Avalara integration. */
-      enable_integration?: boolean;
-      /** The Avalara company code string to associate the Octane vendor with. */
-      company_code?: string;
       /** Password of the Avalara account. */
       password?: string;
-      /** True if the documents generated in Avalara should be committed, false otherwise. */
-      commit_documents?: boolean;
+      /** The Avalara company code string to associate the Octane vendor with. */
+      company_code?: string;
+      /** True if enabling logging for Avalara calls, false otherwise. */
+      enable_logging?: boolean;
       /** he tax code to associate with the item that is representing the Octane invoice. */
       tax_code?: string;
       /** Username of the Avalara account. */
       username?: string;
+      /** True if the documents generated in Avalara should be committed, false otherwise. */
+      commit_documents?: boolean;
       /** The Avalara item code to use to represent all the line items on the Octane invoice. */
       item_code?: string;
       /** True if connecting to Avalara sandbox account, false otherwise. */
       sandbox_mode?: boolean;
+      /** Enable/Disable the Avalara integration. */
+      enable_integration?: boolean;
     };
     CreateVendorAvalaraSettingsArgs: {
       /** The item description to use to represent all the lines on the Octane invoice. */
       item_description?: string;
-      /** True if enabling logging for Avalara calls, false otherwise. Defaults to False. */
-      enable_logging?: boolean;
-      /** Enable/Disable the Avalara integration. */
-      enable_integration: boolean;
-      /** The Avalara company code string to associate the Octane vendor with. */
-      company_code?: string;
       /** Password of the Avalara account. */
       password: string;
-      /** True if the documents generated in Avalara should be committed, false otherwise. Defaults to False. */
-      commit_documents?: boolean;
+      /** The Avalara company code string to associate the Octane vendor with. */
+      company_code?: string;
+      /** True if enabling logging for Avalara calls, false otherwise. Defaults to False. */
+      enable_logging?: boolean;
       /** The tax code to associate with the item that is representing the Octane invoice. */
       tax_code?: string;
       /** Username of the Avalara account. */
       username: string;
+      /** True if the documents generated in Avalara should be committed, false otherwise. Defaults to False. */
+      commit_documents?: boolean;
       /** The Avalara item code to use to represent all the line items on the Octane invoice. */
       item_code?: string;
       /** True if connecting to Avalara sandbox account, false otherwise. */
       sandbox_mode: boolean;
+      /** Enable/Disable the Avalara integration. */
+      enable_integration: boolean;
     };
     UpdateVendorAvalaraSettingsArgs: {
-      /** The item description to use to represent all the lines on the Octane invoice. */
-      item_description?: string;
-      /** Enable/Disable the Avalara integration. */
-      enable_integration?: boolean;
       /** The Avalara company code string to associate the Octane vendor with. */
       company_code?: string;
       /** True if enabling logging for Avalara calls, false otherwise. */
       enable_logging?: boolean;
-      /** True if the documents generated in Avalara should be committed, false otherwise. */
-      commit_documents?: boolean;
       /** he tax code to associate with the item that is representing the Octane invoice. */
       tax_code?: string;
+      /** True if the documents generated in Avalara should be committed, false otherwise. */
+      commit_documents?: boolean;
       /** The Avalara item code to use to represent all the line items on the Octane invoice. */
       item_code?: string;
+      /** The item description to use to represent all the lines on the Octane invoice. */
+      item_description?: string;
+      /** Enable/Disable the Avalara integration. */
+      enable_integration?: boolean;
     };
     ValidateCredentialsArgs: {
-      /** Password of the Avalara account */
-      password: string;
       /** Username of the Avalara account */
       username: string;
       /** True if using a Avalara sandbox account, False otherwise */
       sandbox_mode: boolean;
+      /** Password of the Avalara account */
+      password: string;
     };
     ValidateCredentialsResp: {
       /** Indicates whether the ping to Avalara was successful and the credentials were validated. */
       success?: boolean;
     };
     TaxCode: {
-      /** The Avalara Entity Use Code represented by this tax code. */
-      entity_use_code?: string;
       /** A code string that identifies this tax code. */
       tax_code?: string;
-      /** The unique ID number of this tax code. */
-      id?: string;
-      /** The type of this tax code. */
-      tax_code_type_id?: string;
       /** A friendly description of this tax code. */
       description?: string;
+      /** The type of this tax code. */
+      tax_code_type_id?: string;
+      /** The Avalara Entity Use Code represented by this tax code. */
+      entity_use_code?: string;
+      /** The unique ID number of this tax code. */
+      id?: string;
     };
     Company: {
+      /** A unique code that references this company within your account. */
+      company_code?: string;
       /** The name of this company, as shown to customers. */
       name?: string;
       /** This flag indicates whether tax activity can occur for this company. */
       is_active?: boolean;
-      /** A unique code that references this company within your account. */
-      company_code?: string;
-      /** The unique ID number of this company. */
-      id?: string;
       /** This flag is true if this company is the default company for this account. */
       is_default?: boolean;
+      /** The unique ID number of this company. */
+      id?: string;
+    };
+    EntityUseCode: {
+      /** The name of this entity use code. */
+      name?: string;
+      /** The Avalara-recognized entity use code for this definition. */
+      code?: string;
+      /** A list of countries where this use code is valid. */
+      valid_countries?: string[];
+      /** Text describing the meaning of this use code. */
+      description?: string;
     };
   };
   responses: {
