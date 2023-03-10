@@ -13,7 +13,7 @@ type Options = {
 export default function getAllPricePlans(
   customerToken: string,
   options: Options = {}
-): Promise<PricePlan[]> {
+): Promise<PricePlan[] | null> {
   if (!customerToken) {
     throw new Error('Token must be provided.');
   }

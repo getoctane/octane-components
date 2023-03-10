@@ -19,6 +19,7 @@ type SelfServeSettings = Schemas['SelfServeSettings'];
 type SelfServeCustomization = Schemas['SelfServeCustomization'];
 type ActiveSubscriptionInputArgs =
   Schemas['CustomerPortalActiveSubscriptionInputArgs'];
+type CustomerPortalMeter = Schemas['CustomerPortalMeter'];
 
 /* = = = = = = = = = = = = = =
 
@@ -164,7 +165,7 @@ export const getPricePlansUrl: UrlFactory = (base = API_BASE): string =>
  */
 export const getPricePlans = makeApiGETEndpoint<
   never, // No query params
-  never, // No URL path args
+  [], // No URL path args
   PricePlan[], // Returns a list of price plans
   unknown // Undefined failure type
 >(getPricePlansUrl);
@@ -316,3 +317,13 @@ export const getSelfServeCustomization = makeApiGETEndpoint<
   SelfServeCustomization, // Returns the vendor's self-serve settings
   unknown // Undefined failure type
 >(getSelfServeCustomizationUrl);
+
+export const getSelfServeMetersUrl: UrlFactory = (base = API_BASE) =>
+  `${base}/ecp/meters`;
+
+export const getCustomerMeters = makeApiGETEndpoint<
+  never, // No query params
+  [], // No URL path args
+  CustomerPortalMeter[], // Returns the list of customer's meters
+  unknown // Undefined failure type
+>(getSelfServeMetersUrl);
