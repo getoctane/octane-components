@@ -1,13 +1,11 @@
 import { useCallback, useContext } from 'react';
-import { useAsync } from './useAsync';
-import type { UseAsyncReturnType } from './useAsync';
+import { useAsyncOnDemand } from './useAsyncOnDemand';
 import { TokenContext } from './useCustomerToken';
 import { components } from '../apiTypes';
 import getCusomerUsage from '../actions/getUsage';
 
-type CustomerUsage = components['schemas']['CustomerPortalUsage'][];
-
-export type UseCustomerUsageReturnType = UseAsyncReturnType<CustomerUsage>;
+type CustomerPortalMeterLabelFilter =
+  components['schemas']['CustomerPortalMeterLabelFilter'];
 
 /**
  * A hook that fetches the customer's usage.
@@ -15,7 +13,7 @@ export type UseCustomerUsageReturnType = UseAsyncReturnType<CustomerUsage>;
 export const useCustomerUsage = (args?: {
   token?: string;
   baseApiUrl?: string;
-}): UseCustomerUsageReturnType => {
+}) => {
   const { token: tokenFromContext } = useContext(TokenContext);
   const userToken = args?.token || tokenFromContext;
   const baseApiUrl = args?.baseApiUrl;
@@ -24,9 +22,12 @@ export const useCustomerUsage = (args?: {
     throw new Error('Token must be provided.');
   }
 
-  const asyncFunc = useCallback(() => {
-    return getCusomerUsage(userToken, { baseApiUrl });
-  }, [userToken, baseApiUrl]);
+  const asyncFunc = useCallback(
+    (labelFilter: CustomerPortalMeterLabelFilter) => {
+      return getCusomerUsage(userToken, labelFilter, { baseApiUrl });
+    },
+    [userToken, baseApiUrl]
+  );
 
-  return useAsync(asyncFunc);
+  return useAsyncOnDemand(asyncFunc);
 };

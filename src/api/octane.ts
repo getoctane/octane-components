@@ -12,7 +12,8 @@ type ActivePricePlan = Schemas['CustomerPortalSubscription'];
 type CustomerPortalStripeCredential = Schemas['CustomerPortalStripeCredential'];
 type CustomerPaymentMethodStatus = Schemas['CustomerPaymentMethodStatus'];
 type VendorInfo = Schemas['CustomerPortalVendor'];
-type CustomerUsage = Schemas['CustomerPortalUsage'];
+type CustomerPortalUsage = Schemas['CustomerPortalUsage'];
+type CustomerPortalMeterLabelFilter = Schemas['CustomerPortalMeterLabelFilter'];
 type CustomerPortalPaymentInfo = Schemas['CustomerPortalPaymentMethod'];
 type CustomerPortalUrl = Schemas['CustomerPortalUrl'];
 type SelfServeSettings = Schemas['SelfServeSettings'];
@@ -257,14 +258,21 @@ export const createStripeSetupIntent = makeApiNonGETEndpoint<
 >(createStripeSetupIntentUrl);
 
 export const getCustomerUsageUrl: UrlFactory = (base = API_BASE) =>
-  `${base}/ecp/usage`;
+  `${base}/ecp/filtered_usage`;
 
-export const getCustomerUsage = makeApiGETEndpoint<
-  never, // No query params
+export const getCustomerUsage = makeApiNonGETEndpoint<
+  CustomerPortalMeterLabelFilter, // Body type
   [], // No URL path args
-  CustomerUsage[], // Returns customer's usage
+  CustomerPortalUsage, // Returns Stripe credentials
   unknown // Undefined failure type
->(getCustomerUsageUrl);
+>(getCustomerUsageUrl, 'POST');
+
+// export const getCustomerUsage = makeApiGETEndpoint<
+//   never, // No query params
+//   [], // No URL path args
+//   CustomerUsage[], // Returns customer's usage
+//   unknown // Undefined failure type
+// >(getCustomerUsageUrl);
 
 export const getPaymentMethodStatusUrl: UrlFactory = (base = API_BASE) =>
   `${base}/ecp/payment_method_status`;
