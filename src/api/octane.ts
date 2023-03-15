@@ -263,16 +263,9 @@ export const getCustomerUsageUrl: UrlFactory = (base = API_BASE) =>
 export const getCustomerUsage = makeApiNonGETEndpoint<
   CustomerPortalMeterLabelFilter, // Body type
   [], // No URL path args
-  CustomerPortalUsage, // Returns Stripe credentials
+  CustomerPortalUsage, // Returns Customer usage
   unknown // Undefined failure type
 >(getCustomerUsageUrl, 'POST');
-
-// export const getCustomerUsage = makeApiGETEndpoint<
-//   never, // No query params
-//   [], // No URL path args
-//   CustomerUsage[], // Returns customer's usage
-//   unknown // Undefined failure type
-// >(getCustomerUsageUrl);
 
 export const getPaymentMethodStatusUrl: UrlFactory = (base = API_BASE) =>
   `${base}/ecp/payment_method_status`;
