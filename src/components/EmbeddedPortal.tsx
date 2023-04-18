@@ -8,9 +8,10 @@ type Props = {
 } & IFrameProps;
 
 export const EmbeddedPortal = (props: Props) => {
-  const { customerToken, ...iframeProps } = props;
+  const { customerToken, baseApiUrl, ...iframeProps } = props;
   const { result } = useCustomerLink({
     token: customerToken,
+    baseApiUrl,
   });
 
   if (!result?.url) {
