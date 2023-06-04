@@ -4,8 +4,11 @@ import type { UseAsyncFetchReturnType } from './useAsync';
 import { TokenContext } from './useCustomerToken';
 import { components } from '../apiTypes';
 import getCustomerContactInfo from '../actions/getContactInfo';
+import updateCustomerContactInfo from 'actions/updateContactInfo';
 
 type ContactInfo = components['schemas']['ContactInfo'];
+export type ContactInfoInputArgs =
+  components['schemas']['ContactInfoInputArgs'];
 
 export type UseContactInfoReturnType = UseAsyncFetchReturnType<ContactInfo>;
 
@@ -24,9 +27,22 @@ export const useContactInfo = (args?: {
     throw new Error('Token must be provided.');
   }
 
-  const asyncFunc = useCallback(() => {
+  const fetchFn = useCallback(() => {
     return getCustomerContactInfo(userToken, { baseApiUrl });
   }, [userToken, baseApiUrl]);
 
-  return useAsync(asyncFunc);
+  const updateFn = useCallback(
+    (contactInfoToUpdate: ContactInfoInputArgs) => {
+      if (!contactInfoToUpdate) {
+        throw new Error('Contact info object must be provided.');
+      }
+
+      return updateCustomerContactInfo(userToken, contactInfoToUpdate, {
+        baseApiUrl,
+      });
+    },
+    [userToken, baseApiUrl]
+  );
+
+  return useAsync(fetchFn, updateFn);
 };
