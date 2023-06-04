@@ -1,11 +1,11 @@
 import { useCallback } from 'react';
 import { useAsync } from './useAsync';
-import type { UseAsyncReturnType } from './useAsync';
+import type { UseAsyncFetchReturnType } from './useAsync';
 import getCustomerLink from '../actions/getCustomerLink';
 import { components } from 'apiTypes';
 
 type ContactLink = components['schemas']['CustomerPortalUrl'];
-export type UseContactLinkReturnType = UseAsyncReturnType<ContactLink>;
+export type UseContactLinkReturnType = UseAsyncFetchReturnType<ContactLink>;
 
 /**
  * A hook that fetches the link to a customer's portal.

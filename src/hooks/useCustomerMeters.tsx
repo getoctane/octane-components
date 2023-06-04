@@ -1,13 +1,13 @@
 import { useCallback, useContext } from 'react';
 import getCustomerMeters from '../actions/getCustomerMeters';
 import { useAsync } from './useAsync';
-import type { UseAsyncReturnType } from './useAsync';
+import type { UseAsyncFetchReturnType } from './useAsync';
 import { TokenContext } from './useCustomerToken';
 import { components } from '../apiTypes';
 
 type CustomerPortalMeters = components['schemas']['CustomerPortalMeter'][];
 
-export type UseMetersReturnType = UseAsyncReturnType<CustomerPortalMeters>;
+export type UseMetersReturnType = UseAsyncFetchReturnType<CustomerPortalMeters>;
 
 /**
  * A hook that fetches all price plans associated with a vendor.
