@@ -1,7 +1,7 @@
 import { useCallback, useContext } from 'react';
 import getPaymentMethodStatus from '../actions/getPaymentMethodStatus';
 import { useAsync } from './useAsync';
-import type { UseAsyncReturnType } from './useAsync';
+import type { UseAsyncFetchReturnType } from './useAsync';
 import { TokenContext } from './useCustomerToken';
 import { components } from '../apiTypes';
 
@@ -9,7 +9,7 @@ type CustomerPaymentMethodStatus =
   components['schemas']['CustomerPaymentMethodStatus'];
 
 export type UsePaymentMethodStatusReturnType =
-  UseAsyncReturnType<CustomerPaymentMethodStatus>;
+  UseAsyncFetchReturnType<CustomerPaymentMethodStatus>;
 
 /**
  * A hook that fetches customer's payment method status.

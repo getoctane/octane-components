@@ -1,7 +1,7 @@
 import { useCallback, useContext } from 'react';
 import getActiveSubscription from '../actions/getActiveSubscription';
 import { useAsync } from './useAsync';
-import type { UseAsyncReturnType } from './useAsync';
+import type { UseAsyncFetchReturnType } from './useAsync';
 import { TokenContext } from './useCustomerToken';
 import { components } from '../apiTypes';
 
@@ -9,7 +9,7 @@ type ActiveSubscription =
   components['schemas']['CustomerPortalActiveSubscription'];
 
 export type UseActiveSubscriptionReturnType =
-  UseAsyncReturnType<ActiveSubscription>;
+  UseAsyncFetchReturnType<ActiveSubscription>;
 
 /**
  * A hook that fetches the customer's active subscription information.

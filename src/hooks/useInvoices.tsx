@@ -1,13 +1,13 @@
 import { useCallback, useContext } from 'react';
 import { useAsync } from './useAsync';
 import getInvoices from '../actions/getInvoices';
-import type { UseAsyncReturnType } from './useAsync';
+import type { UseAsyncFetchReturnType } from './useAsync';
 import { TokenContext } from './useCustomerToken';
 import { components } from '../apiTypes';
 
 type Invoices = components['schemas']['CustomerPortalInvoice'][];
 
-export type UseInvoicesReturnType = UseAsyncReturnType<Invoices>;
+export type UseInvoicesReturnType = UseAsyncFetchReturnType<Invoices>;
 
 /**
  * A hook that fetches the customer's invoices.

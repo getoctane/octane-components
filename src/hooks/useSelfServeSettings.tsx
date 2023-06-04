@@ -1,13 +1,13 @@
 import { useCallback, useContext } from 'react';
 import { TokenContext } from './useCustomerToken';
 import { useAsync } from './useAsync';
-import type { UseAsyncReturnType } from './useAsync';
+import type { UseAsyncFetchReturnType } from './useAsync';
 import fetchSelfServeSettings from '../actions/getSelfServeSettings';
 import { components } from '../apiTypes';
 
 type SelfServeSettings = components['schemas']['SelfServeSettings'];
 export type UseSelfServeSettingsReturnType =
-  UseAsyncReturnType<SelfServeSettings>;
+  UseAsyncFetchReturnType<SelfServeSettings>;
 
 /**
  * A hook that fetches the vendor's self-serve settings.

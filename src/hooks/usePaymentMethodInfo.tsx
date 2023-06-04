@@ -1,7 +1,7 @@
 import { useCallback, useContext } from 'react';
 import getPaymentMethodInfo from '../actions/getPaymentMethodInfo';
 import { useAsync } from './useAsync';
-import type { UseAsyncReturnType } from './useAsync';
+import type { UseAsyncFetchReturnType } from './useAsync';
 import { TokenContext } from './useCustomerToken';
 import { components } from '../apiTypes';
 
@@ -9,7 +9,7 @@ type CustomerPortalPaymentInfo =
   components['schemas']['CustomerPortalPaymentMethod'];
 
 export type UsePaymentMehodInfoReturnType =
-  UseAsyncReturnType<CustomerPortalPaymentInfo>;
+  UseAsyncFetchReturnType<CustomerPortalPaymentInfo>;
 
 /**
  * A hook that fetches the customer's payment method info.

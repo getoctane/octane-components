@@ -1,13 +1,13 @@
 import { useCallback, useContext } from 'react';
 import getAllPricePlans from '../actions/getAllPricePlans';
 import { useAsync } from './useAsync';
-import type { UseAsyncReturnType } from './useAsync';
+import type { UseAsyncFetchReturnType } from './useAsync';
 import { TokenContext } from './useCustomerToken';
 import { components } from '../apiTypes';
 
 type PricePlan = components['schemas']['PricePlan'];
 
-export type UsePricePlansReturnType = UseAsyncReturnType<PricePlan[]>;
+export type UsePricePlansReturnType = UseAsyncFetchReturnType<PricePlan[]>;
 
 /**
  * A hook that fetches all price plans associated with a vendor.

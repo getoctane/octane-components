@@ -1,13 +1,13 @@
 import { useCallback, useContext } from 'react';
 import { useAsync } from './useAsync';
-import type { UseAsyncReturnType } from './useAsync';
+import type { UseAsyncFetchReturnType } from './useAsync';
 import { TokenContext } from './useCustomerToken';
 import { components } from '../apiTypes';
 import getCustomerVendorInfo from '../actions/getVendorInfo';
 
 type VendorInfo = components['schemas']['CustomerPortalVendor'];
 
-export type UseVendorInfoReturnType = UseAsyncReturnType<VendorInfo>;
+export type UseVendorInfoReturnType = UseAsyncFetchReturnType<VendorInfo>;
 
 /**
  * A hook that fetches data about the customer's vendor.

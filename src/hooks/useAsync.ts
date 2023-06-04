@@ -1,29 +1,42 @@
 // Based on https://usehooks.com/useAsync/
 import { useState, useEffect, useCallback } from 'react';
 
-export type UseAsyncReturnType<
+export type UseAsyncFetchAndUpdateReturnType<
   Result,
   FetchArgs extends unknown[] = [],
+  UpdateArgs extends unknown[] = [],
   Error = unknown
 > =
   | {
       loading: true;
       result: null;
       error: null;
-      refetch: null;
+      refetch: (...args: FetchArgs | []) => void;
+      update: (...args: UpdateArgs) => Promise<Result>;
     }
   | {
       loading: boolean;
       result: Result;
       error: null;
       refetch: (...args: FetchArgs | []) => void;
+      update: (...args: UpdateArgs) => Promise<Result>;
     }
   | {
       loading: boolean;
       result: null;
       error: Error;
       refetch: (...args: FetchArgs | []) => void;
+      update: (...args: UpdateArgs) => Promise<Result>;
     };
+
+export type UseAsyncFetchReturnType<
+  Result,
+  FetchArgs extends unknown[] = [],
+  Error = unknown
+> = Omit<
+  UseAsyncFetchAndUpdateReturnType<Result, FetchArgs, [], Error>,
+  'update'
+>;
 
 /**
  * Given a function that returns a promise, provide a hook that exposes the
@@ -32,48 +45,58 @@ export type UseAsyncReturnType<
  * and `error` can be set at a time.
  */
 export function useAsync<Result, Error>(
-  fetchFn: () => Promise<Result>
-): UseAsyncReturnType<Result, [], Error>;
+  fetchFn: () => Promise<Result | null>
+): UseAsyncFetchReturnType<Result, [], Error>;
+export function useAsync<Result, UpdateArgs extends unknown[], Error>(
+  fetchFn: () => Promise<Result | null>,
+  updateFn: (...args: UpdateArgs) => Promise<Result>
+): UseAsyncFetchAndUpdateReturnType<Result, [], UpdateArgs, Error>;
 export function useAsync<Result, FetchArgs extends unknown[], Error>(
-  fetchFn: (...args: FetchArgs) => Promise<Result>,
+  fetchFn: (...args: FetchArgs) => Promise<Result | null>,
   initialArgs: FetchArgs
-): UseAsyncReturnType<Result, FetchArgs, Error>;
+): UseAsyncFetchReturnType<Result, FetchArgs, Error>;
+export function useAsync<
+  Result,
+  FetchArgs extends unknown[],
+  UpdateArgs extends unknown[],
+  Error
+>(
+  fetchFn: (...args: FetchArgs) => Promise<Result | null>,
+  initialArgs: FetchArgs,
+  updateFn: (...args: UpdateArgs) => Promise<Result>
+): UseAsyncFetchAndUpdateReturnType<Result, FetchArgs, UpdateArgs, Error>;
 
-export function useAsync<Result, FetchArgs extends unknown[], Error>(
-  fetchFn: (...args: FetchArgs | []) => Promise<Result>,
-  initialArgs?: FetchArgs
-): UseAsyncReturnType<Result, FetchArgs | [], Error> {
-  const [result, setResult] = useState<
-    UseAsyncReturnType<Result, FetchArgs, Error>
-  >({
-    loading: true,
-    result: null,
-    error: null,
-    refetch: null,
-  });
+export function useAsync<
+  Result,
+  FetchArgs extends unknown[],
+  UpdateArgs extends unknown[],
+  Error
+>(
+  fetchFn: (...args: FetchArgs | []) => Promise<Result | null>,
+  initialArgs?: FetchArgs,
+  updateFn?: (...args: UpdateArgs) => Promise<Result>
+):
+  | UseAsyncFetchReturnType<Result, FetchArgs, Error>
+  | UseAsyncFetchAndUpdateReturnType<Result, FetchArgs, UpdateArgs, Error> {
+  const [loading, setLoading] = useState(true);
+  const [result, setResult] = useState<Result | null>(null);
+  const [error, setError] = useState<Error | null>(null);
 
   const refetch = useCallback(
     (...args: FetchArgs | []) => {
-      setResult({ ...result, loading: true });
+      setLoading(true);
       fetchFn(...args)
-        .then((result) => {
-          setResult({
-            result,
-            error: null,
-            loading: false,
-            refetch,
-          });
+        .then((fetchResult) => {
+          setResult(fetchResult);
+          setError(null);
         })
         .catch((error) => {
-          setResult({
-            result: null,
-            error,
-            loading: false,
-            refetch,
-          });
-        });
+          setResult(null);
+          setError(error);
+        })
+        .finally(() => setLoading(false));
     },
-    [fetchFn, result]
+    [fetchFn]
   );
 
   useEffect(() => {
@@ -84,7 +107,26 @@ export function useAsync<Result, FetchArgs extends unknown[], Error>(
     }
   }, [initialArgs, refetch]);
 
-  return result;
+  return updateFn == null
+    ? {
+        loading,
+        result,
+        error,
+        refetch,
+      }
+    : {
+        loading,
+        result,
+        error,
+        refetch,
+        update: (...args: UpdateArgs) =>
+          updateFn(...args).then((updateResult) => {
+            setResult(updateResult);
+            setError(null);
+            setLoading(false);
+            return updateResult;
+          }),
+      };
 }
 
 export const createApiHook = <FetchArgs extends unknown[], Result>(
