@@ -24,9 +24,18 @@ export type UseAsyncReturnType<Result, Error = unknown> =
  * discriminated TypeScript unions for its return type; only one of `result`
  * and `error` can be set at a time.
  */
-export const useAsync = <Result, Error>(
+export function useAsync<Result, Error>(
   asyncFn: () => Promise<Result>
-): UseAsyncReturnType<Result, Error> => {
+): UseAsyncReturnType<Result, Error>;
+export function useAsync<Result, Args extends unknown[], Error>(
+  asyncFn: (...args: Args) => Promise<Result>,
+  initialArgs: Args
+): UseAsyncReturnType<Result, Error>;
+
+export function useAsync<Result, Args extends unknown[], Error>(
+  asyncFn: (...args: Args | []) => Promise<Result>,
+  initialArgs?: Args
+): UseAsyncReturnType<Result, Error> {
   const [result, setResult] = useState<UseAsyncReturnType<Result, Error>>({
     loading: true,
     result: null,
@@ -35,17 +44,27 @@ export const useAsync = <Result, Error>(
 
   useEffect(() => {
     setResult({ ...result, loading: true });
-    asyncFn()
-      .then((result) => {
-        setResult({ result, error: null, loading: false });
-      })
-      .catch((error) => {
-        setResult({ result: null, error, loading: false });
-      });
-  }, [asyncFn, result]);
+    if (!initialArgs) {
+      asyncFn()
+        .then((result) => {
+          setResult({ result, error: null, loading: false });
+        })
+        .catch((error) => {
+          setResult({ result: null, error, loading: false });
+        });
+    } else {
+      asyncFn(...initialArgs)
+        .then((result) => {
+          setResult({ result, error: null, loading: false });
+        })
+        .catch((error) => {
+          setResult({ result: null, error, loading: false });
+        });
+    }
+  }, [asyncFn, initialArgs, result]);
 
   return result;
-};
+}
 
 export const createApiHook = <Args extends unknown[], Result>(
   apiMethod: (...args: Args) => Promise<Result>
