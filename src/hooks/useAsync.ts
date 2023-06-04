@@ -1,21 +1,28 @@
 // Based on https://usehooks.com/useAsync/
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
-export type UseAsyncReturnType<Result, Error = unknown> =
+export type UseAsyncReturnType<
+  Result,
+  Args extends unknown[] = [],
+  Error = unknown
+> =
   | {
       loading: true;
       result: null;
       error: null;
+      refetch: null;
     }
   | {
       loading: boolean;
       result: Result;
       error: null;
+      refetch: (...args: Args | []) => void;
     }
   | {
       loading: boolean;
       result: null;
       error: Error;
+      refetch: (...args: Args | []) => void;
     };
 
 /**
@@ -26,42 +33,56 @@ export type UseAsyncReturnType<Result, Error = unknown> =
  */
 export function useAsync<Result, Error>(
   asyncFn: () => Promise<Result>
-): UseAsyncReturnType<Result, Error>;
+): UseAsyncReturnType<Result, [], Error>;
 export function useAsync<Result, Args extends unknown[], Error>(
   asyncFn: (...args: Args) => Promise<Result>,
   initialArgs: Args
-): UseAsyncReturnType<Result, Error>;
+): UseAsyncReturnType<Result, Args, Error>;
 
 export function useAsync<Result, Args extends unknown[], Error>(
   asyncFn: (...args: Args | []) => Promise<Result>,
   initialArgs?: Args
-): UseAsyncReturnType<Result, Error> {
-  const [result, setResult] = useState<UseAsyncReturnType<Result, Error>>({
-    loading: true,
-    result: null,
-    error: null,
-  });
+): UseAsyncReturnType<Result, Args | [], Error> {
+  const [result, setResult] = useState<UseAsyncReturnType<Result, Args, Error>>(
+    {
+      loading: true,
+      result: null,
+      error: null,
+      refetch: null,
+    }
+  );
+
+  const refetch = useCallback(
+    (...args: Args | []) => {
+      setResult({ ...result, loading: true });
+      asyncFn(...args)
+        .then((result) => {
+          setResult({
+            result,
+            error: null,
+            loading: false,
+            refetch,
+          });
+        })
+        .catch((error) => {
+          setResult({
+            result: null,
+            error,
+            loading: false,
+            refetch,
+          });
+        });
+    },
+    [asyncFn, result]
+  );
 
   useEffect(() => {
-    setResult({ ...result, loading: true });
     if (!initialArgs) {
-      asyncFn()
-        .then((result) => {
-          setResult({ result, error: null, loading: false });
-        })
-        .catch((error) => {
-          setResult({ result: null, error, loading: false });
-        });
+      refetch();
     } else {
-      asyncFn(...initialArgs)
-        .then((result) => {
-          setResult({ result, error: null, loading: false });
-        })
-        .catch((error) => {
-          setResult({ result: null, error, loading: false });
-        });
+      refetch(...initialArgs);
     }
-  }, [asyncFn, initialArgs, result]);
+  }, [initialArgs, refetch]);
 
   return result;
 }
