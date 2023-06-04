@@ -32,15 +32,15 @@ export type UseAsyncReturnType<
  * and `error` can be set at a time.
  */
 export function useAsync<Result, Error>(
-  asyncFn: () => Promise<Result>
+  fetchFn: () => Promise<Result>
 ): UseAsyncReturnType<Result, [], Error>;
 export function useAsync<Result, Args extends unknown[], Error>(
-  asyncFn: (...args: Args) => Promise<Result>,
+  fetchFn: (...args: Args) => Promise<Result>,
   initialArgs: Args
 ): UseAsyncReturnType<Result, Args, Error>;
 
 export function useAsync<Result, Args extends unknown[], Error>(
-  asyncFn: (...args: Args | []) => Promise<Result>,
+  fetchFn: (...args: Args | []) => Promise<Result>,
   initialArgs?: Args
 ): UseAsyncReturnType<Result, Args | [], Error> {
   const [result, setResult] = useState<UseAsyncReturnType<Result, Args, Error>>(
@@ -55,7 +55,7 @@ export function useAsync<Result, Args extends unknown[], Error>(
   const refetch = useCallback(
     (...args: Args | []) => {
       setResult({ ...result, loading: true });
-      asyncFn(...args)
+      fetchFn(...args)
         .then((result) => {
           setResult({
             result,
@@ -73,7 +73,7 @@ export function useAsync<Result, Args extends unknown[], Error>(
           });
         });
     },
-    [asyncFn, result]
+    [fetchFn, result]
   );
 
   useEffect(() => {
