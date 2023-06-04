@@ -8,12 +8,12 @@ export type UseAsyncReturnType<Result, Error = unknown> =
       error: null;
     }
   | {
-      loading: false;
+      loading: boolean;
       result: Result;
       error: null;
     }
   | {
-      loading: false;
+      loading: boolean;
       result: null;
       error: Error;
     };
@@ -21,9 +21,8 @@ export type UseAsyncReturnType<Result, Error = unknown> =
 /**
  * Given a function that returns a promise, provide a hook that exposes the
  * promise's result, error, and loading state. This hook takes advantage of
- * discriminated TypeScript unions for its return type; if `loading` is true,
- * then `error` and `null` are necessarily `null`. If `loading` or `error` are
- * null
+ * discriminated TypeScript unions for its return type; only one of `result`
+ * and `error` can be set at a time.
  */
 export const useAsync = <Result, Error>(
   asyncFn: () => Promise<Result>
@@ -35,6 +34,7 @@ export const useAsync = <Result, Error>(
   });
 
   useEffect(() => {
+    setResult({ ...result, loading: true });
     asyncFn()
       .then((result) => {
         setResult({ result, error: null, loading: false });
@@ -42,7 +42,7 @@ export const useAsync = <Result, Error>(
       .catch((error) => {
         setResult({ result: null, error, loading: false });
       });
-  }, [asyncFn]);
+  }, [asyncFn, result]);
 
   return result;
 };
