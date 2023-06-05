@@ -24,9 +24,9 @@ export const useInvoices = (args?: {
     throw new Error('Token must be provided.');
   }
 
-  const asyncFunc = useCallback(() => {
+  const fetchFn = useCallback(() => {
     return getInvoices(userToken, { baseApiUrl });
   }, [userToken, baseApiUrl]);
 
-  return useAsync(asyncFunc);
+  return useAsync({ fetchFn });
 };

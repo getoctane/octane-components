@@ -55,7 +55,7 @@ export const useActiveSubscription = (args?: {
     [userToken, options, baseApiUrl]
   );
 
-  const hook = useAsync(fetchFn);
+  const hook = useAsync({ fetchFn });
   return {
     ...hook,
     update: (pricePlanInfo: ActiveSubscriptionInputArgs) =>

@@ -24,9 +24,9 @@ export const useSelfServeCustomization = (args: {
     throw new Error("Customer's token must be provided.");
   }
 
-  const asyncFunc = useCallback(() => {
+  const fetchFn = useCallback(() => {
     return fetchSelfServeCustomization(userToken, { baseApiUrl });
   }, [userToken, baseApiUrl]);
 
-  return useAsync(asyncFunc);
+  return useAsync({ fetchFn });
 };

@@ -26,9 +26,9 @@ export const usePaymentMethodStatus = (args?: {
     throw new Error('Token must be provided.');
   }
 
-  const asyncFunc = useCallback(() => {
+  const fetchFn = useCallback(() => {
     return getPaymentMethodStatus(userToken, { baseApiUrl });
   }, [userToken, baseApiUrl]);
 
-  return useAsync(asyncFunc);
+  return useAsync({ fetchFn });
 };

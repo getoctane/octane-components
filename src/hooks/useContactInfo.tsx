@@ -48,5 +48,5 @@ export const useContactInfo = (args?: {
     [userToken, baseApiUrl]
   );
 
-  return useAsync(fetchFn, updateFn);
+  return useAsync({ fetchFn, updateFn });
 };

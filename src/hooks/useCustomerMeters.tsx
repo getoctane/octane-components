@@ -24,9 +24,9 @@ export const useMeters = (args?: {
     throw new Error('Token must be provided.');
   }
 
-  const asyncFunc = useCallback(() => {
+  const fetchFn = useCallback(() => {
     return getCustomerMeters(userToken, { baseApiUrl });
   }, [userToken, baseApiUrl]);
 
-  return useAsync(asyncFunc);
+  return useAsync({ fetchFn });
 };

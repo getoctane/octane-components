@@ -23,7 +23,7 @@ export const useUsage = (args?: {
     throw new Error('Token must be provided.');
   }
 
-  const fetchFunc = useCallback(
+  const fetchFn = useCallback(
     (meterFilter?: CustomerPortalMeterLabelFilter) => {
       if (meterFilter == null) {
         return Promise.resolve(null);
@@ -33,5 +33,5 @@ export const useUsage = (args?: {
     [userToken, baseApiUrl]
   );
 
-  return useAsync(fetchFunc, [args?.meterFilter]);
+  return useAsync({ fetchFn, initialArgs: [args?.meterFilter] });
 };
