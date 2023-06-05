@@ -16,7 +16,9 @@ export type ActiveSubscriptionInputArgs =
 
 export type UseActiveSubscriptionReturnType =
   UseAsyncFetchReturnType<ActiveSubscription> & {
-    update: (pricePlanInfo: ActiveSubscriptionInputArgs) => void;
+    update: (
+      pricePlanInfo: ActiveSubscriptionInputArgs
+    ) => Promise<ActivePricePlan>;
   };
 
 /**
@@ -59,6 +61,9 @@ export const useActiveSubscription = (args?: {
   return {
     ...hook,
     update: (pricePlanInfo: ActiveSubscriptionInputArgs) =>
-      updateFn(pricePlanInfo).then(() => hook.refetch()),
+      updateFn(pricePlanInfo).then((result) => {
+        hook.refetch();
+        return result;
+      }),
   };
 };
