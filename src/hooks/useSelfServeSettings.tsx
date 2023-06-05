@@ -10,7 +10,10 @@ export type UseSelfServeSettingsReturnType =
   UseAsyncFetchReturnType<SelfServeSettings>;
 
 /**
+ * @description
  * A hook that fetches the vendor's self-serve settings.
+ * @example
+ * const { result, loading, error, refetch } = useSelfServeSettings({ token });
  */
 export const useSelfServeSettings = (args: {
   token?: string;

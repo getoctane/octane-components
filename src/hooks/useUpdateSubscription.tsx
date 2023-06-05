@@ -16,6 +16,13 @@ type Props = {
   options?: SubscribeCustomerOptions;
 };
 
+/**
+ * @deprecated use `useActiveSubscription` hook instead.
+ * It comes with `refetch` and `update` functions.
+ * We don't want to create a separate state object for updated data,
+ * because it's much difficult to work with.
+ * Look `hooks/useActiveSubscription` for more details.
+ */
 export const useUpdateSubscription = ({
   token,
   baseApiUrl,

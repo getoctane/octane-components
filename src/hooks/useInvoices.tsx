@@ -10,7 +10,10 @@ type Invoices = components['schemas']['CustomerPortalInvoice'][];
 export type UseInvoicesReturnType = UseAsyncFetchReturnType<Invoices>;
 
 /**
+ * @description
  * A hook that fetches the customer's invoices.
+ * @example
+ * const { result, loading, error, refetch } = useInvoices({ token });
  */
 export const useInvoices = (args?: {
   token?: string;

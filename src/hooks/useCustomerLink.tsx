@@ -9,7 +9,10 @@ type ContactLink = components['schemas']['CustomerPortalUrl'];
 export type UseContactLinkReturnType = UseAsyncFetchReturnType<ContactLink>;
 
 /**
+ * @description
  * A hook that fetches the link to a customer's portal.
+ * @example
+ * const { result , loading, error, refetch } = useCustomerLink({ token });
  */
 export const useCustomerLink = (args?: {
   token?: string;

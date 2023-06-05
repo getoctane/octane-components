@@ -17,7 +17,10 @@ export type UseContactInfoReturnType = UseAsyncFetchAndUpdateReturnType<
 >;
 
 /**
- * A hook that fetches the customer's contact info.
+ * @description
+ * A `useContactInfo` hook allow to fetch, refetch and update the customer's contact info.
+ * @example
+ * const { result, loading, error, refetch, update } = useContactInfo({ token });
  */
 export const useContactInfo = (args?: {
   token?: string;

@@ -10,7 +10,10 @@ export type UseSelfServeCustomizationReturnType =
   UseAsyncFetchReturnType<SelfServeCustomization>;
 
 /**
+ * @description
  * A hook that fetches the vendor's self-serve customization.
+ * @example
+ * const { result, loading, error, refetch } = useSelfServeCustomization({ token });
  */
 export const useSelfServeCustomization = (args: {
   token?: string;

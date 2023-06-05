@@ -8,7 +8,9 @@ type CustomerPortalMeterLabelFilter =
   components['schemas']['CustomerPortalMeterLabelFilter'];
 
 /**
- * A hook that fetches the customer's usage.
+ * @deprecated use `useUsage` hook instead.
+ * It extends a functionality of `useCustomerUsage` and provide `refetch` function.
+ * Look `hooks/useUsage` for more details.
  */
 export const useCustomerUsage = (args?: {
   token?: string;
