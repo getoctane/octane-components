@@ -421,48 +421,82 @@ fetch('/token')
 
 If you use React Hooks, we've wrapped all of our actions in hooks to make things a little easier.
 Hooks accept a token (which can be omitted if you're using `<TokenProvider />`) and fetch any data
-whenever your component laods.
+whenever your component loads.
 
-```ts
-const token = useOctaneComponentsToken();
-const { loading, result: invoices } = useInvoices({ token });
+### Query hooks
+Starting from `0.15.0` version, all query hooks additionally return `refetch` function to get the data whenever it's needed.
 
-return loading ? <Spinner /> : <InvoicesTable invoices={invoices} />;
-```
-
-A few hooks perform mutations, which is to say that they update data rather than fetching it.
-Those hooks return a callback and a `results` object. Calling the callback triggers the request,
-which causes `results` to update.
-
-```ts
-const [updateContactInfo, results] = useUpdateContactInfo();
-const info: ContactInfoInputArgs = getYourNewContactInfo();
-
-return (
-  <>
-    <div>Your request is {results.loading ? 'loading' : 'done'}.</div>
-    <Button onClick={() => updateContactInfo(info)}>Click me!</Button>
-  </>
-);
-```
-
-These hooks fetch data from our end-customer API:
+All these hooks fetch and refetch data from our end-customer API:
 
 - `useActiveSubscription` - fetch data about the customer's current subscription
-- `useContactInfo` - fetch the customer's contact info
-- `useCustomerUsage` - fetch the customer's usage
+- `useContactInfo` - fetch and update the customer's contact info
+- `useUsage` - fetch the customer's usage
 - `useHasPaymentInfo` - fetch whether or not the customer has payment info on file
 - `useInvoices` - fetch a list of invoice metadata for the customer
 - `usePaymentMethodStatus` - fetch the customer's payment method status
 - `usePricePlans` - fetch a list of price plans this customer could subscribe to
 - `useVendorInfo` - fetch information about this customer's vendor
 - `useCustomerLink` - fetch a link to customer's page
+- `useCustomerUsage` - _(deprecated)_ fetch the customer's usage - use `useUsage` instead
 
-And these ones allow you to update data through the same API:
+These ones allow you also to update data through the same API:
 
-- `useUpdateContactInfo` - update the customer's contact info
-- `useUpdateSubscription` - update the customer's subscription
+- `useContactInfo` - use `update` function to update contact info
+- `useActiveSubscription` - use `update` function to update active subscription
+
+```ts
+const { loading, result: invoices, refetch } = useInvoices({ token });
+
+// `refetch` function will update `result` accordingly.
+useEffect(() => {
+  refetch();
+});
+
+return loading ? <Spinner /> : <InvoicesTable invoices={invoices} />;
+```
+
+`useActiveSubscription`, `useContactInfo` hooks also provide `update` function, which updates `result`. It takes a payload which will update hook's data. 
+
+```ts
+const { loading, result: activeSubscription, update } = useActiveSubscription({ token });
+
+if (loading) {
+  return <Spinner />;
+}
+
+return (
+  <>
+    <ComponentDisplayingData subscription={activeSubscription} />
+    <button onClick={() => update({ price_plan_uuid: 'pp_uuid', add_ons: [] })}>
+      Update active subscription
+    </button>
+  </>
+);
+```
+
+
+### Mutation hooks
+A few hooks are meant for mutations only. These hooks won't fetch any data when instantiated - you have to call the returned mutate function manually.
+
 - `useStripeSetupIntent` - create a [Stripe SetupIntent](https://stripe.com/docs/api/setup_intents) for the customer
+- `useUpdateContactInfo` - _(deprecated)_ update the customer's contact info - use `update` function from `useContactInfo` hook
+- `useUpdateSubscription` - _(deprecated)_ update the customer's subscription - use `update` function from `useActiveSubscription` hook
+
+```ts
+const [ updateSetupIntent, { data }] = useStripeSetupIntent({ token });
+const { result, loading, error } = data;
+
+if (loading) {
+  return <Spinner />;
+}
+
+return (
+  <>
+    <ComponentDisplayingData setupIntent={result} />
+    <ConfirmationDialog onConfirm={updateSetupIntent}>
+  </>
+);
+```
 
 ## Types
 
