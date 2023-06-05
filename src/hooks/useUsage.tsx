@@ -1,8 +1,8 @@
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
 import { useAsync } from './useAsync';
 import { TokenContext } from './useCustomerToken';
 import { components } from '../apiTypes';
-import getCusomerUsage from '../actions/getUsage';
+import getCustomerUsage from '../actions/getUsage';
 
 type CustomerPortalMeterLabelFilter =
   components['schemas']['CustomerPortalMeterLabelFilter'];
@@ -19,19 +19,24 @@ export const useUsage = (args?: {
   const userToken = args?.token || tokenFromContext;
   const baseApiUrl = args?.baseApiUrl;
 
-  if (!userToken) {
-    throw new Error('Token must be provided.');
-  }
+  const initialArgs: [CustomerPortalMeterLabelFilter | undefined] = useMemo(
+    () => [args?.meterFilter],
+    [args?.meterFilter]
+  );
 
   const fetchFn = useCallback(
     (meterFilter?: CustomerPortalMeterLabelFilter) => {
       if (meterFilter == null) {
         return Promise.resolve(null);
       }
-      return getCusomerUsage(userToken, meterFilter, { baseApiUrl });
+      return getCustomerUsage(userToken, meterFilter, { baseApiUrl });
     },
     [userToken, baseApiUrl]
   );
 
-  return useAsync({ fetchFn, initialArgs: [args?.meterFilter] });
+  if (!userToken) {
+    throw new Error('Token must be provided.');
+  }
+
+  return useAsync({ fetchFn, initialArgs });
 };
