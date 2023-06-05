@@ -10,7 +10,10 @@ type CustomerPortalMeters = components['schemas']['CustomerPortalMeter'][];
 export type UseMetersReturnType = UseAsyncFetchReturnType<CustomerPortalMeters>;
 
 /**
- * A hook that fetches all price plans associated with a vendor.
+ * @description
+ * A hook that fetches all meters associated with a vendor's price plan.
+ * @example
+ * const { result, loading, error, refetch } = useMeters({ token });
  */
 export const useMeters = (args?: {
   token?: string;

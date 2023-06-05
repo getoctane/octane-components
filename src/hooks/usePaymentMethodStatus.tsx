@@ -12,7 +12,10 @@ export type UsePaymentMethodStatusReturnType =
   UseAsyncFetchReturnType<CustomerPaymentMethodStatus>;
 
 /**
+ * @description
  * A hook that fetches customer's payment method status.
+ * @example
+ * const { result, loading, error, refetch } = usePaymentMethodStatus({ token });
  */
 export const usePaymentMethodStatus = (args?: {
   token?: string;

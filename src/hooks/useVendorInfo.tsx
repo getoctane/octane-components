@@ -10,7 +10,10 @@ type VendorInfo = components['schemas']['CustomerPortalVendor'];
 export type UseVendorInfoReturnType = UseAsyncFetchReturnType<VendorInfo>;
 
 /**
+ * @description
  * A hook that fetches data about the customer's vendor.
+ * @example
+ * const { result, loading, error, refetch } = useVendorInfo({ token });
  */
 export const useVendorInfo = (args?: {
   token?: string;

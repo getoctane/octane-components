@@ -12,7 +12,10 @@ export type UsePaymentMehodInfoReturnType =
   UseAsyncFetchReturnType<CustomerPortalPaymentInfo>;
 
 /**
+ * @description
  * A hook that fetches the customer's payment method info.
+ * @example
+ * const { result, loading, error, refetch } = usePaymentMethodInfo({ token });
  */
 export const usePaymentMethodInfo = (args?: {
   token?: string;

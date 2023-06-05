@@ -39,6 +39,7 @@ export type UseAsyncFetchReturnType<
 >;
 
 /**
+ * @description
  * Given a function that returns a promise, provide a hook that exposes the
  * promise's result, error, loading state, refetch function and optional function to update data.
  * This hook takes advantage of discriminated TypeScript unions for its return type; only one of `result`

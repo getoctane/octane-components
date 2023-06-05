@@ -22,9 +22,11 @@ export type UseActiveSubscriptionReturnType =
   };
 
 /**
- * A hook that fetches the customer's active subscription information.
+ * @description
+ * A `useActiveSubscription` hook allow to fetch, refetch and update the customer's active subscription data.
+ * @example
+ * const { result, loading, error, refetch, update } = useActiveSubscription({ token });
  */
-
 export const useActiveSubscription = (args?: {
   token?: string;
   baseApiUrl?: string;
