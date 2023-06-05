@@ -11,7 +11,7 @@ export type UseMetersReturnType = UseAsyncFetchReturnType<CustomerPortalMeters>;
 
 /**
  * @description
- * A hook that fetches all meters associated with a vendor's price plan.
+ * A hook that fetches all meters associated with a vendor's active subscription.
  * @example
  * const { result, loading, error, refetch } = useMeters({ token });
  */
