@@ -39,6 +39,7 @@ export { useCustomerLink } from './hooks/useCustomerLink';
 export { useSelfServeSettings } from './hooks/useSelfServeSettings';
 export { useSelfServeCustomization } from './hooks/useSelfServeCustomization';
 export { useMeters } from './hooks/useCustomerMeters';
+export { useUsage } from './hooks/useUsage';
 
 export const Actions = {
   subscribeCustomer,
