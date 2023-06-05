@@ -9,8 +9,8 @@ type CustomerPortalMeterLabelFilter =
 
 /**
  * @deprecated use `useUsage` hook instead.
- * It extends a functionality of `useCustomerUsage` and provide `refetch` function.
- * Look `hooks/useUsage` for more details.
+ * It is more consistent with the other hooks in this package and provides a
+ * `refetch` function. Please see `hooks/useUsage` for more details.
  */
 export const useCustomerUsage = (args?: {
   token?: string;

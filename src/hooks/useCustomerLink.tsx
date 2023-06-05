@@ -10,7 +10,8 @@ export type UseContactLinkReturnType = UseAsyncFetchReturnType<ContactLink>;
 
 /**
  * @description
- * A hook that fetches the link to a customer's portal.
+ * A hook to fetch a customer's portal link url.
+ *
  * @example
  * const { result , loading, error, refetch } = useCustomerLink({ token });
  */

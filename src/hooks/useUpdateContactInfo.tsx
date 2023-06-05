@@ -13,10 +13,9 @@ type Props = {
 
 /**
  * @deprecated use `useContactInfo` hook instead.
- * It comes with `refetch` and `update` functions.
- * We don't want to create a separate state object for updated data,
- * because it's much difficult to work with.
- * Look `hooks/useContactInfo` for more details.
+ * It is more consistent with the other hooks in this package and provides
+ * `refetch` and `update` functions. When `update` is called, it will keep the
+ * `result` value up to date. Please see `hooks/useContactInfo` for more details.
  */
 export const useUpdateContactInfo = ({ token, baseApiUrl }: Props) => {
   const { token: tokenFromContext } = useContext(TokenContext);

@@ -40,10 +40,13 @@ export type UseAsyncFetchReturnType<
 
 /**
  * @description
- * Given a function that returns a promise, provide a hook that exposes the
- * promise's result, error, loading state, refetch function and optional function to update data.
- * This hook takes advantage of discriminated TypeScript unions for its return type; only one of `result`
- * and `error` can be set at a time.
+ * Given a function that returns a promise, returns a hook that exposes the
+ * promise's result, error, loading states and provides a refetch function.
+ * When also given an update function, will include it in the return updating
+ * result as necessary.
+ *
+ * This hook takes advantage of discriminated TypeScript unions for its return
+ * type; only one of `result` and `error` can be set at a time.
  */
 export function useAsync<Result, Error>(args: {
   fetchFn: () => Promise<Result | null>;
