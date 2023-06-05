@@ -20,9 +20,9 @@ export const useCustomerLink = (args: {
     throw new Error("Customer's token must be provided.");
   }
 
-  const asyncFunc = useCallback(() => {
+  const fetchFn = useCallback(() => {
     return getCustomerLink(token, { baseApiUrl });
   }, [token, baseApiUrl]);
 
-  return useAsync(asyncFunc);
+  return useAsync({ fetchFn });
 };
