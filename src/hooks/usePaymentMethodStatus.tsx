@@ -13,7 +13,8 @@ export type UsePaymentMethodStatusReturnType =
 
 /**
  * @description
- * A hook that fetches customer's payment method status.
+ * A hook to fetch a customer's payment method status.
+ *
  * @example
  * const { result, loading, error, refetch } = usePaymentMethodStatus({ token });
  */

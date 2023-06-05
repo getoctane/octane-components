@@ -11,7 +11,8 @@ export type UsePricePlansReturnType = UseAsyncFetchReturnType<PricePlan[]>;
 
 /**
  * @description
- * A hook that fetches all price plans associated with a vendor.
+ * A hook to fetch the list of price plans available to a customer.
+ *
  * @example
  * const { result, loading, error, refetch } = usePricePlans({ token });
  */

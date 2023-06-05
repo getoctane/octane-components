@@ -23,7 +23,8 @@ export type UseActiveSubscriptionReturnType =
 
 /**
  * @description
- * A `useActiveSubscription` hook allow to fetch, refetch and update the customer's active subscription data.
+ * A `useActiveSubscription` hook to fetch, refetch, and update the customer's active subscription.
+ *
  * @example
  * const { result, loading, error, refetch, update } = useActiveSubscription({ token });
  */

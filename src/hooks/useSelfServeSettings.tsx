@@ -11,7 +11,8 @@ export type UseSelfServeSettingsReturnType =
 
 /**
  * @description
- * A hook that fetches the vendor's self-serve settings.
+ * A hook to fetch the self-serve settings.
+ *
  * @example
  * const { result, loading, error, refetch } = useSelfServeSettings({ token });
  */

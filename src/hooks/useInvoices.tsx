@@ -11,7 +11,8 @@ export type UseInvoicesReturnType = UseAsyncFetchReturnType<Invoices>;
 
 /**
  * @description
- * A hook that fetches the customer's invoices.
+ * A hook to fetch a customer's invoices.
+ *
  * @example
  * const { result, loading, error, refetch } = useInvoices({ token });
  */
