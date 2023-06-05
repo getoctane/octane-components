@@ -11,7 +11,9 @@ type CustomerPortalMeterLabelFilter =
  * @description
  * A `useUsage` hook allow to fetch and refetch the customer's usage data.
  * @example
- * const { result, loading, error, refetch } = useUsage({ token });
+ * const { result, loading, error, refetch } = useUsage({
+ *   token, meterFilter: { meterName: 'newMeter', label_filters: [] }
+ * });
  */
 export const useUsage = (args?: {
   meterFilter?: CustomerPortalMeterLabelFilter;
