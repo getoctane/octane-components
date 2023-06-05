@@ -1,16 +1,20 @@
 import { useCallback, useContext } from 'react';
 import { useAsync } from './useAsync';
-import type { UseAsyncFetchReturnType } from './useAsync';
+import type { UseAsyncFetchAndUpdateReturnType } from './useAsync';
 import { TokenContext } from './useCustomerToken';
 import { components } from '../apiTypes';
 import getCustomerContactInfo from '../actions/getContactInfo';
-import updateCustomerContactInfo from 'actions/updateContactInfo';
+import updateCustomerContactInfo from '../actions/updateContactInfo';
 
 type ContactInfo = components['schemas']['ContactInfo'];
 export type ContactInfoInputArgs =
   components['schemas']['ContactInfoInputArgs'];
 
-export type UseContactInfoReturnType = UseAsyncFetchReturnType<ContactInfo>;
+export type UseContactInfoReturnType = UseAsyncFetchAndUpdateReturnType<
+  ContactInfo,
+  [],
+  [ContactInfoInputArgs]
+>;
 
 /**
  * A hook that fetches the customer's contact info.
