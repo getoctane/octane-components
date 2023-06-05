@@ -58,8 +58,7 @@ export const useActiveSubscription = (args?: {
   const hook = useAsync(fetchFn);
   return {
     ...hook,
-    update: (pricePlanInfo: ActiveSubscriptionInputArgs) => {
-      updateFn(pricePlanInfo).then(() => hook.refetch());
-    },
+    update: (pricePlanInfo: ActiveSubscriptionInputArgs) =>
+      updateFn(pricePlanInfo).then(() => hook.refetch()),
   };
 };
