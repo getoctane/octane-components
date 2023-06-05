@@ -437,7 +437,6 @@ All these hooks fetch and refetch data from our end-customer API:
 - `usePricePlans` - fetch a list of price plans this customer could subscribe to
 - `useVendorInfo` - fetch information about this customer's vendor
 - `useCustomerLink` - fetch a link to customer's page
-- `useCustomerUsage` - _(deprecated)_ fetch the customer's usage - use `useUsage` instead
 
 These ones allow you also to update data through the same API:
 
@@ -481,6 +480,7 @@ A few hooks are meant for mutations only. These hooks won't fetch any data when 
 - `useStripeSetupIntent` - create a [Stripe SetupIntent](https://stripe.com/docs/api/setup_intents) for the customer
 - `useUpdateContactInfo` - _(deprecated)_ update the customer's contact info - use `update` function from `useContactInfo` hook
 - `useUpdateSubscription` - _(deprecated)_ update the customer's subscription - use `update` function from `useActiveSubscription` hook
+- `useCustomerUsage` - _(deprecated)_ fetch the customer's usage - use `useUsage` instead
 
 ```ts
 const [ updateSetupIntent, { data }] = useStripeSetupIntent({ token });
