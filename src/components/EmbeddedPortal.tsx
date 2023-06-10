@@ -29,7 +29,7 @@ export const EmbeddedPortal = (props: Props) => {
       ref={frameRef}
       src={link}
       {...iframeProps}
-      style={{ ...iframeProps.style, display: 'none' }}
+      style={{ colorScheme: 'normal', ...iframeProps.style, display: 'none' }}
       onLoad={() => {
         if (frameRef.current != null && frameRef.current.style != null) {
           frameRef.current.style.display =
