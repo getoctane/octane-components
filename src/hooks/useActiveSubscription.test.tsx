@@ -32,6 +32,7 @@ const subscriptionResponse: ActiveSubscription = {
       base_price: 100,
       metered_components: [],
     },
+    uuid: '12345',
   },
 };
 
