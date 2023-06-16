@@ -24,6 +24,7 @@ const subscriptionResponse: ActiveSubscription = {
   subscription: {
     customer_name: 'Test Customer',
     price_plan_name: 'Test Plan',
+    price_plan_uuid: '12345',
     add_ons: [],
     price_plan: {
       display_name: 'Test Price Plan',
