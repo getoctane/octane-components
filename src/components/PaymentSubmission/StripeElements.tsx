@@ -35,6 +35,7 @@ interface StripeElementsProps {
   loading?: React.ReactElement;
   onError?: (err: unknown) => void;
   baseApiUrl?: string;
+  children: React.ReactNode;
   /**
    * Use options object to customize the Stripe Elements component.
    */
