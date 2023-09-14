@@ -328,3 +328,23 @@ export const getCustomerMeters = makeApiGETEndpoint<
   CustomerPortalMeter[], // Returns the list of customer's meters
   unknown // Undefined failure type
 >(getSelfServeMetersUrl);
+
+export const getTotalAccruedRevenueUrl: UrlFactory = (base = API_BASE) =>
+  `${base}/ecp/total_accrued_revenue`;
+
+export const getTotalAccruedRevenue = makeApiGETEndpoint<
+  never, // No query params
+  [], // No URL path args
+  Schemas['CustomerPortalAccruedRevenue'], // Returns the total accrued revenue broken down by line item
+  unknown // Undefined failure type
+>(getTotalAccruedRevenueUrl);
+
+export const getDailyAccruedRevenueUrl: UrlFactory = (base = API_BASE) =>
+  `${base}/ecp/daily_accrued_revenue`;
+
+export const getDailyAccruedRevenue = makeApiGETEndpoint<
+  never, // No query params
+  [], // No URL path args
+  Schemas['CustomerPortalDailyAccruedRevenue'][], // Returns the daily accrued revenue broken down by line item
+  unknown // Undefined failure type
+>(getDailyAccruedRevenueUrl);
