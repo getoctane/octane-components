@@ -21,6 +21,8 @@ import getLinkToCustomerPage from './actions/getCustomerLink';
 import getSelfServeSettings from './actions/getSelfServeSettings';
 import getSelfServeCustomization from './actions/getSelfServeCustomization';
 import getCustomerMeters from './actions/getCustomerMeters';
+import getCustomerTotalAccruedRevenue from 'actions/getCustomerTotalAccruedRevenue';
+import getCustomerDailyAccruedRevenue from 'actions/getCustomerDailyAccruedRevenue';
 
 // Hooks
 export { useActiveSubscription } from './hooks/useActiveSubscription';
@@ -40,6 +42,8 @@ export { useSelfServeSettings } from './hooks/useSelfServeSettings';
 export { useSelfServeCustomization } from './hooks/useSelfServeCustomization';
 export { useMeters } from './hooks/useCustomerMeters';
 export { useUsage } from './hooks/useUsage';
+export { useTotalAccruedRevenue } from './hooks/useTotalAccruedRevenue';
+export { useDailyAccruedRevenue } from './hooks/useDailyAccruedRevenue';
 
 export const Actions = {
   subscribeCustomer,
@@ -57,6 +61,8 @@ export const Actions = {
   getSelfServeSettings,
   getSelfServeCustomization,
   getCustomerMeters,
+  getCustomerTotalAccruedRevenue,
+  getCustomerDailyAccruedRevenue,
 };
 
 // Top-level API components. These only need a customer token and should
