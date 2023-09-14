@@ -21,8 +21,8 @@ import getLinkToCustomerPage from './actions/getCustomerLink';
 import getSelfServeSettings from './actions/getSelfServeSettings';
 import getSelfServeCustomization from './actions/getSelfServeCustomization';
 import getCustomerMeters from './actions/getCustomerMeters';
-import getCustomerTotalAccruedRevenue from 'actions/getCustomerTotalAccruedRevenue';
-import getCustomerDailyAccruedRevenue from 'actions/getCustomerDailyAccruedRevenue';
+import getCustomerTotalAccruedRevenue from './actions/getCustomerTotalAccruedRevenue';
+import getCustomerDailyAccruedRevenue from './actions/getCustomerDailyAccruedRevenue';
 
 // Hooks
 export { useActiveSubscription } from './hooks/useActiveSubscription';
