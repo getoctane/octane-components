@@ -339,12 +339,12 @@ export const getTotalAccruedRevenue = makeApiGETEndpoint<
   unknown // Undefined failure type
 >(getTotalAccruedRevenueUrl);
 
-export const getDailyAccruedRevenueUrl: UrlFactory = (base = API_BASE) =>
-  `${base}/ecp/daily_accrued_revenue`;
+export const getDailySpendUrl: UrlFactory = (base = API_BASE) =>
+  `${base}/ecp/spend_by_time`;
 
-export const getDailyAccruedRevenue = makeApiGETEndpoint<
-  never, // No query params
+export const getDailySpend = makeApiNonGETEndpoint<
+  Schemas['CustomerPortalSpendByTimeInput'], // Body type
   [], // No URL path args
-  Schemas['CustomerPortalDailyAccruedRevenue'][], // Returns the daily accrued revenue broken down by line item
+  Schemas['CustomerPortalSpendByTime'][], // Returns the daily accrued revenue broken down by line item
   unknown // Undefined failure type
->(getDailyAccruedRevenueUrl);
+>(getDailySpendUrl);
