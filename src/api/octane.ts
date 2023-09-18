@@ -348,3 +348,13 @@ export const getDailySpend = makeApiNonGETEndpoint<
   Schemas['CustomerPortalSpendByTime'][], // Returns the daily accrued revenue broken down by line item
   unknown // Undefined failure type
 >(getDailySpendUrl);
+
+export const getDailyUsageUrl: UrlFactory = (base = API_BASE) =>
+  `${base}/ecp/usage_by_time`;
+
+export const getDailyUsage = makeApiNonGETEndpoint<
+  Schemas['CustomerPortalDailyUsageInput'], // Body type
+  [], // No URL path args
+  Schemas['CustomerPortalDailyUsage'], // Returns the daily usage by meter
+  unknown // Undefined failure type
+>(getDailyUsageUrl);
