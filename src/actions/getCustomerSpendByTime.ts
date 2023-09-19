@@ -1,8 +1,8 @@
-import { getDailySpend } from '../api/octane';
+import { getSpendByTime } from '../api/octane';
 import { components } from '../apiTypes';
 
-type CustomerDailySpend = components['schemas']['CustomerPortalSpendByTime'];
-type CustomerDailySpendInput =
+type CustomerSpendByTime = components['schemas']['CustomerPortalSpendByTime'];
+type CustomerSpendByTimeInput =
   components['schemas']['CustomerPortalSpendByTimeInput'];
 
 type Options = {
@@ -10,18 +10,18 @@ type Options = {
 };
 
 /**
- * Fetches customer's daily spend data, or `null` if there is none.
+ * Fetches customer's spend by time data, or `null` if there is none.
  */
-export default async function getCustomerDailySpend(
+export default async function getCustomerSpendByTime(
   customerToken: string,
-  payload: CustomerDailySpendInput,
+  payload: CustomerSpendByTimeInput,
   options: Options = {}
-): Promise<CustomerDailySpend[] | null> {
+): Promise<CustomerSpendByTime[] | null> {
   if (!customerToken) {
     throw new Error('Token must be provided.');
   }
 
-  const response = await getDailySpend({
+  const response = await getSpendByTime({
     token: customerToken,
     body: {
       ...payload,
@@ -31,7 +31,7 @@ export default async function getCustomerDailySpend(
 
   if (!response.ok) {
     throw new Error(
-      "Something went wrong fetching the customer's daily spend data"
+      "Something went wrong fetching the customer's spend by time data"
     );
   }
 
