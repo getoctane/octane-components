@@ -2,37 +2,37 @@ import { useCallback, useContext, useMemo } from 'react';
 import { useAsync } from './useAsync';
 import { TokenContext } from './useCustomerToken';
 import { components } from '../apiTypes';
-import getCustomerDailySpend from '../actions/getCustomerDailySpend';
+import getCustomerSpendByTime from '../actions/getCustomerSpendByTime';
 
-type CustomerDailySpendInput =
+type CustomerSpendByTimeInput =
   components['schemas']['CustomerPortalSpendByTimeInput'];
 
 /**
  * @description
- * A hook that fetches customer's daily spend data.
+ * A hook that fetches customer's spend by time data.
  * @example
- * const { result, loading, error, refetch } = useDailySpend({ token, payload: { start_time: '2023-09-01T00:00:00.000Z' } });
+ * const { result, loading, error, refetch } = useSpendByTime({ token, payload: { start_time: '2023-09-01T00:00:00.000Z' } });
  */
-export const useDailySpend = (args?: {
+export const useSpendByTime = (args?: {
   token?: string;
-  payload?: CustomerDailySpendInput;
+  payload?: CustomerSpendByTimeInput;
   baseApiUrl?: string;
 }) => {
   const { token: tokenFromContext } = useContext(TokenContext);
   const userToken = args?.token || tokenFromContext;
   const baseApiUrl = args?.baseApiUrl;
 
-  const initialArgs: [CustomerDailySpendInput | undefined] = useMemo(
+  const initialArgs: [CustomerSpendByTimeInput | undefined] = useMemo(
     () => [args?.payload],
     [args?.payload]
   );
 
   const fetchFn = useCallback(
-    (payload?: CustomerDailySpendInput) => {
+    (payload?: CustomerSpendByTimeInput) => {
       if (!payload) {
         return Promise.resolve(null);
       }
-      return getCustomerDailySpend(userToken, payload, { baseApiUrl });
+      return getCustomerSpendByTime(userToken, payload, { baseApiUrl });
     },
     [userToken, baseApiUrl]
   );

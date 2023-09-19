@@ -1,9 +1,9 @@
-import { getDailyUsage } from '../api/octane';
+import { getUsageByTime } from '../api/octane';
 import { components } from '../apiTypes';
 
-type CustomerDailyUsage = components['schemas']['CustomerPortalDailyUsage'];
-type CustomerDailyUsageInput =
-  components['schemas']['CustomerPortalDailyUsageInput'];
+type CustomerUsageByTime = components['schemas']['CustomerPortalUsageByTime'];
+type CustomerUsageByTimeInput =
+  components['schemas']['CustomerPortalUsageByTimeInput'];
 
 type Options = {
   baseApiUrl?: string;
@@ -14,14 +14,14 @@ type Options = {
  */
 export default async function getUsage(
   customerToken: string,
-  payload: CustomerDailyUsageInput,
+  payload: CustomerUsageByTimeInput,
   options: Options = {}
-): Promise<CustomerDailyUsage | null> {
+): Promise<CustomerUsageByTime | null> {
   if (!customerToken) {
     throw new Error('Token must be provided.');
   }
 
-  const response = await getDailyUsage({
+  const response = await getUsageByTime({
     token: customerToken,
     body: {
       ...payload,
