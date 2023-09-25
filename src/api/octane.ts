@@ -365,6 +365,16 @@ export const getCreditLedgerUrl: UrlFactory = (base = API_BASE) =>
 export const getCreditLedger = makeApiGETEndpoint<
   never, // No query params
   [], // No URL path args
-  Schemas['CreditLedger'][], // Returns the total accrued revenue broken down by line item
+  Schemas['CreditLedger'][], // Returns the customer entire credit ledger.
   unknown // Undefined failure type
 >(getCreditLedgerUrl);
+
+export const getAvailableCreditBalanceUrl: UrlFactory = (base = API_BASE) =>
+  `${base}/ecp/credit/available_balance`;
+
+export const getAvailableCreditBalance = makeApiGETEndpoint<
+  never, // No query params
+  [], // No URL path args
+  Schemas['CustomerPortalAvailableCreditBalance'], // Returns the credit balance. This is a live balance including the accrued revenue in the current cycle.
+  unknown // Undefined failure type
+>(getAvailableCreditBalanceUrl);
