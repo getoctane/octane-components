@@ -358,3 +358,13 @@ export const getUsageByTime = makeApiNonGETEndpoint<
   Schemas['CustomerPortalUsageByTime'], // Returns the daily usage by meter
   unknown // Undefined failure type
 >(getUsageByTimeUrl);
+
+export const getCreditLedgerUrl: UrlFactory = (base = API_BASE) =>
+  `${base}/ecp/credit/ledger`;
+
+export const getCreditLedger = makeApiGETEndpoint<
+  never, // No query params
+  [], // No URL path args
+  Schemas['CreditLedger'][], // Returns the total accrued revenue broken down by line item
+  unknown // Undefined failure type
+>(getCreditLedgerUrl);

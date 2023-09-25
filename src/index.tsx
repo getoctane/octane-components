@@ -24,6 +24,7 @@ import getCustomerMeters from './actions/getCustomerMeters';
 import getCustomerTotalAccruedRevenue from './actions/getCustomerTotalAccruedRevenue';
 import getCustomerSpendByTime from './actions/getCustomerSpendByTime';
 import getCustomerUsageByTime from './actions/getUsageByTime';
+import getCustomerCreditLedger from './actions/getCreditLedger';
 
 // Hooks
 export { useActiveSubscription } from './hooks/useActiveSubscription';
@@ -46,6 +47,7 @@ export { useUsage } from './hooks/useUsage';
 export { useTotalAccruedRevenue } from './hooks/useTotalAccruedRevenue';
 export { useSpendByTime } from './hooks/useSpendByTime';
 export { useUsageByTime } from './hooks/useUsageByTime';
+export { useCreditLedger } from './hooks/useCreditLedger';
 
 export const Actions = {
   subscribeCustomer,
@@ -66,6 +68,7 @@ export const Actions = {
   getCustomerTotalAccruedRevenue,
   getCustomerSpendByTime,
   getCustomerUsageByTime,
+  getCustomerCreditLedger,
 };
 
 // Top-level API components. These only need a customer token and should
