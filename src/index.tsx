@@ -24,7 +24,7 @@ import getCustomerMeters from './actions/getCustomerMeters';
 import getCustomerTotalAccruedRevenue from './actions/getCustomerTotalAccruedRevenue';
 import getCustomerSpendByTime from './actions/getCustomerSpendByTime';
 import getCustomerUsageByTime from './actions/getUsageByTime';
-import getCustomerCreditLedger from './actions/getCreditLedger';
+import getCustomerCreditGrants from './actions/getCreditGrants';
 import getCustomerAvailableCreditBalance from './actions/getAvailableCreditBalance';
 
 // Hooks
@@ -48,7 +48,7 @@ export { useUsage } from './hooks/useUsage';
 export { useTotalAccruedRevenue } from './hooks/useTotalAccruedRevenue';
 export { useSpendByTime } from './hooks/useSpendByTime';
 export { useUsageByTime } from './hooks/useUsageByTime';
-export { useCreditLedger } from './hooks/useCreditLedger';
+export { useCreditGrants } from './hooks/useCreditGrants';
 export { useAvailableCreditBalance } from './hooks/useAvailableCreditBalance';
 
 export const Actions = {
@@ -70,7 +70,7 @@ export const Actions = {
   getCustomerTotalAccruedRevenue,
   getCustomerSpendByTime,
   getCustomerUsageByTime,
-  getCustomerCreditLedger,
+  getCustomerCreditGrants,
   getCustomerAvailableCreditBalance,
 };
 
