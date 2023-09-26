@@ -3,22 +3,22 @@ import { useAsync } from './useAsync';
 import type { UseAsyncFetchReturnType } from './useAsync';
 import { TokenContext } from './useCustomerToken';
 import { components } from '../apiTypes';
-import getCreditLedger from '../actions/getCreditLedger';
+import getCustomerCreditGrants from '../actions/getCreditGrants';
 
-type CreditLedger = components['schemas']['CreditLedger'][];
+type CreditGrants = components['schemas']['CustomerPortalCreditGrant'][];
 
-export type UseCreditLedgerReturnType = UseAsyncFetchReturnType<CreditLedger>;
+export type UseCreditGrantsReturnType = UseAsyncFetchReturnType<CreditGrants>;
 
 /**
  * @description
- * A hook that fetches customer entire credit ledger.
+ * A hook that fetches customer credit grants.
  * @example
- * const { result, loading, error, refetch } = useCreditLedger({ token });
+ * const { result, loading, error, refetch } = useCreditGrants({ token });
  */
-export const useCreditLedger = (args?: {
+export const useCreditGrants = (args?: {
   token?: string;
   baseApiUrl?: string;
-}): UseCreditLedgerReturnType => {
+}): UseCreditGrantsReturnType => {
   const { token: tokenFromContext } = useContext(TokenContext);
   const userToken = args?.token || tokenFromContext;
   const baseApiUrl = args?.baseApiUrl;
@@ -28,7 +28,7 @@ export const useCreditLedger = (args?: {
   }
 
   const fetchFn = useCallback(() => {
-    return getCreditLedger(userToken, { baseApiUrl });
+    return getCustomerCreditGrants(userToken, { baseApiUrl });
   }, [userToken, baseApiUrl]);
 
   return useAsync({ fetchFn });

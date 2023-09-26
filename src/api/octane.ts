@@ -359,15 +359,15 @@ export const getUsageByTime = makeApiNonGETEndpoint<
   unknown // Undefined failure type
 >(getUsageByTimeUrl);
 
-export const getCreditLedgerUrl: UrlFactory = (base = API_BASE) =>
-  `${base}/ecp/credit/ledger`;
+export const getCreditGrantsUrl: UrlFactory = (base = API_BASE) =>
+  `${base}/ecp/credit_grants`;
 
-export const getCreditLedger = makeApiGETEndpoint<
+export const getCreditGrants = makeApiGETEndpoint<
   never, // No query params
   [], // No URL path args
-  Schemas['CreditLedger'][], // Returns the customer entire credit ledger.
+  Schemas['CustomerPortalCreditGrant'][], // Returns the customer entire credit ledger.
   unknown // Undefined failure type
->(getCreditLedgerUrl);
+>(getCreditGrantsUrl);
 
 export const getAvailableCreditBalanceUrl: UrlFactory = (base = API_BASE) =>
   `${base}/ecp/credit/available_balance`;

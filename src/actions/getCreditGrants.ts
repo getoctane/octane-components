@@ -1,30 +1,30 @@
-import { getCreditLedger } from '../api/octane';
+import { getCreditGrants } from '../api/octane';
 import { components } from '../apiTypes';
 
-type CreditLedger = components['schemas']['CreditLedger'][];
+type CrediGrants = components['schemas']['CustomerPortalCreditGrant'][];
 
 type Options = {
   baseApiUrl?: string;
 };
 
 /**
- * Fetches the customer entire credit ledger, or `null` if there is none.
+ * Fetches the customer credit grants, or `null` if there is none.
  */
-export default async function getCustomerCreditLedger(
+export default async function getCustomerCreditGrants(
   customerToken: string,
   options: Options = {}
-): Promise<CreditLedger | null> {
+): Promise<CrediGrants | null> {
   if (!customerToken) {
     throw new Error('Token must be provided.');
   }
 
-  const response = await getCreditLedger({
+  const response = await getCreditGrants({
     token: customerToken,
     urlOverride: options.baseApiUrl,
   });
   if (!response.ok) {
     throw new Error(
-      "Something went wrong fetching the customer's credit ledger info"
+      "Something went wrong fetching the customer's credit grants info"
     );
   }
   const data = await response.json();
