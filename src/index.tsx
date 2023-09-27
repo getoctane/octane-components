@@ -26,6 +26,7 @@ import getCustomerSpendByTime from './actions/getCustomerSpendByTime';
 import getCustomerUsageByTime from './actions/getUsageByTime';
 import getCustomerCreditGrants from './actions/getCreditGrants';
 import getCustomerAvailableCreditBalance from './actions/getAvailableCreditBalance';
+import getCustomerCreditTopOffPlan from './actions/getCreditTopOffPlan';
 
 // Hooks
 export { useActiveSubscription } from './hooks/useActiveSubscription';
@@ -50,6 +51,7 @@ export { useSpendByTime } from './hooks/useSpendByTime';
 export { useUsageByTime } from './hooks/useUsageByTime';
 export { useCreditGrants } from './hooks/useCreditGrants';
 export { useAvailableCreditBalance } from './hooks/useAvailableCreditBalance';
+export { useCreditTopOffPlan } from './hooks/useCreditTopOffPlan';
 
 export const Actions = {
   subscribeCustomer,
@@ -72,6 +74,7 @@ export const Actions = {
   getCustomerUsageByTime,
   getCustomerCreditGrants,
   getCustomerAvailableCreditBalance,
+  getCustomerCreditTopOffPlan,
 };
 
 // Top-level API components. These only need a customer token and should

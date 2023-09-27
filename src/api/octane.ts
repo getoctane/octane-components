@@ -378,3 +378,13 @@ export const getAvailableCreditBalance = makeApiGETEndpoint<
   Schemas['CustomerPortalAvailableCreditBalance'], // Returns the credit balance. This is a live balance including the accrued revenue in the current cycle.
   unknown // Undefined failure type
 >(getAvailableCreditBalanceUrl);
+
+export const getCreditTopOffPlanUrl: UrlFactory = (base = API_BASE) =>
+  `${base}/ecp/credit_top_off_plan`;
+
+export const getCreditTopOffPlan = makeApiGETEndpoint<
+  never, // No query params
+  [], // No URL path args
+  Schemas['CreditTopOffPlan'], // Returns the customer's top-off plan (if configured).
+  unknown // Undefined failure type
+>(getCreditTopOffPlanUrl);
