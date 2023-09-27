@@ -400,4 +400,4 @@ export const purchaseCredits = makeApiNonGETEndpoint<
   [], // No URL path args
   Schemas['CreditGrant'], // Return a credit grant
   unknown // Undefined failure type
->(getCustomerActiveSubscriptionUrl, 'POST');
+>(purchaseCreditsUrl, 'POST');
