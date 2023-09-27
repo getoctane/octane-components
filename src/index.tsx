@@ -27,6 +27,7 @@ import getCustomerUsageByTime from './actions/getUsageByTime';
 import getCustomerCreditGrants from './actions/getCreditGrants';
 import getCustomerAvailableCreditBalance from './actions/getAvailableCreditBalance';
 import getCustomerCreditTopOffPlan from './actions/getCreditTopOffPlan';
+import purchaseCustomerCredits from './actions/purchaseCredits';
 
 // Hooks
 export { useActiveSubscription } from './hooks/useActiveSubscription';
@@ -75,6 +76,7 @@ export const Actions = {
   getCustomerCreditGrants,
   getCustomerAvailableCreditBalance,
   getCustomerCreditTopOffPlan,
+  purchaseCustomerCredits,
 };
 
 // Top-level API components. These only need a customer token and should
