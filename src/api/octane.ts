@@ -388,3 +388,16 @@ export const getCreditTopOffPlan = makeApiGETEndpoint<
   Schemas['CreditTopOffPlan'], // Returns the customer's top-off plan (if configured).
   unknown // Undefined failure type
 >(getCreditTopOffPlanUrl);
+
+export const purchaseCreditsUrl: UrlFactory = (base = API_BASE) =>
+  `${base}/ecp/credit/purchase`;
+
+/**
+ * Allows given customer to buy credits.
+ */
+export const purchaseCredits = makeApiNonGETEndpoint<
+  Schemas['CustomerPortalCreditPurchase'], // Body type
+  [], // No URL path args
+  Schemas['CreditGrant'], // Return a credit grant
+  unknown // Undefined failure type
+>(getCustomerActiveSubscriptionUrl, 'POST');
