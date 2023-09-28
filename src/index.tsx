@@ -53,6 +53,7 @@ export { useUsageByTime } from './hooks/useUsageByTime';
 export { useCreditGrants } from './hooks/useCreditGrants';
 export { useAvailableCreditBalance } from './hooks/useAvailableCreditBalance';
 export { useCreditTopOffPlan } from './hooks/useCreditTopOffPlan';
+export { usePurchaseCredits } from './hooks/usePurchaseCredits';
 
 export const Actions = {
   subscribeCustomer,
